@@ -215,13 +215,29 @@ Generate AgentFlow V2 from natural language description.
 fluent-mind-mcp/
 ├── src/fluent_mind_mcp/
 │   ├── __init__.py
-│   ├── server.py        # MCP tools
-│   ├── client.py        # Flowise API client
-│   ├── models.py        # Pydantic models
-│   └── config.py        # Configuration
+│   ├── server.py                    # MCP server entry point, tool definitions
+│   ├── services/
+│   │   ├── __init__.py
+│   │   └── chatflow_service.py      # Business logic orchestration
+│   ├── client/
+│   │   ├── __init__.py
+│   │   ├── flowise_client.py        # HTTP client implementation
+│   │   └── exceptions.py            # Custom exception hierarchy
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── chatflow.py              # Chatflow, FlowData domain models
+│   │   ├── config.py                # Configuration model
+│   │   └── responses.py             # API response models
+│   ├── logging/
+│   │   ├── __init__.py
+│   │   └── operation_logger.py      # Structured logging
+│   └── utils/
+│       ├── __init__.py
+│       └── validators.py            # Input validation helpers
 ├── tests/
-│   ├── test_client.py
-│   └── test_server.py
+│   ├── unit/
+│   ├── integration/
+│   └── acceptance/
 ├── README.md
 ├── pyproject.toml
 └── .env.example

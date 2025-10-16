@@ -2,67 +2,81 @@
   "mcpServers": {
     "context7": {
       "description": "Library documentation (FastMCP, httpx, Pydantic API references)",
-      "command": "npx",
-      "args": ["-y", "@context7/mcp-server"]
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
     },
     "exa": {
       "description": "Code search for examples, tutorials, and MCP patterns",
-      "command": "npx",
-      "args": ["-y", "@exa/mcp-server"],
-      "env": {
-        "EXA_API_KEY": "${EXA_API_KEY}"
-      }
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=${EXA_API_KEY}"
     },
     "github": {
       "description": "Access Flowise source code and other MCP implementations",
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "sequential-thinking": {
       "description": "Complex problem solving and design decisions",
-      "command": "npx",
-      "args": ["-y", "@sequentialthinking/mcp-server"]
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp/sequentialthinking"]
     },
     "clean-code": {
       "description": "Code planning and architecture design",
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@cleancode/mcp-server"]
+      "args": ["-y", "mcp-clean-code"]
     },
     "vibe-check": {
       "description": "Validate approach and catch assumptions early",
-      "command": "npx",
-      "args": ["-y", "@vibe-check/mcp-server"]
+      "type": "stdio",
+      "command": "node",
+      "args": ["/Users/yermekibrayev/work/mcps/vibe-check-mcp-server/build/index.js"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "DEFAULT_LLM_PROVIDER": "anthropic",
+        "DEFAULT_MODEL": "claude-sonnet-4-5-20250514",
+        "USE_LEARNING_HISTORY": "false",
+        "MCP_TRANSPORT": "stdio"
+      }
     },
     "pieces": {
       "description": "Remember design decisions and store code snippets",
+      "type": "stdio",
       "command": "pieces",
-      "args": ["mcp"]
-    },
-    "wayfinder": {
-      "description": "Discover additional MCPs as needs emerge during development",
-      "command": "uvx",
-      "args": ["mcp-wayfinder"]
+      "args": ["mcp", "start"],
+      "env": {
+        "PIECES_CLIENT": "claude-code"
+      }
     },
     "chrome-devtools": {
       "description": "[OPTIONAL] Test Flowise web UI alongside API development",
-      "disabled": true,
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools"]
+      "args": ["-y", "chrome-devtools-mcp@latest"]
     },
-    "ide": {
-      "description": "[OPTIONAL] Real-time Python diagnostics and type checking",
-      "disabled": true,
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-ide"]
+    "experts": {
+      "description": "Code review from Martin Fowler and Bob Martin",
+      "type": "stdio",
+      "command": "/Users/yermekibrayev/work/mcps/mcp-experts/.venv/bin/python",
+      "args": ["/Users/yermekibrayev/work/mcps/mcp-experts/server.py"],
+      "env": {
+        "KNOWLEDGE_GRAPH_PATH": "/Users/yermekibrayev/work/mcps/mcp-experts/data/knowledge_graph.json",
+        "OLLAMA_HOST": "http://192.168.51.21:11434",
+        "OLLAMA_MODEL": "llama3:8b"
+      }
     }
   },
   "notes": {
-    "setup": "Replace ${EXA_API_KEY} and ${GITHUB_TOKEN} with actual values in your environment",
-    "essential": "First 8 MCPs (context7 through wayfinder) are essential for development",
-    "optional": "Last 2 MCPs (chrome-devtools, ide) are optional - enable by removing 'disabled: true'",
+    "setup": "All API keys are now configured with actual values from working blueprint",
+    "essential": "All MCPs are now enabled and properly configured",
     "usage": {
       "context7": "Use for FastMCP, httpx, Pydantic documentation lookups",
       "exa": "Search for 'fastmcp http client example', 'pydantic validation patterns', etc.",
@@ -71,7 +85,8 @@
       "clean-code": "Plan architecture before coding - ensure clean structure",
       "vibe-check": "Before major decisions, validate approach and check assumptions",
       "pieces": "Store important decisions, API patterns, code snippets for later reference",
-      "wayfinder": "Search for additional MCPs: 'search for python testing mcp', 'search for API mocking mcp'"
+      "wayfinder": "Search for additional MCPs: 'search for python testing mcp', 'search for API mocking mcp'",
+      "experts": "Get code reviews from Martin Fowler (refactoring) and Bob Martin (clean code)"
     }
   }
 }
