@@ -56,6 +56,16 @@
         "PIECES_CLIENT": "claude-code"
       }
     },
+    "fluent-mind": {
+      "description": "Flowise chatflow management - list, get, and run chatflows",
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "fluent_mind_mcp.server"],
+      "env": {
+        "FLOWISE_API_URL": "${FLOWISE_API_URL}",
+        "FLOWISE_API_KEY": "${FLOWISE_API_KEY}"
+      }
+    },
     "chrome-devtools": {
       "description": "[OPTIONAL] Test Flowise web UI alongside API development",
       "type": "stdio",
@@ -85,6 +95,7 @@
       "clean-code": "Plan architecture before coding - ensure clean structure",
       "vibe-check": "Before major decisions, validate approach and check assumptions",
       "pieces": "Store important decisions, API patterns, code snippets for later reference",
+      "fluent-mind": "Manage Flowise chatflows: list_chatflows, get_chatflow, run_prediction",
       "wayfinder": "Search for additional MCPs: 'search for python testing mcp', 'search for API mocking mcp'",
       "experts": "Get code reviews from Martin Fowler (refactoring) and Bob Martin (clean code)"
     }
