@@ -1,0 +1,30 @@
+```mermaid
+flowchart TD
+    Start{What changed?} --> Feature[User-Facing<br/>Feature?]
+    Feature -->|Yes| Spec[✅ Required:<br/>Specification]
+    Feature -->|No| Internal{Internal<br/>Code?}
+
+    Internal -->|Refactoring| NoSpec[⚠️ Optional:<br/>Spec]
+    Internal -->|Utility| NoSpec
+
+    Spec --> Arch{Architectural<br/>Decision?}
+    NoSpec --> Arch
+
+    Arch -->|Yes| ADR[✅ Required:<br/>ADR]
+    Arch -->|No| API{Public API?}
+
+    ADR --> API
+    API -->|Yes| APIDocs[✅ Required:<br/>API Docs]
+    API -->|No| README{New<br/>Directory?}
+
+    APIDocs --> README
+    README -->|Yes| READMEDoc[✅ Required:<br/>README.md]
+    README -->|No| Done[✅ Complete]
+
+    style Spec fill:#ccffcc
+    style ADR fill:#ccffcc
+    style APIDocs fill:#ccffcc
+    style READMEDoc fill:#ccffcc
+    style NoSpec fill:#ffffcc
+    style Done fill:#ccccff
+```

@@ -1,0 +1,37 @@
+```mermaid
+flowchart TD
+    Start[Feature Request] --> Spec["/speckit.specify<br/>Create Specification"]
+    Spec --> Clarify["/speckit.clarify<br/>Identify Gaps"]
+    Clarify --> Plan[Create .plans/<br/>Based on Complexity]
+    Plan --> Vibe[Vibe-Check MCP<br/>Validate Approach]
+    Vibe --> TDD["TDD Cycle<br/>(Red-Green-Refactor)"]
+    TDD --> Gates["Quality Gates<br/>(Semgrep, Tests, Coverage)"]
+    Gates --> UI{UI<br/>Involved?}
+    UI -->|Yes| UITest[Chrome DevTools<br/>Testing]
+    UI -->|No| Doc
+    UITest --> Doc[Update<br/>Documentation]
+    Doc --> Log{Complex<br/>Task?}
+    Log -->|Yes| ExecLog[Complete<br/>Execution Log]
+    Log -->|No| Learn
+    ExecLog --> Learn[Save Learnings<br/>to Pieces MCP]
+    Learn --> Commit[GitHub MCP<br/>Commit & PR]
+    Commit --> Review[Code Review]
+    Review --> Analyze["/speckit.analyze<br/>Consistency Check"]
+    Analyze --> Done[✅ Feature Complete]
+
+    style Start fill:#ccccff
+    style Spec fill:#ccccff
+    style Clarify fill:#ccccff
+    style Plan fill:#ccccff
+    style Vibe fill:#ccccff
+    style TDD fill:#ffffcc
+    style Gates fill:#ffddcc
+    style UITest fill:#ffddcc
+    style Doc fill:#ffddcc
+    style ExecLog fill:#ffddcc
+    style Learn fill:#ffddcc
+    style Commit fill:#ccffcc
+    style Review fill:#ccffcc
+    style Analyze fill:#ccffcc
+    style Done fill:#ccffcc
+```

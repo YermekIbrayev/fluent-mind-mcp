@@ -1,0 +1,21 @@
+```mermaid
+flowchart TD
+    Green["🟢 GREEN<br/>Existing Code/Docs"] --> Analyze[Create Task Proposals<br/>Analyze improvements needed]
+    Analyze --> Submit1["Submit to Experts<br/>Code + Task List"]
+    Submit1 --> Feedback1["🔴 RED<br/>Expert Feedback<br/>(Rate code + tasks)"]
+    Feedback1 --> Merge[Merge Task Lists<br/>Our ideas + Expert suggestions]
+    Merge --> Submit2[Submit Full Task List<br/>for Approval]
+    Submit2 --> Approved{Approved?}
+    Approved -->|No| RefineTask[Refine Tasks]
+    RefineTask --> Submit2
+    Approved -->|Yes| Implement["🔵 REFACTOR<br/>Implement Tasks"]
+    Implement --> Submit3[Submit Refined Code<br/>for Final Review]
+    Submit3 --> Rate{Rating<br/>≥ Target?}
+    Rate -->|No| Analyze
+    Rate -->|Yes| Done[✅ Complete]
+
+    style Green fill:#ccffcc
+    style Feedback1 fill:#ffcccc
+    style Implement fill:#ccccff
+    style Done fill:#ccffcc
+```

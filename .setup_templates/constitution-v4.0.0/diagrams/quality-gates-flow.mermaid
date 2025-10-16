@@ -1,0 +1,39 @@
+```mermaid
+flowchart LR
+    Code[Write Code] --> PreCommit[Pre-Commit<br/>Hooks]
+    PreCommit --> Semgrep[Semgrep Scan]
+    PreCommit --> Lint[Linting]
+    PreCommit --> Types[Type Check]
+
+    Semgrep --> Local{All Pass?}
+    Lint --> Local
+    Types --> Local
+
+    Local -->|Yes| Commit[Git Commit]
+    Local -->|No| Fix[Fix Issues]
+    Fix --> Code
+
+    Commit --> PR[Create PR]
+    PR --> CI[CI/CD<br/>Pipeline]
+    CI --> TestSuite[Run Full<br/>Test Suite]
+    CI --> Coverage[Check Coverage<br/>≥80%]
+    CI --> Security[Semgrep<br/>Full Scan]
+
+    TestSuite --> CIPass{All Pass?}
+    Coverage --> CIPass
+    Security --> CIPass
+
+    CIPass -->|Yes| CodeReview[Code Review]
+    CIPass -->|No| FixCI[Fix CI<br/>Issues]
+    FixCI --> Code
+
+    CodeReview --> Approved{Approved?}
+    Approved -->|Yes| Merge[Merge to<br/>Main]
+    Approved -->|No| Revise[Address<br/>Feedback]
+    Revise --> Code
+
+    style Commit fill:#ccffcc
+    style Merge fill:#ccffcc
+    style Fix fill:#ffcccc
+    style FixCI fill:#ffcccc
+```

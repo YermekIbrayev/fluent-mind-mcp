@@ -1,0 +1,21 @@
+```mermaid
+flowchart LR
+    Red["🔴 RED<br/>Write Failing Test"] --> Approve{Vibe-Check<br/>Approval?}
+    Approve -->|New Pattern<br/>or Critical Path| UserApprove[User Reviews Test]
+    Approve -->|Standard Pattern| Green
+    UserApprove --> Green["🟢 GREEN<br/>Write Minimal Code"]
+    Green --> Pass{Tests Pass?}
+    Pass -->|No| Green
+    Pass -->|Yes| Refactor["🔵 REFACTOR<br/>Improve Code"]
+    Refactor --> AllPass{All Tests<br/>Still Pass?}
+    AllPass -->|No| FixRefactor[Fix Refactoring]
+    FixRefactor --> Refactor
+    AllPass -->|Yes| Next{More<br/>Functionality?}
+    Next -->|Yes| Red
+    Next -->|No| Done[✅ Feature Complete]
+
+    style Red fill:#ffcccc
+    style Green fill:#ccffcc
+    style Refactor fill:#ccccff
+    style Done fill:#ccffcc
+```
