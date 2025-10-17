@@ -38,6 +38,46 @@ Existing Flowise MCP wrappers only support **querying** existing chatflows. Flue
 - **Clean separation** - 4-layer architecture (MCP Server, Service Logic, Flowise Client, Domain Models)
 - **Production-ready** - Comprehensive error handling, logging, and testing
 
+## Documentation
+
+**Start here**: [Documentation Hub](docs/README.md) - Central navigation for all documentation
+
+### Quick Navigation
+
+| I want to... | Go to |
+|--------------|-------|
+| **Create a working chatflow** | [Node Templates](examples/node_templates/) |
+| **Understand API field names** | [API Field Comparison](docs/API_FIELD_COMPARISON.md) |
+| **Learn chatflow creation** | [Working Chatflows Guide](examples/WORKING_CHATFLOWS_GUIDE.md) |
+| **Use MCP tools** | [API Reference](#api-reference) (this README) |
+| **Understand the data model** | [Data Model](specs/001-flowise-mcp-server/data-model.md) |
+| **View implementation plan** | [Implementation Plan](specs/001-flowise-mcp-server/plan.md) |
+
+### Key Resources
+
+- **[docs/README.md](docs/README.md)** - Complete documentation index and navigation hub
+- **[examples/node_templates/](examples/node_templates/)** - 39 production-ready node templates
+- **[examples/WORKING_CHATFLOWS_GUIDE.md](examples/WORKING_CHATFLOWS_GUIDE.md)** - How to create functional chatflows
+- **[docs/API_FIELD_COMPARISON.md](docs/API_FIELD_COMPARISON.md)** - Critical API field reference (camelCase vs snake_case)
+- **[specs/001-flowise-mcp-server/](specs/001-flowise-mcp-server/)** - Complete specification and design docs
+
+### Learning Path
+
+**Beginner**: Start here
+1. [README.md](#) (this file) - Project overview
+2. [examples/node_templates/QUICK_REFERENCE.md](examples/node_templates/QUICK_REFERENCE.md) - Quick start
+3. [examples/WORKING_CHATFLOWS_GUIDE.md](examples/WORKING_CHATFLOWS_GUIDE.md) - Learn the patterns
+
+**Intermediate**: Building chatflows
+1. [examples/node_templates/](examples/node_templates/) - Browse 39 templates
+2. [examples/node_templates/node_builder.py](examples/node_templates/node_builder.py) - Use helper utilities
+3. [docs/API_FIELD_COMPARISON.md](docs/API_FIELD_COMPARISON.md) - Understand API structure
+
+**Advanced**: Contributing
+1. [specs/001-flowise-mcp-server/spec.md](specs/001-flowise-mcp-server/spec.md) - Full specification
+2. [specs/001-flowise-mcp-server/data-model.md](specs/001-flowise-mcp-server/data-model.md) - Data model
+3. [.specify/memory/constitution.md](.specify/memory/constitution.md) - Development principles
+
 ## Installation
 
 ### Prerequisites
@@ -523,8 +563,10 @@ Built with frustration after discovering existing mcp-flowise tools couldn't act
 ## Support
 
 - **Issues**: Report at repository issues page
-- **Documentation**: See `specs/001-flowise-mcp-server/` for detailed design docs
-- **Quick Start**: See `specs/001-flowise-mcp-server/quickstart.md` for fast setup
+- **Documentation**: See [docs/README.md](docs/README.md) for complete documentation hub
+- **Quick Start**: See [specs/001-flowise-mcp-server/quickstart.md](specs/001-flowise-mcp-server/quickstart.md) for fast setup
+- **Node Templates**: See [examples/node_templates/](examples/node_templates/) for 39 production-ready templates
+- **Working Chatflows**: See [examples/WORKING_CHATFLOWS_GUIDE.md](examples/WORKING_CHATFLOWS_GUIDE.md) for how to create functional chatflows
 
 ## Quick Reference
 

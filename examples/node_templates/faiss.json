@@ -1,0 +1,126 @@
+{
+  "_metadata": {
+    "node_type": "faiss",
+    "name": "faiss",
+    "label": "Faiss",
+    "category": "Vector Stores",
+    "version": 1,
+    "description": "Upsert embedded data and perform similarity search upon query using Faiss library from Meta",
+    "base_classes": [
+      "Faiss",
+      "VectorStoreRetriever",
+      "BaseRetriever"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "faiss_0",
+    "position": {
+      "x": 605.4406604529936,
+      "y": -334.4603982296513
+    },
+    "type": "customNode",
+    "data": {
+      "vectorStoreMethods": {},
+      "label": "Faiss",
+      "name": "faiss",
+      "version": 1,
+      "type": "Faiss",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/Faiss/faiss.svg",
+      "category": "Vector Stores",
+      "description": "Upsert embedded data and perform similarity search upon query using Faiss library from Meta",
+      "baseClasses": [
+        "Faiss",
+        "VectorStoreRetriever",
+        "BaseRetriever"
+      ],
+      "inputs": {
+        "document": [
+          "{{documentStore_0.data.instance}}",
+          "{{documentStore_1.data.instance}}",
+          "{{documentStore_2.data.instance}}"
+        ],
+        "embeddings": "{{openAIEmbeddings_0.data.instance}}",
+        "basePath": "/home/yermek/work/output/66c1adc0-aeda-4d80-84b1-c195af61cb72",
+        "topK": ""
+      },
+      "outputs": {
+        "output": "retriever"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/Faiss/Faiss.js",
+      "inputAnchors": [
+        {
+          "label": "Document",
+          "name": "document",
+          "type": "Document",
+          "list": true,
+          "optional": true,
+          "id": "faiss_0-input-document-Document"
+        },
+        {
+          "label": "Embeddings",
+          "name": "embeddings",
+          "type": "Embeddings",
+          "id": "faiss_0-input-embeddings-Embeddings"
+        }
+      ],
+      "inputParams": [
+        {
+          "label": "Base Path to load",
+          "name": "basePath",
+          "description": "Path to load faiss.index file",
+          "placeholder": "C:\\Users\\User\\Desktop",
+          "type": "string",
+          "id": "faiss_0-input-basePath-string"
+        },
+        {
+          "label": "Top K",
+          "name": "topK",
+          "description": "Number of top results to fetch. Default to 4",
+          "placeholder": "4",
+          "type": "number",
+          "additionalParams": true,
+          "optional": true,
+          "id": "faiss_0-input-topK-number"
+        }
+      ],
+      "outputAnchors": [
+        {
+          "name": "output",
+          "label": "Output",
+          "type": "options",
+          "description": "",
+          "options": [
+            {
+              "id": "faiss_0-output-retriever-Faiss|VectorStoreRetriever|BaseRetriever",
+              "name": "retriever",
+              "label": "Faiss Retriever",
+              "description": "",
+              "type": "Faiss | VectorStoreRetriever | BaseRetriever"
+            },
+            {
+              "id": "faiss_0-output-vectorStore-Faiss|SaveableVectorStore|VectorStore",
+              "name": "vectorStore",
+              "label": "Faiss Vector Store",
+              "description": "",
+              "type": "Faiss | SaveableVectorStore | VectorStore"
+            }
+          ],
+          "default": "retriever"
+        }
+      ],
+      "id": "faiss_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 459,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 605.4406604529936,
+      "y": -334.4603982296513
+    },
+    "dragging": false
+  }
+}

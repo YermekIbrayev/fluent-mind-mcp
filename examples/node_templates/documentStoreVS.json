@@ -1,0 +1,89 @@
+{
+  "_metadata": {
+    "node_type": "documentStoreVS",
+    "name": "documentStoreVS",
+    "label": "Document Store (Vector)",
+    "category": "Vector Stores",
+    "version": 1,
+    "description": "Search and retrieve documents from Document Store",
+    "base_classes": [
+      "DocumentStoreVS"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "documentStoreVS_0",
+    "position": {
+      "x": 82.08834931316756,
+      "y": 158.001331687923
+    },
+    "type": "customNode",
+    "data": {
+      "loadMethods": {},
+      "label": "Document Store (Vector)",
+      "name": "documentStoreVS",
+      "version": 1,
+      "type": "DocumentStoreVS",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/DocumentStoreVS/dstore.svg",
+      "category": "Vector Stores",
+      "description": "Search and retrieve documents from Document Store",
+      "baseClasses": [
+        "DocumentStoreVS"
+      ],
+      "inputs": {
+        "selectedStore": "8ca82687-917c-4ee4-a8b0-fbd03aca7cbb"
+      },
+      "outputs": {
+        "output": "vectorStore"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/DocumentStoreVS/DocStoreVector.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Select Store",
+          "name": "selectedStore",
+          "type": "asyncOptions",
+          "loadMethod": "listStores",
+          "id": "documentStoreVS_0-input-selectedStore-asyncOptions"
+        }
+      ],
+      "outputAnchors": [
+        {
+          "name": "output",
+          "label": "Output",
+          "type": "options",
+          "description": "",
+          "options": [
+            {
+              "id": "documentStoreVS_0-output-retriever-BaseRetriever",
+              "name": "retriever",
+              "label": "Retriever",
+              "description": "",
+              "type": "BaseRetriever"
+            },
+            {
+              "id": "documentStoreVS_0-output-vectorStore-VectorStore",
+              "name": "vectorStore",
+              "label": "Vector Store",
+              "description": "",
+              "type": "VectorStore"
+            }
+          ],
+          "default": "retriever"
+        }
+      ],
+      "id": "documentStoreVS_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 318,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 82.08834931316756,
+      "y": 158.001331687923
+    },
+    "dragging": false
+  }
+}

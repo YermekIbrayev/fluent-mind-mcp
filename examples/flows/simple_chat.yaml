@@ -1,0 +1,16 @@
+name: "Simple Chat"
+deployed: false
+
+spec:
+  nodes:
+    - template: "chatOpenAI"
+      inputs:
+        modelName: "gpt-4o-mini"
+        temperature: 0.7
+
+    - template: "conversationChain"
+      inputs: {}
+
+  edges:
+    - from: 0  # chatOpenAI
+      to: 1    # conversationChain

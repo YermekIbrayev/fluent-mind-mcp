@@ -105,20 +105,27 @@ config = FlowiseConfig(
 
 **Source**: Flowise API responses
 
-**Fields**:
+**Fields** (camelCase to match Flowise API):
 
 | Field | Type | Required | Description | Validation |
 |-------|------|----------|-------------|------------|
-| `id` | `str` | Yes | Unique chatflow identifier | Non-empty string (UUID format preferred) |
+| `id` | `str` | Yes | Unique chatflow identifier | Non-empty string (UUID format) |
 | `name` | `str` | Yes | Human-readable chatflow name | Min length 1, Max length 255 |
 | `type` | `ChatflowType` | Yes | Chatflow type enum | Must be valid ChatflowType |
 | `deployed` | `bool` | Yes | Deployment status | Boolean |
-| `is_public` | `Optional[bool]` | No | Public access flag | Boolean |
-| `flow_data` | `Optional[str]` | No | JSON string of workflow structure | Valid JSON if provided |
-| `chatbot_config` | `Optional[str]` | No | JSON string of chatbot settings | Valid JSON if provided |
-| `api_config` | `Optional[str]` | No | JSON string of API settings | Valid JSON if provided |
-| `created_date` | `Optional[datetime]` | No | Creation timestamp | ISO 8601 format |
-| `updated_date` | `Optional[datetime]` | No | Last update timestamp | ISO 8601 format |
+| `isPublic` | `Optional[bool]` | No | Public access flag | Boolean |
+| `flowData` | `Optional[str]` | No | JSON string of workflow structure | Valid JSON if provided |
+| `chatbotConfig` | `Optional[str]` | No | JSON string of chatbot settings | Valid JSON if provided |
+| `apiConfig` | `Optional[str]` | No | JSON string of API settings | Valid JSON if provided |
+| `apikeyid` | `Optional[str]` | No | API key identifier | String |
+| `analytic` | `Optional[str]` | No | Analytics configuration | Valid JSON if provided |
+| `speechToText` | `Optional[str]` | No | Speech-to-text configuration | Valid JSON if provided |
+| `textToSpeech` | `Optional[str]` | No | Text-to-speech configuration | Valid JSON if provided |
+| `followUpPrompts` | `Optional[str]` | No | Follow-up prompts configuration | Valid JSON if provided |
+| `category` | `Optional[str]` | No | Chatflow category | String |
+| `workspaceId` | `Optional[str]` | No | Workspace identifier | UUID format |
+| `createdDate` | `Optional[datetime]` | No | Creation timestamp | ISO 8601 format |
+| `updatedDate` | `Optional[datetime]` | No | Last update timestamp | ISO 8601 format |
 
 **Example**:
 ```python
@@ -127,13 +134,15 @@ chatflow = Chatflow(
     name="My RAG Assistant",
     type=ChatflowType.CHATFLOW,
     deployed=True,
-    flow_data='{"nodes": [...], "edges": [...]}'
+    flowData='{"nodes": [...], "edges": [...]}',
+    workspaceId="workspace-uuid"
 )
 ```
 
 **Relationships**:
-- Contains one `FlowData` (when `flow_data` field is parsed)
+- Contains one `FlowData` (when `flowData` field is parsed)
 - Managed by one `FlowiseClient`
+- Belongs to one workspace (via `workspaceId`)
 
 **State Transitions**:
 ```
@@ -143,11 +152,16 @@ Created (deployed=False) → Deployed (deployed=True) → Undeployed (deployed=F
 ```
 
 **Validation Rules**:
-- `id` must be non-empty
+- `id` must be non-empty UUID format
 - `name` must be 1-255 characters
 - `type` must be valid enum value
-- `flow_data` must be valid JSON if provided
+- `flowData` must be valid JSON if provided
+- `workspaceId` must be valid UUID format if provided
 - Size limit: Total serialized size <1MB (validated at service layer)
+
+**Field Naming Note**:
+- All fields use camelCase to match Flowise API responses
+- Pydantic models should use `Field(alias=...)` for snake_case compatibility if needed
 
 ---
 
@@ -183,7 +197,7 @@ class ChatflowType(str, Enum):
 
 **Purpose**: Workflow graph structure (nodes and edges)
 
-**Source**: Parsed from `Chatflow.flow_data` JSON string
+**Source**: Parsed from `Chatflow.flowData` JSON string
 
 **Fields**:
 
@@ -191,6 +205,7 @@ class ChatflowType(str, Enum):
 |-------|------|----------|-------------|------------|
 | `nodes` | `List[Node]` | Yes | Workflow components | Min 0 nodes |
 | `edges` | `List[Edge]` | Yes | Connections between nodes | Min 0 edges |
+| `viewport` | `Optional[Dict[str, Any]]` | No | UI viewport state (x, y, zoom) | Valid dict with x, y, zoom keys |
 
 **Example**:
 ```python
@@ -201,7 +216,8 @@ flow_data = FlowData(
     ],
     edges=[
         Edge(id="edge-1", source="node-1", target="node-2")
-    ]
+    ],
+    viewport={"x": 0, "y": 0, "zoom": 1}
 )
 ```
 
@@ -232,6 +248,11 @@ flow_data = FlowData(
 | `type` | `str` | Yes | Node type (llm, vectorStore, tool, etc.) | Non-empty string |
 | `data` | `Dict[str, Any]` | Yes | Node configuration | Valid dict |
 | `position` | `Optional[Dict[str, float]]` | No | UI position (x, y) | {x: float, y: float} |
+| `width` | `Optional[int]` | No | UI node width in pixels | Positive integer |
+| `height` | `Optional[int]` | No | UI node height in pixels | Positive integer |
+| `selected` | `Optional[bool]` | No | UI selection state | Boolean |
+| `positionAbsolute` | `Optional[Dict[str, float]]` | No | Absolute UI position | {x: float, y: float} |
+| `dragging` | `Optional[bool]` | No | UI dragging state | Boolean |
 
 **Example**:
 ```python
@@ -419,12 +440,15 @@ error = ErrorResponse(
 | FlowiseConfig | timeout | 1-600 seconds |
 | FlowiseConfig | max_connections | 1-50 |
 | Chatflow | name | 1-255 characters |
-| Chatflow | flow_data | Valid JSON if provided |
+| Chatflow | flowData | Valid JSON if provided |
+| Chatflow | workspaceId | Valid UUID format if provided |
 | FlowData | nodes | List of Node objects |
 | FlowData | edges | List of Edge objects, valid references |
+| FlowData | viewport | Valid dict with x, y, zoom keys |
 | Node | id | Non-empty, unique within FlowData |
+| Node | width, height | Positive integers if provided |
 | Edge | source, target | Must reference existing nodes |
-| CreateChatflowRequest | flow_data | Valid JSON, <1MB |
+| CreateChatflowRequest | flowData | Valid JSON, <1MB |
 | UpdateChatflowRequest | At least one optional field | - |
 
 ### Business Rule Validations (Service Layer)

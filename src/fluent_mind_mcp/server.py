@@ -1,13 +1,17 @@
 """MCP server entry point for Fluent Mind Flowise integration.
 
-This module defines the FastMCP server with 8 MCP tools for managing
+This module defines the FastMCP server with 9 MCP tools for managing
 Flowise chatflows. Currently implements:
 - US1 (P1): Read and execute operations (list, get, run)
 - US2 (P2): Create new chatflows
+- US3 (P3): Update chatflows (update, deploy, delete)
+- US4 (P4): Generate AgentFlow V2 from descriptions
+- US5 (P5): Connect nodes with automatic beautiful layout
 
 WHY: Provides MCP protocol interface for AI assistants to interact with Flowise.
 """
 
+import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -27,6 +31,7 @@ from fluent_mind_mcp.logging.operation_logger import OperationLogger
 from fluent_mind_mcp.models.chatflow import ChatflowType
 from fluent_mind_mcp.models.config import FlowiseConfig
 from fluent_mind_mcp.services.chatflow_service import ChatflowService
+from fluent_mind_mcp.utils.layout import apply_hierarchical_layout
 
 
 # Server context for dependency injection
@@ -654,6 +659,161 @@ async def generate_agentflow_v2(description: str) -> dict[str, Any]:
         raise RuntimeError(f"{error_response['error']}: {error_response['message']}")
 
 
+@mcp.tool()
+async def connect_nodes(
+    chatflow_id: str,
+    source_node_id: str,
+    target_node_id: str,
+    auto_layout: bool = True
+) -> dict[str, Any]:
+    """Connect two nodes in a Flowise chatflow with automatic beautiful layout.
+
+    WHY: Enables programmatic flow construction by connecting nodes and automatically
+    positioning them to avoid overlaps. Creates professional-looking diagrams without
+    manual positioning in the UI.
+
+    Connects a source node's output to a target node's input by creating an edge.
+    Automatically finds compatible output/input anchors and creates the connection.
+    Optionally applies hierarchical layout to position all nodes beautifully.
+
+    Args:
+        chatflow_id: Unique chatflow identifier (required, non-empty)
+        source_node_id: ID of node providing output (required, non-empty)
+        target_node_id: ID of node receiving input (required, non-empty)
+        auto_layout: Apply automatic layout to prevent overlaps (default: True)
+
+    Returns:
+        Updated chatflow with new edge and repositioned nodes
+
+    Raises:
+        NotFoundError: Chatflow or nodes don't exist
+        ValidationError: Incompatible node types or no matching anchors
+        ConnectionError: Flowise API unreachable
+        AuthenticationError: Invalid API key
+
+    Performance: ≤10 seconds
+
+    Example:
+        # Connect LLM output to Agent input
+        result = await connect_nodes(
+            chatflow_id="abc-123",
+            source_node_id="chatOpenAI_0",
+            target_node_id="agent_1",
+            auto_layout=True
+        )
+        # Returns: Updated chatflow with new edge and beautified layout
+    """
+    try:
+        if server_context is None:
+            raise RuntimeError("Service not initialized")
+
+        # Fetch current chatflow
+        chatflow = await server_context.service.get_chatflow(chatflow_id)
+
+        # Parse flowData
+        flow_data = json.loads(chatflow.flow_data)
+        nodes = flow_data.get("nodes", [])
+        edges = flow_data.get("edges", [])
+
+        # Find source and target nodes
+        source_node = next((n for n in nodes if n["id"] == source_node_id), None)
+        target_node = next((n for n in nodes if n["id"] == target_node_id), None)
+
+        if not source_node:
+            raise ValidationError(f"Source node '{source_node_id}' not found in chatflow")
+        if not target_node:
+            raise ValidationError(f"Target node '{target_node_id}' not found in chatflow")
+
+        # Find compatible output/input anchors
+        source_outputs = source_node.get("data", {}).get("outputAnchors", [])
+        target_inputs = target_node.get("data", {}).get("inputAnchors", [])
+
+        if not source_outputs:
+            raise ValidationError(f"Source node '{source_node_id}' has no output anchors")
+        if not target_inputs:
+            raise ValidationError(f"Target node '{target_node_id}' has no input anchors")
+
+        # Find type-compatible anchors
+        source_anchor = None
+        target_anchor = None
+
+        # Try to match anchors by type compatibility
+        for s_anchor in source_outputs:
+            # Get source types (e.g., "ChatOpenAI | BaseChatModel | BaseLanguageModel")
+            s_types = s_anchor.get("type", "").split(" | ")
+            s_types = [t.strip() for t in s_types]
+
+            for t_anchor in target_inputs:
+                # Get target type (e.g., "BaseChatModel")
+                t_type = t_anchor.get("type", "")
+
+                # Check if any source type matches target type
+                if t_type in s_types:
+                    source_anchor = s_anchor
+                    target_anchor = t_anchor
+                    break
+
+            if source_anchor:
+                break
+
+        # Fallback: use first anchors if no type match found
+        if not source_anchor:
+            source_anchor = source_outputs[0]
+            target_anchor = target_inputs[0]
+
+        # Create edge
+        edge_id = f"{source_node_id}-{source_anchor['id']}-{target_node_id}-{target_anchor['id']}"
+
+        # Check if edge already exists
+        existing_edge = next((e for e in edges if e["id"] == edge_id), None)
+        if existing_edge:
+            raise ValidationError(
+                f"Edge already exists between '{source_node_id}' and '{target_node_id}'"
+            )
+
+        new_edge = {
+            "id": edge_id,
+            "source": source_node_id,
+            "sourceHandle": source_anchor["id"],
+            "target": target_node_id,
+            "targetHandle": target_anchor["id"],
+            "type": "buttonedge"
+        }
+
+        edges.append(new_edge)
+
+        # Apply auto-layout if requested
+        if auto_layout:
+            nodes = apply_hierarchical_layout(nodes, edges)
+
+        # Update flowData
+        flow_data["nodes"] = nodes
+        flow_data["edges"] = edges
+        updated_flow_data = json.dumps(flow_data)
+
+        # Update chatflow
+        updated_chatflow = await server_context.service.update_chatflow(
+            chatflow_id=chatflow_id,
+            flow_data=updated_flow_data
+        )
+
+        # Return updated chatflow with connection info
+        return {
+            **_chatflow_to_dict(updated_chatflow, include_flow_data=True),
+            "connection": {
+                "source": source_node_id,
+                "target": target_node_id,
+                "edge_id": edge_id,
+                "auto_layout_applied": auto_layout
+            }
+        }
+
+    except Exception as e:
+        # Translate exception to user-friendly error
+        error_response = _translate_error(e)
+        raise RuntimeError(f"{error_response['error']}: {error_response['message']}")
+
+
 class MCPServer:
     """Test-friendly wrapper for MCP server operations.
 
@@ -836,6 +996,128 @@ class MCPServer:
         result = await self.service.generate_agentflow_v2(description)
         # Return result directly (already a dict)
         return result
+
+    async def connect_nodes(
+        self,
+        chatflow_id: str,
+        source_node_id: str,
+        target_node_id: str,
+        auto_layout: bool = True
+    ) -> dict[str, Any]:
+        """Connect two nodes with auto-layout - test wrapper.
+
+        WHY: Provides direct access to connect_nodes functionality for
+        acceptance tests without FastMCP's tool layer overhead.
+
+        Args:
+            chatflow_id: Unique chatflow identifier
+            source_node_id: ID of node providing output
+            target_node_id: ID of node receiving input
+            auto_layout: Apply automatic layout (default: True)
+
+        Returns:
+            Updated chatflow dict with new edge and connection info
+        """
+        # Fetch current chatflow
+        chatflow = await self.service.get_chatflow(chatflow_id)
+
+        # Parse flowData
+        flow_data = json.loads(chatflow.flow_data)
+        nodes = flow_data.get("nodes", [])
+        edges = flow_data.get("edges", [])
+
+        # Find source and target nodes
+        source_node = next((n for n in nodes if n["id"] == source_node_id), None)
+        target_node = next((n for n in nodes if n["id"] == target_node_id), None)
+
+        if not source_node:
+            raise ValidationError(f"Source node '{source_node_id}' not found in chatflow")
+        if not target_node:
+            raise ValidationError(f"Target node '{target_node_id}' not found in chatflow")
+
+        # Find compatible output/input anchors
+        source_outputs = source_node.get("data", {}).get("outputAnchors", [])
+        target_inputs = target_node.get("data", {}).get("inputAnchors", [])
+
+        if not source_outputs:
+            raise ValidationError(f"Source node '{source_node_id}' has no output anchors")
+        if not target_inputs:
+            raise ValidationError(f"Target node '{target_node_id}' has no input anchors")
+
+        # Find type-compatible anchors
+        source_anchor = None
+        target_anchor = None
+
+        # Try to match anchors by type compatibility
+        for s_anchor in source_outputs:
+            # Get source types (e.g., "ChatOpenAI | BaseChatModel | BaseLanguageModel")
+            s_types = s_anchor.get("type", "").split(" | ")
+            s_types = [t.strip() for t in s_types]
+
+            for t_anchor in target_inputs:
+                # Get target type (e.g., "BaseChatModel")
+                t_type = t_anchor.get("type", "")
+
+                # Check if any source type matches target type
+                if t_type in s_types:
+                    source_anchor = s_anchor
+                    target_anchor = t_anchor
+                    break
+
+            if source_anchor:
+                break
+
+        # Fallback: use first anchors if no type match found
+        if not source_anchor:
+            source_anchor = source_outputs[0]
+            target_anchor = target_inputs[0]
+
+        # Create edge
+        edge_id = f"{source_node_id}-{source_anchor['id']}-{target_node_id}-{target_anchor['id']}"
+
+        # Check if edge already exists
+        existing_edge = next((e for e in edges if e["id"] == edge_id), None)
+        if existing_edge:
+            raise ValidationError(
+                f"Edge already exists between '{source_node_id}' and '{target_node_id}'"
+            )
+
+        new_edge = {
+            "id": edge_id,
+            "source": source_node_id,
+            "sourceHandle": source_anchor["id"],
+            "target": target_node_id,
+            "targetHandle": target_anchor["id"],
+            "type": "buttonedge"
+        }
+
+        edges.append(new_edge)
+
+        # Apply auto-layout if requested
+        if auto_layout:
+            nodes = apply_hierarchical_layout(nodes, edges)
+
+        # Update flowData
+        flow_data["nodes"] = nodes
+        flow_data["edges"] = edges
+        updated_flow_data = json.dumps(flow_data)
+
+        # Update chatflow
+        updated_chatflow = await self.service.update_chatflow(
+            chatflow_id=chatflow_id,
+            flow_data=updated_flow_data
+        )
+
+        # Return updated chatflow with connection info
+        return {
+            **_chatflow_to_dict(updated_chatflow, include_flow_data=True, test_mode=True),
+            "connection": {
+                "source": source_node_id,
+                "target": target_node_id,
+                "edge_id": edge_id,
+                "auto_layout_applied": auto_layout
+            }
+        }
 
     async def close(self) -> None:
         """Close HTTP client connections."""

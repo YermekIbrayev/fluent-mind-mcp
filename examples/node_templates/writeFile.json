@@ -1,0 +1,77 @@
+{
+  "_metadata": {
+    "node_type": "writeFile",
+    "name": "writeFile",
+    "label": "Write File",
+    "category": "Tools",
+    "version": 1,
+    "description": "Write file to disk",
+    "base_classes": [
+      "WriteFile",
+      "Tool",
+      "StructuredTool",
+      "Runnable"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "writeFile_0",
+    "position": {
+      "x": 1388.6228875693332,
+      "y": -283.60044875413826
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Write File",
+      "name": "writeFile",
+      "version": 1,
+      "type": "WriteFile",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/WriteFile/writefile.svg",
+      "category": "Tools",
+      "description": "Write file to disk",
+      "baseClasses": [
+        "WriteFile",
+        "Tool",
+        "StructuredTool",
+        "Runnable"
+      ],
+      "inputs": {
+        "basePath": "/home/yermek/work/output/66c1adc0-aeda-4d80-84b1-c195af61cb72"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/WriteFile/WriteFile.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Base Path",
+          "name": "basePath",
+          "placeholder": "C:\\Users\\User\\Desktop",
+          "type": "string",
+          "optional": true,
+          "id": "writeFile_0-input-basePath-string"
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "writeFile_0-output-writeFile-WriteFile|Tool|StructuredTool|Runnable",
+          "name": "writeFile",
+          "label": "WriteFile",
+          "description": "Write file to disk",
+          "type": "WriteFile | Tool | StructuredTool | Runnable"
+        }
+      ],
+      "id": "writeFile_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 279,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 1388.6228875693332,
+      "y": -283.60044875413826
+    },
+    "dragging": false
+  }
+}

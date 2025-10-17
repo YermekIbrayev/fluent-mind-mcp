@@ -1,0 +1,89 @@
+{
+  "_metadata": {
+    "node_type": "documentStore",
+    "name": "documentStore",
+    "label": "Document Store",
+    "category": "Document Loaders",
+    "version": 1,
+    "description": "Load data from pre-configured document stores",
+    "base_classes": [
+      "Document"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "documentStore_2",
+    "position": {
+      "x": 162.60379521464012,
+      "y": -1334.1256479374724
+    },
+    "type": "customNode",
+    "data": {
+      "loadMethods": {},
+      "label": "Document Store",
+      "name": "documentStore",
+      "version": 1,
+      "type": "Document",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/documentloaders/DocumentStore/dstore.svg",
+      "category": "Document Loaders",
+      "description": "Load data from pre-configured document stores",
+      "baseClasses": [
+        "Document"
+      ],
+      "inputs": {
+        "selectedStore": "518dd34f-ad11-4642-a145-afaa42cd78bb"
+      },
+      "outputs": {
+        "output": "document"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/documentloaders/DocumentStore/DocStoreLoader.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Select Store",
+          "name": "selectedStore",
+          "type": "asyncOptions",
+          "loadMethod": "listStores",
+          "id": "documentStore_2-input-selectedStore-asyncOptions"
+        }
+      ],
+      "outputAnchors": [
+        {
+          "name": "output",
+          "label": "Output",
+          "type": "options",
+          "description": "Array of document objects containing metadata and pageContent",
+          "options": [
+            {
+              "id": "documentStore_2-output-document-Document|json",
+              "name": "document",
+              "label": "Document",
+              "description": "Array of document objects containing metadata and pageContent",
+              "type": "Document | json"
+            },
+            {
+              "id": "documentStore_2-output-text-string|json",
+              "name": "text",
+              "label": "Text",
+              "description": "Concatenated string from pageContent of documents",
+              "type": "string | json"
+            }
+          ],
+          "default": "document"
+        }
+      ],
+      "id": "documentStore_2",
+      "selected": false
+    },
+    "width": 300,
+    "height": 312,
+    "selected": false,
+    "dragging": false,
+    "positionAbsolute": {
+      "x": 162.60379521464012,
+      "y": -1334.1256479374724
+    }
+  }
+}

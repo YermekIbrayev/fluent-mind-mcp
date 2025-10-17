@@ -1,0 +1,77 @@
+{
+  "_metadata": {
+    "node_type": "createFolderStructure",
+    "name": "createFolderStructure",
+    "label": "Create Folder Structure",
+    "category": "Tools",
+    "version": 1,
+    "description": "Create a folder structure based on a text description",
+    "base_classes": [
+      "CreateFolderStructure",
+      "Tool",
+      "StructuredTool",
+      "Runnable"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "createFolderStructure_0",
+    "position": {
+      "x": 1685.2754126337893,
+      "y": -361.79638317857507
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Create Folder Structure",
+      "name": "createFolderStructure",
+      "version": 1,
+      "type": "CreateFolderStructure",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/CreateFolderStructure/folder.svg",
+      "category": "Tools",
+      "description": "Create a folder structure based on a text description",
+      "baseClasses": [
+        "CreateFolderStructure",
+        "Tool",
+        "StructuredTool",
+        "Runnable"
+      ],
+      "inputs": {
+        "basePath": "/home/yermek/work/output/python/assistant"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/CreateFolderStructure/CreateFolderStructure.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Base Path",
+          "name": "basePath",
+          "placeholder": "/app/testOutput/python",
+          "type": "string",
+          "optional": true,
+          "id": "createFolderStructure_0-input-basePath-string"
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "createFolderStructure_0-output-createFolderStructure-CreateFolderStructure|Tool|StructuredTool|Runnable",
+          "name": "createFolderStructure",
+          "label": "CreateFolderStructure",
+          "description": "Create a folder structure based on a text description",
+          "type": "CreateFolderStructure | Tool | StructuredTool | Runnable"
+        }
+      ],
+      "id": "createFolderStructure_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 279,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 1685.2754126337893,
+      "y": -361.79638317857507
+    },
+    "dragging": false
+  }
+}

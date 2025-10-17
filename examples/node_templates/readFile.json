@@ -1,0 +1,77 @@
+{
+  "_metadata": {
+    "node_type": "readFile",
+    "name": "readFile",
+    "label": "Read File",
+    "category": "Tools",
+    "version": 1,
+    "description": "Read file from disk",
+    "base_classes": [
+      "ReadFile",
+      "Tool",
+      "StructuredTool",
+      "Runnable"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "readFile_0",
+    "position": {
+      "x": 2398.021129716923,
+      "y": -273.7177021649827
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Read File",
+      "name": "readFile",
+      "version": 1,
+      "type": "ReadFile",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/ReadFile/readfile.svg",
+      "category": "Tools",
+      "description": "Read file from disk",
+      "baseClasses": [
+        "ReadFile",
+        "Tool",
+        "StructuredTool",
+        "Runnable"
+      ],
+      "inputs": {
+        "basePath": "/home/yermek/work/output/66c1adc0-aeda-4d80-84b1-c195af61cb72"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/ReadFile/ReadFile.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Base Path",
+          "name": "basePath",
+          "placeholder": "C:\\Users\\User\\Desktop",
+          "type": "string",
+          "optional": true,
+          "id": "readFile_0-input-basePath-string"
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "readFile_0-output-readFile-ReadFile|Tool|StructuredTool|Runnable",
+          "name": "readFile",
+          "label": "ReadFile",
+          "description": "Read file from disk",
+          "type": "ReadFile | Tool | StructuredTool | Runnable"
+        }
+      ],
+      "id": "readFile_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 279,
+    "selected": false,
+    "dragging": false,
+    "positionAbsolute": {
+      "x": 2398.021129716923,
+      "y": -273.7177021649827
+    }
+  }
+}

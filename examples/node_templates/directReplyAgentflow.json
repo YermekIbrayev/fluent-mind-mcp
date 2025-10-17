@@ -1,0 +1,66 @@
+{
+  "_metadata": {
+    "node_type": "directReplyAgentflow",
+    "name": "directReplyAgentflow",
+    "label": "Output",
+    "category": "Agent Flows",
+    "version": 1,
+    "description": "Directly reply to the user with a message",
+    "base_classes": [
+      "DirectReply"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "directReplyAgentflow_0",
+    "position": {
+      "x": 442.20641700799905,
+      "y": 130.91431905275323
+    },
+    "data": {
+      "label": "Output",
+      "name": "directReplyAgentflow",
+      "version": 1,
+      "type": "DirectReply",
+      "category": "Agent Flows",
+      "description": "Directly reply to the user with a message",
+      "baseClasses": [
+        "DirectReply"
+      ],
+      "color": "#4DDBBB",
+      "hideOutput": true,
+      "inputs": {
+        "directReplyMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"agentAgentflow_0\" data-label=\"agentAgentflow_0\">{{ agentAgentflow_0 }}</span></p>",
+        "undefined": ""
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/DirectReply/DirectReply.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Message",
+          "name": "directReplyMessage",
+          "type": "string",
+          "rows": 4,
+          "acceptVariable": true,
+          "id": "directReplyAgentflow_0-input-directReplyMessage-string",
+          "display": true
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [],
+      "id": "directReplyAgentflow_0",
+      "selected": false
+    },
+    "type": "agentFlow",
+    "width": 116,
+    "height": 66,
+    "selected": false,
+    "dragging": false,
+    "positionAbsolute": {
+      "x": 442.20641700799905,
+      "y": 130.91431905275323
+    }
+  }
+}

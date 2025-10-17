@@ -1,0 +1,88 @@
+{
+  "_metadata": {
+    "node_type": "bufferMemory",
+    "name": "bufferMemory",
+    "label": "Buffer Memory",
+    "category": "Memory",
+    "version": 2,
+    "description": "Retrieve chat messages stored in database",
+    "base_classes": [
+      "BufferMemory",
+      "BaseChatMemory",
+      "BaseMemory"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "bufferMemory_0",
+    "position": {
+      "x": 852.0235477905042,
+      "y": 257.76873291757386
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Buffer Memory",
+      "name": "bufferMemory",
+      "version": 2,
+      "type": "BufferMemory",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/memory/BufferMemory/memory.svg",
+      "category": "Memory",
+      "description": "Retrieve chat messages stored in database",
+      "baseClasses": [
+        "BufferMemory",
+        "BaseChatMemory",
+        "BaseMemory"
+      ],
+      "inputs": {
+        "sessionId": "",
+        "memoryKey": "chat_history"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/memory/BufferMemory/BufferMemory.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Session Id",
+          "name": "sessionId",
+          "type": "string",
+          "description": "If not specified, a random id will be used. Learn <a target=\"_blank\" href=\"https://docs.flowiseai.com/memory#ui-and-embedded-chat\">more</a>",
+          "default": "",
+          "additionalParams": true,
+          "optional": true,
+          "id": "bufferMemory_0-input-sessionId-string",
+          "display": true
+        },
+        {
+          "label": "Memory Key",
+          "name": "memoryKey",
+          "type": "string",
+          "default": "chat_history",
+          "additionalParams": true,
+          "id": "bufferMemory_0-input-memoryKey-string",
+          "display": true
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "bufferMemory_0-output-bufferMemory-BufferMemory|BaseChatMemory|BaseMemory",
+          "name": "bufferMemory",
+          "label": "BufferMemory",
+          "description": "Retrieve chat messages stored in database",
+          "type": "BufferMemory | BaseChatMemory | BaseMemory"
+        }
+      ],
+      "id": "bufferMemory_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 259,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 852.0235477905042,
+      "y": 257.76873291757386
+    },
+    "dragging": false
+  }
+}
