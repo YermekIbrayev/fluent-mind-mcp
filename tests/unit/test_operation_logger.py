@@ -54,41 +54,41 @@ class TestOperationLogging:
     """Test structured operation logging (NFR-001 to NFR-004)."""
 
     def test_log_operation_basic(self, caplog):
-        """log_operation() logs operation name and status."""
+        """log_completed_operation() logs operation name and status."""
         logger = OperationLogger("test_logger")
 
         with caplog.at_level(logging.INFO):
-            logger.log_operation("list_chatflows", duration=0.5, status="success")
+            logger.log_completed_operation("list_chatflows", duration=0.5, status="success")
 
         assert "list_chatflows" in caplog.text
         assert "success" in caplog.text
 
     def test_log_operation_with_duration(self, caplog):
-        """log_operation() includes operation duration."""
+        """log_completed_operation() includes operation duration."""
         logger = OperationLogger("test_logger")
 
         with caplog.at_level(logging.INFO):
-            logger.log_operation("create_chatflow", duration=1.23, status="success")
+            logger.log_completed_operation("create_chatflow", duration=1.23, status="success")
 
         assert "create_chatflow" in caplog.text
         assert "1.23" in caplog.text or "duration" in caplog.text.lower()
 
     def test_log_operation_failure(self, caplog):
-        """log_operation() logs failed operations."""
+        """log_completed_operation() logs failed operations."""
         logger = OperationLogger("test_logger")
 
         with caplog.at_level(logging.ERROR):
-            logger.log_operation("update_chatflow", duration=0.8, status="failure")
+            logger.log_completed_operation("update_chatflow", duration=0.8, status="failure")
 
         assert "update_chatflow" in caplog.text
         assert "failure" in caplog.text
 
     def test_log_operation_structured_format(self, caplog):
-        """log_operation() uses structured format (JSON or key-value)."""
+        """log_completed_operation() uses structured format (JSON or key-value)."""
         logger = OperationLogger("test_logger")
 
         with caplog.at_level(logging.INFO):
-            logger.log_operation(
+            logger.log_completed_operation(
                 "get_chatflow",
                 duration=0.3,
                 status="success",
@@ -196,7 +196,7 @@ class TestCredentialMasking:
         logger = OperationLogger("test_logger")
 
         with caplog.at_level(logging.INFO):
-            logger.log_operation(
+            logger.log_completed_operation(
                 "api_call",
                 duration=0.1,
                 status="success",
