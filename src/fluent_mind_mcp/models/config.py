@@ -5,16 +5,16 @@ and loading configuration from environment variables.
 """
 
 import os
-from typing import Literal, Optional
+from typing import Literal
 
-from pydantic import Field, field_validator, HttpUrl
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from dotenv import load_dotenv
+from pydantic import BaseModel, Field, HttpUrl, field_validator
 
 
-class FlowiseConfig(BaseSettings):
+class FlowiseConfig(BaseModel):
     """Configuration for Flowise API connection.
 
-    Loads configuration from environment variables with validation.
+    Can be initialized programmatically or loaded from environment variables.
     All fields follow the validation rules from data-model.md.
 
     Attributes:
@@ -26,26 +26,15 @@ class FlowiseConfig(BaseSettings):
         flowise_version: Target Flowise version (informational)
     """
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        extra="ignore",
-        # Allow both programmatic and env var initialization
-        populate_by_name=True,
-    )
-
     api_url: HttpUrl = Field(
         ...,
         description="Flowise instance URL",
-        alias="FLOWISE_API_URL",
     )
 
-    api_key: Optional[str] = Field(
+    api_key: str | None = Field(
         None,
         min_length=8,
         description="API key for Flowise authentication",
-        alias="FLOWISE_API_KEY",
     )
 
     timeout: int = Field(
@@ -53,7 +42,6 @@ class FlowiseConfig(BaseSettings):
         ge=1,
         le=600,
         description="Request timeout in seconds",
-        alias="FLOWISE_TIMEOUT",
     )
 
     max_connections: int = Field(
@@ -61,13 +49,11 @@ class FlowiseConfig(BaseSettings):
         ge=1,
         le=50,
         description="Connection pool size",
-        alias="FLOWISE_MAX_CONNECTIONS",
     )
 
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = Field(
         "INFO",
         description="Logging level",
-        alias="LOG_LEVEL",
     )
 
     flowise_version: str = Field(
@@ -99,8 +85,35 @@ class FlowiseConfig(BaseSettings):
         Raises:
             ValidationError: If required variables missing or invalid
         """
-        # Pydantic Settings automatically loads from environment
-        return cls()
+        # Load .env file if not running tests
+        if not os.getenv("PYTEST_CURRENT_TEST"):
+            load_dotenv()
+
+        # WHY: Manually load from environment to avoid BaseSettings
+        # which always prioritizes env vars over constructor args
+        api_url = os.getenv("FLOWISE_API_URL")
+        if not api_url:
+            from pydantic_core import ValidationError as CoreValidationError
+
+            raise CoreValidationError.from_exception_data(
+                "Value error",
+                [
+                    {
+                        "type": "missing",
+                        "loc": ("FLOWISE_API_URL",),
+                        "input": {},
+                    }
+                ],
+            )
+
+        return cls(
+            api_url=api_url,  # type: ignore[arg-type]
+            api_key=os.getenv("FLOWISE_API_KEY"),
+            timeout=int(os.getenv("FLOWISE_TIMEOUT", "60")),
+            max_connections=int(os.getenv("FLOWISE_MAX_CONNECTIONS", "10")),
+            log_level=os.getenv("LOG_LEVEL", "INFO"),  # type: ignore
+            flowise_version=os.getenv("FLOWISE_VERSION", "v1.x"),
+        )
 
     @property
     def name(self) -> str:

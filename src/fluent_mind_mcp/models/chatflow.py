@@ -6,9 +6,9 @@ their workflow structure (nodes and edges), and chatflow types.
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator
 
 
 class ChatflowType(str, Enum):
@@ -37,14 +37,14 @@ class Node(BaseModel):
 
     id: str = Field(..., min_length=1, description="Unique node identifier")
     type: str = Field(..., min_length=1, description="Node type")
-    data: Dict[str, Any] = Field(..., description="Node configuration")
-    position: Optional[Dict[str, float]] = Field(
+    data: dict[str, Any] = Field(..., description="Node configuration")
+    position: dict[str, float] | None = Field(
         None, description="UI position {x: float, y: float}"
     )
 
     @field_validator("position")
     @classmethod
-    def validate_position(cls, v: Optional[Dict[str, float]]) -> Optional[Dict[str, float]]:
+    def validate_position(cls, v: dict[str, float] | None) -> dict[str, float] | None:
         """Validate position has x and y coordinates.
 
         WHY: Ensures position dict structure is correct if provided.
@@ -75,12 +75,12 @@ class Edge(BaseModel):
     id: str = Field(..., min_length=1, description="Unique edge identifier")
     source: str = Field(..., min_length=1, description="Source node ID")
     target: str = Field(..., min_length=1, description="Target node ID")
-    source_handle: Optional[str] = Field(None, description="Source output handle")
-    target_handle: Optional[str] = Field(None, description="Target input handle")
+    source_handle: str | None = Field(None, description="Source output handle")
+    target_handle: str | None = Field(None, description="Target input handle")
 
     @field_validator("target")
     @classmethod
-    def validate_no_self_loops(cls, v: str, info) -> str:
+    def validate_no_self_loops(cls, v: str, info: ValidationInfo) -> str:
         """Prevent self-referencing edges.
 
         WHY: Self-loops are not meaningful in Flowise workflows.
@@ -101,12 +101,12 @@ class FlowData(BaseModel):
         edges: List of connections between nodes
     """
 
-    nodes: List[Node] = Field(..., description="Workflow components")
-    edges: List[Edge] = Field(..., description="Connections between nodes")
+    nodes: list[Node] = Field(..., description="Workflow components")
+    edges: list[Edge] = Field(..., description="Connections between nodes")
 
     @field_validator("edges")
     @classmethod
-    def validate_edge_references(cls, v: List[Edge], info) -> List[Edge]:
+    def validate_edge_references(cls, v: list[Edge], info: ValidationInfo) -> list[Edge]:
         """Validate that edges reference existing nodes.
 
         WHY: Ensures graph integrity - edges must connect real nodes.
@@ -122,7 +122,7 @@ class FlowData(BaseModel):
 
     @field_validator("nodes")
     @classmethod
-    def validate_unique_node_ids(cls, v: List[Node]) -> List[Node]:
+    def validate_unique_node_ids(cls, v: list[Node]) -> list[Node]:
         """Validate that node IDs are unique.
 
         WHY: Node IDs must be unique for proper graph traversal.
@@ -158,9 +158,9 @@ class Chatflow(BaseModel):
     name: str = Field(..., min_length=1, max_length=255, description="Chatflow name")
     type: ChatflowType = Field(..., description="Chatflow type")
     deployed: bool = Field(..., description="Deployment status")
-    is_public: Optional[bool] = Field(None, alias="isPublic", description="Public access flag")
-    flow_data: Optional[str] = Field(None, alias="flowData", description="JSON string of workflow structure")
-    chatbot_config: Optional[str] = Field(None, alias="chatbotConfig", description="JSON string of chatbot settings")
-    api_config: Optional[str] = Field(None, alias="apiConfig", description="JSON string of API settings")
-    created_date: Optional[datetime] = Field(None, alias="createdDate", description="Creation timestamp")
-    updated_date: Optional[datetime] = Field(None, alias="updatedDate", description="Last update timestamp")
+    is_public: bool | None = Field(None, alias="isPublic", description="Public access flag")
+    flow_data: str | None = Field(None, alias="flowData", description="JSON string of workflow structure")
+    chatbot_config: str | None = Field(None, alias="chatbotConfig", description="JSON string of chatbot settings")
+    api_config: str | None = Field(None, alias="apiConfig", description="JSON string of API settings")
+    created_date: datetime | None = Field(None, alias="createdDate", description="Creation timestamp")
+    updated_date: datetime | None = Field(None, alias="updatedDate", description="Last update timestamp")

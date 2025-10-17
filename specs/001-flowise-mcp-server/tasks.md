@@ -125,30 +125,30 @@
 
 ### Tests First (RED)
 
-- [ ] T042 [P] [US2] Add create tests to test_flowise_client.py (POST /api/v1/chatflows, mock responses)
-- [ ] T043 [P] [US2] Add create tests to test_chatflow_service.py (validation, error cases)
-- [ ] T044 [P] [US2] Create test_user_story_2.py acceptance tests in tests/acceptance/test_user_story_2.py (4 scenarios from spec.md)
-- [ ] T045 [P] [US2] Add US2 integration tests to test_full_lifecycle.py (create, verify in Flowise, execute)
+- [X] T042 [P] [US2] Add create tests to test_flowise_client.py (POST /api/v1/chatflows, mock responses)
+- [X] T043 [P] [US2] Add create tests to test_chatflow_service.py (validation, error cases)
+- [X] T044 [P] [US2] Create test_user_story_2.py acceptance tests in tests/acceptance/test_user_story_2.py (4 scenarios from spec.md)
+- [X] T045 [P] [US2] Add US2 integration tests to test_full_lifecycle.py (create, verify in Flowise, execute)
 
 ### Implementation (GREEN)
 
-- [ ] T046 [US2] Implement create_chatflow() in FlowiseClient (POST /api/v1/chatflows, request body formatting)
-- [ ] T047 [US2] Add validation for flowData size (<1MB) in validators.py (validate_flow_data_size function)
-- [ ] T048 [US2] Add validation for flowData structure in validators.py (must have nodes and edges keys)
-- [ ] T049 [US2] Implement service.create_chatflow() in ChatflowService (validate inputs, call client, log creation)
-- [ ] T050 [US2] Define create_chatflow MCP tool with schema in server.py (name, flow_data, type, deployed parameters)
-- [ ] T051 [US2] Add error handling for creation failures (malformed JSON, size exceeded, API errors)
+- [X] T046 [US2] Implement create_chatflow() in FlowiseClient (POST /api/v1/chatflows, request body formatting)
+- [X] T047 [US2] Add validation for flowData size (<1MB) in validators.py (validate_flow_data_size function)
+- [X] T048 [US2] Add validation for flowData structure in validators.py (must have nodes and edges keys)
+- [X] T049 [US2] Implement service.create_chatflow() in ChatflowService (validate inputs, call client, log creation)
+- [X] T050 [US2] Define create_chatflow MCP tool with schema in server.py (name, flow_data, type, deployed parameters)
+- [X] T051 [US2] Add error handling for creation failures (malformed JSON, size exceeded, API errors)
 
 ### Verification (GREEN)
 
-- [ ] T052 [US2] Run US2 unit tests to verify GREEN (pytest -k "test_create")
-- [ ] T053 [US2] Run US2 acceptance tests to verify all 4 scenarios pass (pytest tests/acceptance/test_user_story_2.py)
-- [ ] T054 [US2] Run US2 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_create")
+- [X] T052 [US2] Run US2 unit tests to verify GREEN (pytest -k "test_create")
+- [X] T053 [US2] Run US2 acceptance tests to verify all 4 scenarios pass (pytest tests/acceptance/test_user_story_2.py)
+- [X] T054 [US2] Run US2 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_create")
 
 ### Refactor
 
-- [ ] T055 [US2] Refactor: Extract flowData validation into reusable validator class
-- [ ] T056 [US2] Add docstrings for all US2 additions
+- [X] T055 [US2] Refactor: Extract flowData validation into reusable validator class
+- [X] T056 [US2] Add docstrings for all US2 additions
 
 **Checkpoint**: User Stories 1 AND 2 complete. Can list, get, execute, and create chatflows. Both stories independently testable.
 
@@ -164,30 +164,30 @@
 
 ### Tests First (RED)
 
-- [ ] T057 [P] [US3] Add update tests to test_flowise_client.py (PUT /api/v1/chatflows/{id}, partial updates)
-- [ ] T058 [P] [US3] Add update tests to test_chatflow_service.py (validation, at least one field required)
-- [ ] T059 [P] [US3] Create test_user_story_3.py acceptance tests in tests/acceptance/test_user_story_3.py (4 scenarios from spec.md)
-- [ ] T060 [P] [US3] Add US3 integration tests to test_full_lifecycle.py (update name, flowData, deployment status)
+- [X] T057 [P] [US3] Add update tests to test_flowise_client.py (PUT /api/v1/chatflows/{id}, partial updates)
+- [X] T058 [P] [US3] Add update tests to test_chatflow_service.py (validation, at least one field required)
+- [X] T059 [P] [US3] Create test_user_story_3.py acceptance tests in tests/acceptance/test_user_story_3.py (4 scenarios from spec.md)
+- [X] T060 [P] [US3] Add US3 integration tests to test_full_lifecycle.py (update name, flowData, deployment status)
 
 ### Implementation (GREEN)
 
-- [ ] T061 [US3] Implement update_chatflow(id, **kwargs) in FlowiseClient (PUT with optional fields support)
-- [ ] T062 [US3] Implement service.update_chatflow() in ChatflowService (validate at least one field, call client, log update)
-- [ ] T063 [US3] Implement service.deploy_chatflow() in ChatflowService (convenience wrapper for update with deployed field)
-- [ ] T064 [US3] Define update_chatflow MCP tool with schema in server.py (chatflow_id required, name/flow_data/deployed optional)
-- [ ] T065 [US3] Define deploy_chatflow MCP tool with schema in server.py (chatflow_id and deployed parameters)
-- [ ] T066 [US3] Add error handling for update failures (not found, validation errors)
+- [X] T061 [US3] Implement update_chatflow(id, **kwargs) in FlowiseClient (PUT with optional fields support)
+- [X] T062 [US3] Implement service.update_chatflow() in ChatflowService (validate at least one field, call client, log update)
+- [X] T063 [US3] Implement service.deploy_chatflow() in ChatflowService (convenience wrapper for update with deployed field)
+- [X] T064 [US3] Define update_chatflow MCP tool with schema in server.py (chatflow_id required, name/flow_data/deployed optional)
+- [X] T065 [US3] Define deploy_chatflow MCP tool with schema in server.py (chatflow_id and deployed parameters)
+- [X] T066 [US3] Add error handling for update failures (not found, validation errors)
 
 ### Verification (GREEN)
 
-- [ ] T067 [US3] Run US3 unit tests to verify GREEN (pytest -k "test_update or test_deploy")
-- [ ] T068 [US3] Run US3 acceptance tests to verify all 4 scenarios pass (pytest tests/acceptance/test_user_story_3.py)
-- [ ] T069 [US3] Run US3 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_update")
+- [X] T067 [US3] Run US3 unit tests to verify GREEN (pytest -k "test_update or test_deploy")
+- [X] T068 [US3] Run US3 acceptance tests to verify all 4 scenarios pass (pytest tests/acceptance/test_user_story_3.py)
+- [X] T069 [US3] Run US3 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_update")
 
 ### Refactor
 
-- [ ] T070 [US3] Refactor: Ensure deploy_chatflow properly reuses update_chatflow logic
-- [ ] T071 [US3] Add docstrings for all US3 additions
+- [X] T070 [US3] Refactor: Ensure deploy_chatflow properly reuses update_chatflow logic
+- [X] T071 [US3] Add docstrings for all US3 additions
 
 **Checkpoint**: User Stories 1, 2, AND 3 complete. Full CRUD operations on chatflows working. All stories independently testable.
 
@@ -203,28 +203,28 @@
 
 ### Tests First (RED)
 
-- [ ] T072 [P] [US4] Add delete tests to test_flowise_client.py (DELETE /api/v1/chatflows/{id}, handle 404)
-- [ ] T073 [P] [US4] Add delete tests to test_chatflow_service.py (graceful handling of already deleted)
-- [ ] T074 [P] [US4] Create test_user_story_4.py acceptance tests in tests/acceptance/test_user_story_4.py (3 scenarios from spec.md)
-- [ ] T075 [P] [US4] Add US4 integration tests to test_full_lifecycle.py (create, delete, verify gone)
+- [X] T072 [P] [US4] Add delete tests to test_flowise_client.py (DELETE /api/v1/chatflows/{id}, handle 404)
+- [X] T073 [P] [US4] Add delete tests to test_chatflow_service.py (graceful handling of already deleted)
+- [X] T074 [P] [US4] Create test_user_story_4.py acceptance tests in tests/acceptance/test_user_story_4.py (3 scenarios from spec.md)
+- [X] T075 [P] [US4] Add US4 integration tests to test_full_lifecycle.py (create, delete, verify gone)
 
 ### Implementation (GREEN)
 
-- [ ] T076 [US4] Implement delete_chatflow(id) in FlowiseClient (DELETE /api/v1/chatflows/{id}, handle responses)
-- [ ] T077 [US4] Implement service.delete_chatflow(id) in ChatflowService (validate ID, call client, log deletion)
-- [ ] T078 [US4] Define delete_chatflow MCP tool with schema in server.py (chatflow_id parameter, return confirmation)
-- [ ] T079 [US4] Add error handling for delete failures (already deleted should succeed gracefully)
+- [X] T076 [US4] Implement delete_chatflow(id) in FlowiseClient (DELETE /api/v1/chatflows/{id}, handle responses)
+- [X] T077 [US4] Implement service.delete_chatflow(id) in ChatflowService (validate ID, call client, log deletion)
+- [X] T078 [US4] Define delete_chatflow MCP tool with schema in server.py (chatflow_id parameter, return confirmation)
+- [X] T079 [US4] Add error handling for delete failures (already deleted should succeed gracefully)
 
 ### Verification (GREEN)
 
-- [ ] T080 [US4] Run US4 unit tests to verify GREEN (pytest -k "test_delete")
-- [ ] T081 [US4] Run US4 acceptance tests to verify all 3 scenarios pass (pytest tests/acceptance/test_user_story_4.py)
-- [ ] T082 [US4] Run US4 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_delete")
+- [X] T080 [US4] Run US4 unit tests to verify GREEN (pytest -k "test_delete")
+- [X] T081 [US4] Run US4 acceptance tests to verify all 3 scenarios pass (pytest tests/acceptance/test_user_story_4.py)
+- [X] T082 [US4] Run US4 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_delete")
 
 ### Refactor
 
-- [ ] T083 [US4] Refactor: Ensure consistent error handling across all CRUD operations
-- [ ] T084 [US4] Add docstrings for all US4 additions
+- [X] T083 [US4] Refactor: Ensure consistent error handling across all CRUD operations
+- [X] T084 [US4] Add docstrings for all US4 additions
 
 **Checkpoint**: User Stories 1-4 complete. Full lifecycle management (list, get, create, update, delete, execute) working.
 
@@ -240,28 +240,28 @@
 
 ### Tests First (RED)
 
-- [ ] T085 [P] [US5] Add generation tests to test_flowise_client.py (POST /api/v1/agentflowv2-generator/generate, mock response)
-- [ ] T086 [P] [US5] Add generation tests to test_chatflow_service.py (validate description provided)
-- [ ] T087 [P] [US5] Create test_user_story_5.py acceptance tests in tests/acceptance/test_user_story_5.py (3 scenarios from spec.md)
-- [ ] T088 [P] [US5] Add US5 integration tests to test_full_lifecycle.py (generate, optionally create chatflow)
+- [X] T085 [P] [US5] Add generation tests to test_flowise_client.py (POST /api/v1/agentflowv2-generator/generate, mock response)
+- [X] T086 [P] [US5] Add generation tests to test_chatflow_service.py (validate description provided)
+- [X] T087 [P] [US5] Create test_user_story_5.py acceptance tests in tests/acceptance/test_user_story_5.py (3 scenarios from spec.md)
+- [X] T088 [P] [US5] Add US5 integration tests to test_full_lifecycle.py (generate, optionally create chatflow)
 
 ### Implementation (GREEN)
 
-- [ ] T089 [US5] Implement generate_agentflow_v2(description) in FlowiseClient (POST to generation endpoint)
-- [ ] T090 [US5] Implement service.generate_agentflow_v2(description) in ChatflowService (validate description, call client, log)
-- [ ] T091 [US5] Define generate_agentflow_v2 MCP tool with schema in server.py (description parameter, return flowData/name/description)
-- [ ] T092 [US5] Add error handling for generation failures (vague description, API errors)
+- [X] T089 [US5] Implement generate_agentflow_v2(description) in FlowiseClient (POST to generation endpoint)
+- [X] T090 [US5] Implement service.generate_agentflow_v2(description) in ChatflowService (validate description, call client, log)
+- [X] T091 [US5] Define generate_agentflow_v2 MCP tool with schema in server.py (description parameter, return flowData/name/description)
+- [X] T092 [US5] Add error handling for generation failures (vague description, API errors)
 
 ### Verification (GREEN)
 
-- [ ] T093 [US5] Run US5 unit tests to verify GREEN (pytest -k "test_generate")
-- [ ] T094 [US5] Run US5 acceptance tests to verify all 3 scenarios pass (pytest tests/acceptance/test_user_story_5.py)
-- [ ] T095 [US5] Run US5 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_generate")
+- [X] T093 [US5] Run US5 unit tests to verify GREEN (pytest -k "test_generate")
+- [X] T094 [US5] Run US5 acceptance tests to verify all 3 scenarios pass (pytest tests/acceptance/test_user_story_5.py)
+- [X] T095 [US5] Run US5 integration test (pytest tests/integration/test_full_lifecycle.py -k "test_generate")
 
 ### Refactor
 
-- [ ] T096 [US5] Refactor: Clean up any code duplication across all 8 MCP tools
-- [ ] T097 [US5] Add docstrings for all US5 additions
+- [X] T096 [US5] Refactor: Clean up any code duplication across all 8 MCP tools
+- [X] T097 [US5] Add docstrings for all US5 additions
 
 **Checkpoint**: All 5 user stories complete. All 8 MCP tools implemented and tested. Feature complete!
 
@@ -275,36 +275,36 @@
 
 ### Concurrency & Performance
 
-- [ ] T098 [P] Add concurrency tests in tests/integration/test_concurrency.py (5-10 simultaneous operations, verify targets met)
-- [ ] T099 [P] Add performance tests in tests/integration/test_performance.py (validate 5s, 10s, 60s targets per SC-002, SC-003, SC-006)
-- [ ] T100 Optimize connection pooling if performance tests fail (tune max_connections, timeout values)
-- [ ] T101 Add retry logic for 409 conflicts (single retry with 0.5s delay)
+- [X] T098 [P] Add concurrency tests in tests/integration/test_concurrency.py (5-10 simultaneous operations, verify targets met)
+- [X] T099 [P] Add performance tests in tests/integration/test_performance.py (validate 5s, 10s, 60s targets per SC-002, SC-003, SC-006)
+- [X] T100 Optimize connection pooling if performance tests fail (tune max_connections, timeout values)
+- [X] T101 Add retry logic for 409 conflicts (single retry with 0.5s delay)
 
 ### Error Handling & Edge Cases
 
-- [ ] T102 [P] Create test_error_scenarios.py in tests/integration/ (all 8 edge cases from spec.md)
-- [ ] T103 Implement graceful handling for all edge cases (unreachable API, auth failures, malformed data, large flowData, concurrent ops, rate limiting, timeouts)
-- [ ] T104 Verify error messages are user-friendly (run error scenario tests, validate messages)
+- [X] T102 [P] Create test_error_scenarios.py in tests/integration/ (all 8 edge cases from spec.md)
+- [X] T103 Implement graceful handling for all edge cases (unreachable API, auth failures, malformed data, large flowData, concurrent ops, rate limiting, timeouts)
+- [X] T104 Verify error messages are user-friendly (run error scenario tests, validate messages)
 
 ### Documentation
 
-- [ ] T105 [P] Update README.md with installation, configuration, usage examples (based on quickstart.md)
-- [ ] T106 [P] Add module docstrings to all __init__.py files (explain module purpose, exports)
-- [ ] T107 [P] Review and improve inline comments (ensure they explain WHY, not WHAT)
-- [ ] T108 [P] Create CLAUDE.md integration guide (if not exists, document how to add MCP server to Claude Desktop)
+- [X] T105 [P] Update README.md with installation, configuration, usage examples (based on quickstart.md)
+- [X] T106 [P] Add module docstrings to all __init__.py files (explain module purpose, exports)
+- [X] T107 [P] Review and improve inline comments (ensure they explain WHY, not WHAT)
+- [X] T108 [P] Create CLAUDE.md integration guide (if not exists, document how to add MCP server to Claude Desktop)
 
 ### Test Coverage
 
-- [ ] T109 Run full test suite with coverage (pytest --cov=fluent_mind_mcp --cov-report=html tests/)
-- [ ] T110 Verify ≥80% overall coverage, 100% critical path (authentication, API comm, validation)
-- [ ] T111 Add missing unit tests for any uncovered code (focus on critical paths)
+- [X] T109 Run full test suite with coverage (pytest --cov=fluent_mind_mcp --cov-report=html tests/)
+- [X] T110 Verify ≥80% overall coverage, 100% critical path (authentication, API comm, validation)
+- [X] T111 Add missing unit tests for any uncovered code (focus on critical paths)
 
 ### Code Quality
 
-- [ ] T112 Run ruff linter and fix issues (ruff check src/)
-- [ ] T113 Run mypy type checker and fix issues (mypy src/)
-- [ ] T114 Check cyclomatic complexity ≤10, nesting ≤3 (review complex functions, refactor if needed)
-- [ ] T115 Check for code duplication (review similar code blocks, extract common patterns)
+- [X] T112 Run ruff linter and fix issues (ruff check src/)
+- [X] T113 Run mypy type checker and fix issues (mypy src/)
+- [X] T114 Check cyclomatic complexity ≤10, nesting ≤3 (review complex functions, refactor if needed)
+- [X] T115 Check for code duplication (review similar code blocks, extract common patterns)
 
 ### Security
 

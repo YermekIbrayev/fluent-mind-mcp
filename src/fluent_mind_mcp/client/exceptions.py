@@ -4,7 +4,7 @@ This module defines the exception hierarchy for handling errors from
 the Flowise API and client-side validation.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 class FlowiseClientError(Exception):
@@ -18,7 +18,7 @@ class FlowiseClientError(Exception):
         details: Optional dictionary with additional error context
     """
 
-    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, message: str, details: dict[str, Any] | None = None) -> None:
         """Initialize FlowiseClientError.
 
         Args:
@@ -101,6 +101,18 @@ class RateLimitError(FlowiseClientError):
     - Too many requests to Flowise API (429)
     - Quota exceeded
     - Throttling applied
+    """
+
+    pass
+
+
+class ConflictError(FlowiseClientError):
+    """Resource conflict error.
+
+    Raised when:
+    - Concurrent modification detected (409)
+    - Resource state conflicts with operation
+    - Version mismatch or optimistic locking failure
     """
 
     pass

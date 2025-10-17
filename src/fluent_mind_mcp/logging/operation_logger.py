@@ -7,9 +7,9 @@ timing, structured data, and automatic credential masking for security.
 import logging
 import re
 import time
+from collections.abc import AsyncGenerator, Generator
 from contextlib import asynccontextmanager, contextmanager
-from typing import Any, AsyncGenerator, Dict, Optional, Generator
-
+from typing import Any
 
 # Patterns for credential masking (case-insensitive)
 CREDENTIAL_PATTERNS = [
@@ -76,7 +76,7 @@ class OperationLogger:
             masked = pattern.sub(replacement, masked)
         return masked
 
-    def _mask_dict_credentials(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _mask_dict_credentials(self, data: dict[str, Any]) -> dict[str, Any]:
         """Mask credentials in dictionary values.
 
         WHY: Security requirement for structured logging data.
@@ -147,6 +147,31 @@ class OperationLogger:
         else:
             self.logger.info(message)
 
+    def log_completed_operation(
+        self,
+        operation: str,
+        duration: float | None = None,
+        status: str = "success",
+        **context: Any
+    ) -> None:
+        """Log a completed operation with structured data.
+
+        WHY: Provides structured logging for operations that are already completed,
+        useful for testing or logging external operations.
+
+        Args:
+            operation: Operation name (e.g., "list_chatflows")
+            duration: Optional operation duration in seconds
+            status: Operation status ("success" or "failure")
+            **context: Additional structured data
+
+        Example:
+            logger.log_completed_operation("list_chatflows", duration=0.5, status="success")
+        """
+        # Use provided duration or default to 0
+        dur = duration if duration is not None else 0.0
+        self._log_operation_message(operation, dur, status, **context)
+
     @contextmanager
     def time_operation(self, operation: str, **context: Any) -> Generator[None, None, None]:
         """Context manager for timing operations.
@@ -180,8 +205,8 @@ class OperationLogger:
 
     @asynccontextmanager
     async def log_operation(
-        self, operation: str, initial_context: Dict[str, Any]
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+        self, operation: str, initial_context: dict[str, Any]
+    ) -> AsyncGenerator[dict[str, Any], None]:
         """Async context manager for logging operations with timing.
 
         WHY: Provides automatic operation timing and logging for async operations.
@@ -230,7 +255,7 @@ class OperationLogger:
     def log_error(
         self,
         operation: str,
-        exception: Optional[Exception] = None,
+        exception: Exception | None = None,
         include_traceback: bool = False,
         **context: Any
     ) -> None:

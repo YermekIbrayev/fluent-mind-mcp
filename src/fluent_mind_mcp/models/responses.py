@@ -4,11 +4,12 @@ This module defines Pydantic models for API requests and responses,
 including prediction responses, error responses, and CRUD request models.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from fluent_mind_mcp.models.chatflow import ChatflowType
+from fluent_mind_mcp.utils.validators import FlowDataValidator
 
 
 class PredictionResponse(BaseModel):
@@ -26,13 +27,13 @@ class PredictionResponse(BaseModel):
     model_config = {"populate_by_name": True}
 
     text: str = Field(..., min_length=1, description="Response text from chatflow")
-    question_message_id: Optional[str] = Field(
+    question_message_id: str | None = Field(
         None, alias="questionMessageId", description="Question message identifier"
     )
-    chat_message_id: Optional[str] = Field(
+    chat_message_id: str | None = Field(
         None, alias="chatMessageId", description="Response message identifier"
     )
-    session_id: Optional[str] = Field(
+    session_id: str | None = Field(
         None, alias="sessionId", description="Conversation session identifier"
     )
 
@@ -50,7 +51,7 @@ class ErrorResponse(BaseModel):
 
     error: str = Field(..., description="Error type/code")
     message: str = Field(..., description="User-friendly error message")
-    details: Optional[Dict[str, Any]] = Field(None, description="Additional error context")
+    details: dict[str, Any] | None = Field(None, description="Additional error context")
 
 
 class CreateChatflowRequest(BaseModel):
@@ -72,35 +73,15 @@ class CreateChatflowRequest(BaseModel):
 
     @field_validator("flow_data")
     @classmethod
-    def validate_flow_data_size(cls, v: str) -> str:
-        """Validate flow_data size is under 1MB.
+    def validate_flow_data_structure(cls, v: str) -> str:
+        """Validate flow_data structure, size, and JSON format.
 
-        WHY: Prevent oversized payloads from being sent to API.
+        WHY: Uses centralized FlowDataValidator to ensure consistent validation
+             across all parts of the system. This eliminates code duplication
+             and makes validation logic easier to maintain.
         """
-        max_size = 1_048_576  # 1MB in bytes
-        size = len(v.encode("utf-8"))
-        if size > max_size:
-            raise ValueError(f"flow_data size ({size} bytes) exceeds 1MB limit ({max_size} bytes)")
-        return v
-
-    @field_validator("flow_data")
-    @classmethod
-    def validate_flow_data_json(cls, v: str) -> str:
-        """Validate flow_data is valid JSON.
-
-        WHY: Ensures flow_data can be parsed as JSON.
-        """
-        import json
-
-        try:
-            parsed = json.loads(v)
-            if not isinstance(parsed, dict):
-                raise ValueError("flow_data must be a JSON object")
-            if "nodes" not in parsed or "edges" not in parsed:
-                raise ValueError("flow_data must contain 'nodes' and 'edges' keys")
-        except json.JSONDecodeError as e:
-            raise ValueError(f"flow_data must be valid JSON: {str(e)}")
-        return v
+        validator = FlowDataValidator()
+        return validator.validate_for_pydantic(v)
 
 
 class UpdateChatflowRequest(BaseModel):
@@ -117,38 +98,22 @@ class UpdateChatflowRequest(BaseModel):
     """
 
     chatflow_id: str = Field(..., min_length=1, description="Chatflow to update")
-    name: Optional[str] = Field(None, min_length=1, max_length=255, description="New name")
-    flow_data: Optional[str] = Field(None, min_length=1, description="New workflow structure")
-    deployed: Optional[bool] = Field(None, description="New deployment status")
+    name: str | None = Field(None, min_length=1, max_length=255, description="New name")
+    flow_data: str | None = Field(None, min_length=1, description="New workflow structure")
+    deployed: bool | None = Field(None, description="New deployment status")
 
     @field_validator("flow_data")
     @classmethod
-    def validate_flow_data_size(cls, v: Optional[str]) -> Optional[str]:
-        """Validate flow_data size is under 1MB if provided.
+    def validate_flow_data_structure(cls, v: str | None) -> str | None:
+        """Validate flow_data structure, size, and JSON format if provided.
 
-        WHY: Prevent oversized payloads from being sent to API.
+        WHY: Uses centralized FlowDataValidator to ensure consistent validation
+             across all parts of the system. This eliminates code duplication
+             and makes validation logic easier to maintain.
         """
         if v is not None:
-            max_size = 1_048_576  # 1MB in bytes
-            size = len(v.encode("utf-8"))
-            if size > max_size:
-                raise ValueError(f"flow_data size ({size} bytes) exceeds 1MB limit ({max_size} bytes)")
-        return v
-
-    @field_validator("flow_data")
-    @classmethod
-    def validate_flow_data_json(cls, v: Optional[str]) -> Optional[str]:
-        """Validate flow_data is valid JSON if provided.
-
-        WHY: Ensures flow_data can be parsed as JSON.
-        """
-        if v is not None:
-            import json
-
-            try:
-                json.loads(v)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"flow_data must be valid JSON: {str(e)}")
+            validator = FlowDataValidator()
+            return validator.validate_for_pydantic(v)
         return v
 
     @model_validator(mode="after")
