@@ -11,7 +11,12 @@ from fluent_mind_mcp.client.flowise_client import FlowiseClient
 from fluent_mind_mcp.logging.operation_logger import OperationLogger
 from fluent_mind_mcp.models import Chatflow, PredictionResponse
 from fluent_mind_mcp.models.chatflow import ChatflowType
-from fluent_mind_mcp.utils.validators import validate_chatflow_id, validate_flow_data, sanitize_inputs
+from fluent_mind_mcp.utils.validators import (
+    sanitize_inputs,
+    sanitize_string,
+    validate_chatflow_id,
+    validate_flow_data,
+)
 
 
 class ChatflowService:
@@ -117,9 +122,12 @@ class ChatflowService:
             ValidationError: Invalid inputs
             FlowiseClientError: On API errors
         """
-        # Sanitize inputs
-        inputs = sanitize_inputs(chatflow_id=chatflow_id, question=question)
-        chatflow_id, question = inputs['chatflow_id'], inputs['question']
+        # Sanitize inputs with robust security checks
+        try:
+            chatflow_id = sanitize_string(chatflow_id)
+            question = sanitize_string(question, max_length=10000)  # Reasonable limit for questions
+        except ValueError as e:
+            raise ValidationError(f"Invalid input: {e}")
 
         # Validate inputs before API call
         if not validate_chatflow_id(chatflow_id):
@@ -172,9 +180,11 @@ class ChatflowService:
             ValidationError: Invalid name or flowData structure
             FlowiseClientError: On API errors
         """
-        # Sanitize inputs
-        inputs = sanitize_inputs(name=name)
-        name = inputs['name']
+        # Sanitize inputs with robust security checks
+        try:
+            name = sanitize_string(name, max_length=255)
+        except ValueError as e:
+            raise ValidationError(f"Invalid chatflow name: {e}")
 
         # Validate name
         if not name:

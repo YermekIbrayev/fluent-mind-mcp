@@ -224,11 +224,76 @@ def validate_chatflow_type(chatflow_type: str) -> bool:
         return False
 
 
+def sanitize_string(value: str, max_length: int | None = None) -> str:
+    """Sanitize a single string value to prevent injection attacks.
+
+    WHY: Prevents various injection attacks (XSS, SQL injection, command injection)
+         by validating and normalizing string inputs. Does NOT escape HTML/SQL -
+         that's the responsibility of the consuming system (Flowise).
+
+    Security measures:
+    - Strips leading/trailing whitespace
+    - Validates length limits
+    - Rejects null bytes (can cause truncation attacks)
+    - Rejects control characters except newlines/tabs (for security)
+
+    NOTE: We do NOT reject SQL keywords, HTML tags, or shell metacharacters
+          because the MCP server is a pass-through to Flowise. The Flowise
+          API is responsible for proper escaping and sanitization for its
+          database and UI. We only validate that inputs are well-formed strings.
+
+    Args:
+        value: String value to sanitize
+        max_length: Optional maximum length (raises ValueError if exceeded)
+
+    Returns:
+        Sanitized string value
+
+    Raises:
+        ValueError: If input contains forbidden characters or exceeds max_length
+
+    Example:
+        >>> sanitize_string("  hello  ")
+        'hello'
+        >>> sanitize_string("test\\x00injection")  # doctest: +SKIP
+        ValueError: String contains null bytes
+    """
+    if not isinstance(value, str):
+        raise ValueError(f"Expected string, got {type(value).__name__}")
+
+    # Strip whitespace
+    sanitized = value.strip()
+
+    # Check for null bytes (security: prevents truncation attacks)
+    if '\x00' in sanitized:
+        raise ValueError("String contains null bytes")
+
+    # Check for control characters (except newlines and tabs which are valid)
+    # WHY: Control characters can cause unexpected behavior in logs, UIs, etc.
+    for char in sanitized:
+        code = ord(char)
+        # Allow printable chars (32-126), newline (10), tab (9), carriage return (13)
+        # and extended Unicode characters (>127)
+        if code < 32 and code not in (9, 10, 13):
+            raise ValueError(f"String contains invalid control character: {repr(char)}")
+
+    # Validate length if specified
+    if max_length is not None and len(sanitized) > max_length:
+        raise ValueError(
+            f"String length {len(sanitized)} exceeds maximum {max_length}"
+        )
+
+    return sanitized
+
+
 def sanitize_inputs(**kwargs: Any) -> dict[str, Any]:
     """Sanitize input values by stripping whitespace from strings.
 
     WHY: Centralizes input sanitization to eliminate duplication of .strip() calls
          across service methods. Ensures consistent handling of whitespace in inputs.
+
+    This is a lightweight sanitization that only strips whitespace. For more
+    robust sanitization with injection protection, use sanitize_string() directly.
 
     Args:
         **kwargs: Keyword arguments with values to sanitize
@@ -247,3 +312,62 @@ def sanitize_inputs(**kwargs: Any) -> dict[str, Any]:
         else:
             result[key] = value
     return result
+
+
+def validate_response_type(response_data: Any, expected_type: type) -> None:
+    """Validate API response is of expected type.
+
+    WHY: Protects against malicious or malformed API responses that could
+         cause unexpected behavior. Validates response structure before
+         processing to prevent type errors and security issues.
+
+    Args:
+        response_data: The parsed response data from API
+        expected_type: The expected Python type (dict, list, str, etc.)
+
+    Raises:
+        ValueError: If response type doesn't match expected type
+
+    Example:
+        >>> validate_response_type({"key": "value"}, dict)  # OK
+        >>> validate_response_type([1, 2, 3], list)  # OK
+        >>> validate_response_type("string", dict)  # doctest: +SKIP
+        ValueError: Expected dict response, got str
+    """
+    if not isinstance(response_data, expected_type):
+        actual_type = type(response_data).__name__
+        expected_name = expected_type.__name__
+        raise ValueError(
+            f"Expected {expected_name} response, got {actual_type}. "
+            f"This may indicate a malicious or malformed API response."
+        )
+
+
+def validate_response_has_fields(response_data: dict[str, Any], required_fields: list[str]) -> None:
+    """Validate API response dict has required fields.
+
+    WHY: Ensures API responses contain expected data structure before processing.
+         Prevents KeyError and protects against incomplete or tampered responses.
+
+    Args:
+        response_data: The parsed response dictionary from API
+        required_fields: List of required field names
+
+    Raises:
+        ValueError: If any required field is missing
+
+    Example:
+        >>> validate_response_has_fields({"id": "123", "name": "Test"}, ["id", "name"])  # OK
+        >>> validate_response_has_fields({"id": "123"}, ["id", "name"])  # doctest: +SKIP
+        ValueError: Response missing required field: name
+    """
+    if not isinstance(response_data, dict):
+        raise ValueError("Response must be a dictionary to validate fields")
+
+    missing_fields = [field for field in required_fields if field not in response_data]
+
+    if missing_fields:
+        raise ValueError(
+            f"Response missing required field(s): {', '.join(missing_fields)}. "
+            f"This may indicate an incomplete or malicious API response."
+        )

@@ -241,6 +241,7 @@ class FlowiseClient:
             AuthenticationError: Invalid API key
             ConnectionError: Network/timeout issues
             RateLimitError: Too many requests
+            ValidationError: Malformed API response
         """
         try:
             response = await self._client.get("/chatflows")
@@ -249,6 +250,22 @@ class FlowiseClient:
                 self._handle_error(response, "list_chatflows")
 
             chatflows_data = response.json()
+
+            # Validate response type (security: protect against malicious responses)
+            if not isinstance(chatflows_data, list):
+                raise ValidationError(
+                    f"Invalid API response: expected list, got {type(chatflows_data).__name__}",
+                    details={"operation": "list_chatflows"}
+                )
+
+            # Validate each chatflow has required fields before parsing
+            for idx, chatflow_data in enumerate(chatflows_data):
+                if not isinstance(chatflow_data, dict):
+                    raise ValidationError(
+                        f"Invalid chatflow data at index {idx}: expected dict, got {type(chatflow_data).__name__}",
+                        details={"operation": "list_chatflows", "index": idx}
+                    )
+
             return [Chatflow(**chatflow) for chatflow in chatflows_data]
 
         except (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPError, httpx.NetworkError):
@@ -270,6 +287,7 @@ class FlowiseClient:
             NotFoundError: Chatflow doesn't exist
             AuthenticationError: Invalid API key
             ConnectionError: Network/timeout issues
+            ValidationError: Malformed API response
         """
         try:
             response = await self._client.get(f"/chatflows/{chatflow_id}")
@@ -278,6 +296,14 @@ class FlowiseClient:
                 self._handle_error(response, "get_chatflow")
 
             chatflow_data = response.json()
+
+            # Validate response type (security: protect against malicious responses)
+            if not isinstance(chatflow_data, dict):
+                raise ValidationError(
+                    f"Invalid API response: expected dict, got {type(chatflow_data).__name__}",
+                    details={"operation": "get_chatflow", "chatflow_id": chatflow_id}
+                )
+
             return Chatflow(**chatflow_data)
 
         except (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPError, httpx.NetworkError):
@@ -298,7 +324,7 @@ class FlowiseClient:
 
         Raises:
             NotFoundError: Chatflow doesn't exist
-            ValidationError: Invalid input
+            ValidationError: Invalid input or malformed response
             AuthenticationError: Invalid API key
             ConnectionError: Network/timeout issues
         """
@@ -311,6 +337,21 @@ class FlowiseClient:
                 self._handle_error(response, "run_prediction")
 
             prediction_data = response.json()
+
+            # Validate response type (security: protect against malicious responses)
+            if not isinstance(prediction_data, dict):
+                raise ValidationError(
+                    f"Invalid API response: expected dict, got {type(prediction_data).__name__}",
+                    details={"operation": "run_prediction", "chatflow_id": chatflow_id}
+                )
+
+            # Validate required field 'text' is present
+            if "text" not in prediction_data:
+                raise ValidationError(
+                    "API response missing required field 'text'",
+                    details={"operation": "run_prediction", "chatflow_id": chatflow_id}
+                )
+
             return PredictionResponse(**prediction_data)
 
         except (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPError, httpx.NetworkError):
