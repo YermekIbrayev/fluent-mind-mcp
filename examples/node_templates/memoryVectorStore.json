@@ -1,0 +1,114 @@
+{
+  "_metadata": {
+    "node_type": "memoryVectorStore",
+    "name": "memoryVectorStore",
+    "label": "In-Memory Vector Store",
+    "category": "Vector Stores",
+    "version": 1,
+    "description": "In-memory vectorstore that stores embeddings and does an exact, linear search for the most similar embeddings.",
+    "base_classes": [
+      "Memory",
+      "VectorStoreRetriever",
+      "BaseRetriever"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "memoryVectorStore_0",
+    "position": {
+      "x": 775.9040119653458,
+      "y": -2.7097123061410002
+    },
+    "type": "customNode",
+    "data": {
+      "vectorStoreMethods": {},
+      "label": "In-Memory Vector Store",
+      "name": "memoryVectorStore",
+      "version": 1,
+      "type": "Memory",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/InMemory/memory.svg",
+      "category": "Vector Stores",
+      "description": "In-memory vectorstore that stores embeddings and does an exact, linear search for the most similar embeddings.",
+      "baseClasses": [
+        "Memory",
+        "VectorStoreRetriever",
+        "BaseRetriever"
+      ],
+      "inputs": {
+        "document": [
+          "{{cheerioWebScraper_0.data.instance}}"
+        ],
+        "embeddings": "{{openAIEmbeddings_0.data.instance}}",
+        "topK": ""
+      },
+      "outputs": {
+        "output": "retriever"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/vectorstores/InMemory/InMemoryVectorStore.js",
+      "inputAnchors": [
+        {
+          "label": "Document",
+          "name": "document",
+          "type": "Document",
+          "list": true,
+          "optional": true,
+          "id": "memoryVectorStore_0-input-document-Document"
+        },
+        {
+          "label": "Embeddings",
+          "name": "embeddings",
+          "type": "Embeddings",
+          "id": "memoryVectorStore_0-input-embeddings-Embeddings"
+        }
+      ],
+      "inputParams": [
+        {
+          "label": "Top K",
+          "name": "topK",
+          "description": "Number of top results to fetch. Default to 4",
+          "placeholder": "4",
+          "type": "number",
+          "optional": true,
+          "id": "memoryVectorStore_0-input-topK-number"
+        }
+      ],
+      "outputAnchors": [
+        {
+          "name": "output",
+          "label": "Output",
+          "type": "options",
+          "description": "",
+          "options": [
+            {
+              "id": "memoryVectorStore_0-output-retriever-Memory|VectorStoreRetriever|BaseRetriever",
+              "name": "retriever",
+              "label": "Memory Retriever",
+              "description": "",
+              "type": "Memory | VectorStoreRetriever | BaseRetriever"
+            },
+            {
+              "id": "memoryVectorStore_0-output-vectorStore-Memory|VectorStore",
+              "name": "vectorStore",
+              "label": "Memory Vector Store",
+              "description": "",
+              "type": "Memory | VectorStore"
+            }
+          ],
+          "default": "retriever"
+        }
+      ],
+      "id": "memoryVectorStore_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 407,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 775.9040119653458,
+      "y": -2.7097123061410002
+    },
+    "dragging": false
+  }
+}

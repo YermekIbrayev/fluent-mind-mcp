@@ -1,0 +1,62 @@
+{
+  "_metadata": {
+    "node_type": "inMemoryCache",
+    "name": "inMemoryCache",
+    "label": "InMemory Cache",
+    "category": "Cache",
+    "version": 1,
+    "description": "Cache LLM response in memory, will be cleared once app restarted",
+    "base_classes": [
+      "InMemoryCache",
+      "BaseCache"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "inMemoryCache_0",
+    "position": {
+      "x": 470.2603944102882,
+      "y": -406.0226107071034
+    },
+    "type": "customNode",
+    "data": {
+      "label": "InMemory Cache",
+      "name": "inMemoryCache",
+      "version": 1,
+      "type": "InMemoryCache",
+      "description": "Cache LLM response in memory, will be cleared once app restarted",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/cache/InMemoryCache/Memory.svg",
+      "category": "Cache",
+      "baseClasses": [
+        "InMemoryCache",
+        "BaseCache"
+      ],
+      "inputs": {},
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/cache/InMemoryCache/InMemoryCache.js",
+      "inputAnchors": [],
+      "inputParams": [],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "inMemoryCache_0-output-inMemoryCache-InMemoryCache|BaseCache",
+          "name": "inMemoryCache",
+          "label": "InMemoryCache",
+          "description": "Cache LLM response in memory, will be cleared once app restarted",
+          "type": "InMemoryCache | BaseCache"
+        }
+      ],
+      "id": "inMemoryCache_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 149,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 470.2603944102882,
+      "y": -406.0226107071034
+    },
+    "dragging": false
+  }
+}

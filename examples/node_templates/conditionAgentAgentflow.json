@@ -1,0 +1,177 @@
+{
+  "_metadata": {
+    "node_type": "conditionAgentAgentflow",
+    "name": "conditionAgentAgentflow",
+    "label": "More SubAgents?",
+    "category": "Agent Flows",
+    "version": 1.1,
+    "description": "Utilize an agent to split flows based on dynamic conditions",
+    "base_classes": [
+      "ConditionAgent"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "conditionAgentAgentflow_0",
+    "position": {
+      "x": 783.610017823362,
+      "y": 35.07935247258487
+    },
+    "data": {
+      "id": "conditionAgentAgentflow_0",
+      "label": "More SubAgents?",
+      "version": 1.1,
+      "name": "conditionAgentAgentflow",
+      "type": "ConditionAgent",
+      "color": "#ff8fab",
+      "baseClasses": [
+        "ConditionAgent"
+      ],
+      "category": "Agent Flows",
+      "description": "Utilize an agent to split flows based on dynamic conditions",
+      "inputParams": [
+        {
+          "label": "Model",
+          "name": "conditionAgentModel",
+          "type": "asyncOptions",
+          "loadMethod": "listModels",
+          "loadConfig": true,
+          "id": "conditionAgentAgentflow_0-input-conditionAgentModel-asyncOptions",
+          "display": true
+        },
+        {
+          "label": "Instructions",
+          "name": "conditionAgentInstructions",
+          "type": "string",
+          "description": "A general instructions of what the condition agent should do",
+          "rows": 4,
+          "acceptVariable": true,
+          "placeholder": "Determine if the user is interested in learning about AI",
+          "id": "conditionAgentAgentflow_0-input-conditionAgentInstructions-string",
+          "display": true
+        },
+        {
+          "label": "Input",
+          "name": "conditionAgentInput",
+          "type": "string",
+          "description": "Input to be used for the condition agent",
+          "rows": 4,
+          "acceptVariable": true,
+          "default": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"question\" data-label=\"question\">{{ question }}</span> </p>",
+          "id": "conditionAgentAgentflow_0-input-conditionAgentInput-string",
+          "display": true
+        },
+        {
+          "label": "Scenarios",
+          "name": "conditionAgentScenarios",
+          "description": "Define the scenarios that will be used as the conditions to split the flow",
+          "type": "array",
+          "array": [
+            {
+              "label": "Scenario",
+              "name": "scenario",
+              "type": "string",
+              "placeholder": "User is asking for a pizza"
+            }
+          ],
+          "default": [
+            {
+              "scenario": "More subagents are needed"
+            },
+            {
+              "scenario": "Findings are sufficient"
+            }
+          ],
+          "id": "conditionAgentAgentflow_0-input-conditionAgentScenarios-array",
+          "display": true
+        },
+        {
+          "label": "Override System Prompt",
+          "name": "conditionAgentOverrideSystemPrompt",
+          "type": "boolean",
+          "description": "Override initial system prompt for Condition Agent",
+          "optional": true,
+          "id": "conditionAgentAgentflow_0-input-conditionAgentOverrideSystemPrompt-boolean",
+          "display": true
+        },
+        {
+          "label": "Node System Prompt",
+          "name": "conditionAgentSystemPrompt",
+          "type": "string",
+          "rows": 4,
+          "optional": true,
+          "acceptVariable": true,
+          "default": "<p>You are part of a multi-agent system designed to make agent coordination and execution easy. Your task is to analyze the given input and select one matching scenario from a provided set of scenarios.</p>\n    <ul>\n        <li><strong>Input</strong>: A string representing the user's query, message or data.</li>\n        <li><strong>Scenarios</strong>: A list of predefined scenarios that relate to the input.</li>\n        <li><strong>Instruction</strong>: Determine which of the provided scenarios is the best fit for the input.</li>\n    </ul>\n    <h2>Steps</h2>\n    <ol>\n        <li><strong>Read the input string</strong> and the list of scenarios.</li>\n        <li><strong>Analyze the content of the input</strong> to identify its main topic or intention.</li>\n        <li><strong>Compare the input with each scenario</strong>: Evaluate how well the input's topic or intention aligns with each of the provided scenarios and select the one that is the best fit.</li>\n        <li><strong>Output the result</strong>: Return the selected scenario in the specified JSON format.</li>\n    </ol>\n    <h2>Output Format</h2>\n    <p>Output should be a JSON object that names the selected scenario, like this: <code>{\"output\": \"<selected_scenario_name>\"}</code>. No explanation is needed.</p>\n    <h2>Examples</h2>\n    <ol>\n       <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"Hello\", \"scenarios\": [\"user is asking about AI\", \"user is not asking about AI\"], \"instruction\": \"Your task is to check if the user is asking about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is not asking about AI\"}</code></p>\n        </li>\n        <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"What is AIGC?\", \"scenarios\": [\"user is asking about AI\", \"user is asking about the weather\"], \"instruction\": \"Your task is to check and see if the user is asking a topic about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is asking about AI\"}</code></p>\n        </li>\n        <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"Can you explain deep learning?\", \"scenarios\": [\"user is interested in AI topics\", \"user wants to order food\"], \"instruction\": \"Determine if the user is interested in learning about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is interested in AI topics\"}</code></p>\n        </li>\n    </ol>\n    <h2>Note</h2>\n    <ul>\n        <li>Ensure that the input scenarios align well with potential user queries for accurate matching.</li>\n        <li>DO NOT include anything other than the JSON in your response.</li>\n    </ul>",
+          "description": "Expert use only. Modifying this can significantly alter agent behavior. Leave default if unsure",
+          "show": {
+            "conditionAgentOverrideSystemPrompt": true
+          },
+          "id": "conditionAgentAgentflow_0-input-conditionAgentSystemPrompt-string",
+          "display": false
+        }
+      ],
+      "inputAnchors": [],
+      "inputs": {
+        "conditionAgentModel": "chatOpenAI",
+        "conditionAgentInstructions": "<p>Given a research topic, previous subagents and their findings, determine if more subagents are needed for further research or the findings are sufficient for the research topic</p>",
+        "conditionAgentInput": "<p>&lt;research_topic&gt;</p><p><span class=\"variable\" data-type=\"mention\" data-id=\"$form.query\" data-label=\"$form.query\">{{ $form.query }}</span></p><p>&lt;/research_topic&gt;</p><p></p><p>&lt;subagents&gt;</p><p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.subagents\" data-label=\"$flow.state.subagents\">{{ $flow.state.subagents }}</span></p><p>&lt;/subagents&gt;</p><p></p><p>&lt;findings&gt;</p><p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.findings\" data-label=\"$flow.state.findings\">{{ $flow.state.findings }}</span></p><p>&lt;/findings&gt;</p>",
+        "conditionAgentScenarios": [
+          {
+            "scenario": "More subagents are needed"
+          },
+          {
+            "scenario": "Findings are sufficient"
+          }
+        ],
+        "conditionAgentOverrideSystemPrompt": "",
+        "conditionAgentModelConfig": {
+          "cache": "",
+          "modelName": "gpt-4.1-mini",
+          "temperature": 0.9,
+          "streaming": true,
+          "maxTokens": "",
+          "topP": "",
+          "frequencyPenalty": "",
+          "presencePenalty": "",
+          "timeout": "",
+          "strictToolCalling": "",
+          "stopSequence": "",
+          "basepath": "",
+          "proxyUrl": "",
+          "baseOptions": "",
+          "allowImageUploads": "",
+          "reasoningEffort": "medium",
+          "conditionAgentModel": "chatOpenAI",
+          "FLOWISE_CREDENTIAL_ID": "cce50fc6-ef42-43e8-9bb2-0638c0bf23be"
+        }
+      },
+      "outputAnchors": [
+        {
+          "id": "conditionAgentAgentflow_0-output-0",
+          "label": "Condition Agent",
+          "name": "conditionAgentAgentflow"
+        },
+        {
+          "id": "conditionAgentAgentflow_0-output-1",
+          "label": "Condition Agent",
+          "name": "conditionAgentAgentflow"
+        }
+      ],
+      "outputs": {
+        "conditionAgentAgentflow": ""
+      },
+      "selected": false
+    },
+    "type": "agentFlow",
+    "width": 187,
+    "height": 80,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 783.610017823362,
+      "y": 35.07935247258487
+    },
+    "dragging": false
+  }
+}

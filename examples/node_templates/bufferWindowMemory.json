@@ -1,0 +1,98 @@
+{
+  "_metadata": {
+    "node_type": "bufferWindowMemory",
+    "name": "bufferWindowMemory",
+    "label": "Buffer Window Memory",
+    "category": "Memory",
+    "version": 2,
+    "description": "Uses a window of size k to surface the last k back-and-forth to use as memory",
+    "base_classes": [
+      "BufferWindowMemory",
+      "BaseChatMemory",
+      "BaseMemory"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "bufferWindowMemory_0",
+    "position": {
+      "x": 967.0168892107538,
+      "y": 195.09907731417758
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Buffer Window Memory",
+      "name": "bufferWindowMemory",
+      "version": 2,
+      "type": "BufferWindowMemory",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/memory/BufferWindowMemory/memory.svg",
+      "category": "Memory",
+      "description": "Uses a window of size k to surface the last k back-and-forth to use as memory",
+      "baseClasses": [
+        "BufferWindowMemory",
+        "BaseChatMemory",
+        "BaseMemory"
+      ],
+      "inputs": {
+        "k": "20",
+        "sessionId": "",
+        "memoryKey": "chat_history"
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/memory/BufferWindowMemory/BufferWindowMemory.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Size",
+          "name": "k",
+          "type": "number",
+          "default": "4",
+          "description": "Window of size k to surface the last k back-and-forth to use as memory.",
+          "id": "bufferWindowMemory_0-input-k-number",
+          "display": true
+        },
+        {
+          "label": "Session Id",
+          "name": "sessionId",
+          "type": "string",
+          "description": "If not specified, a random id will be used. Learn <a target=\"_blank\" href=\"https://docs.flowiseai.com/memory#ui-and-embedded-chat\">more</a>",
+          "default": "",
+          "optional": true,
+          "additionalParams": true,
+          "id": "bufferWindowMemory_0-input-sessionId-string",
+          "display": true
+        },
+        {
+          "label": "Memory Key",
+          "name": "memoryKey",
+          "type": "string",
+          "default": "chat_history",
+          "additionalParams": true,
+          "id": "bufferWindowMemory_0-input-memoryKey-string",
+          "display": true
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "bufferWindowMemory_0-output-bufferWindowMemory-BufferWindowMemory|BaseChatMemory|BaseMemory",
+          "name": "bufferWindowMemory",
+          "label": "BufferWindowMemory",
+          "description": "Uses a window of size k to surface the last k back-and-forth to use as memory",
+          "type": "BufferWindowMemory | BaseChatMemory | BaseMemory"
+        }
+      ],
+      "id": "bufferWindowMemory_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 337,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 967.0168892107538,
+      "y": 195.09907731417758
+    },
+    "dragging": false
+  }
+}

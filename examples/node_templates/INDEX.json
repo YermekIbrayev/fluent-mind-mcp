@@ -1,0 +1,397 @@
+{
+  "total_node_types": 39,
+  "extracted_date": "2025-10-17",
+  "source": "http://192.168.51.32:3000",
+  "nodes": [
+    {
+      "type": "ChatCustomLLM_v1",
+      "name": "ChatCustomLLM_v1",
+      "label": "ChatCustomLLM",
+      "category": "Chat Models",
+      "version": 1,
+      "file": "ChatCustomLLM_v1.json",
+      "description": "Wrapper around custom LLM that uses the Text Generator Web API",
+      "occurrences": 1
+    },
+    {
+      "type": "agentAgentflow",
+      "name": "agentAgentflow",
+      "label": "Meeting Booking Agent - Execution",
+      "category": "Agent Flows",
+      "version": 2.2,
+      "file": "agentAgentflow.json",
+      "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+      "occurrences": 8
+    },
+    {
+      "type": "bufferMemory",
+      "name": "bufferMemory",
+      "label": "Buffer Memory",
+      "category": "Memory",
+      "version": 2,
+      "file": "bufferMemory.json",
+      "description": "Retrieve chat messages stored in database",
+      "occurrences": 1
+    },
+    {
+      "type": "bufferWindowMemory",
+      "name": "bufferWindowMemory",
+      "label": "Buffer Window Memory",
+      "category": "Memory",
+      "version": 2,
+      "file": "bufferWindowMemory.json",
+      "description": "Uses a window of size k to surface the last k back-and-forth to use as memory",
+      "occurrences": 2
+    },
+    {
+      "type": "chatAnthropic",
+      "name": "chatAnthropic",
+      "label": "ChatAnthropic",
+      "category": "Chat Models",
+      "version": 8,
+      "file": "chatAnthropic.json",
+      "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+      "occurrences": 2
+    },
+    {
+      "type": "chatLocalAI",
+      "name": "chatLocalAI",
+      "label": "ChatLocalAI",
+      "category": "Chat Models",
+      "version": 3,
+      "file": "chatLocalAI.json",
+      "description": "Use local LLMs like llama.cpp, gpt4all using LocalAI",
+      "occurrences": 1
+    },
+    {
+      "type": "chatOpenAI",
+      "name": "chatOpenAI",
+      "label": "ChatOpenAI",
+      "category": "Chat Models",
+      "version": 8.3,
+      "file": "chatOpenAI.json",
+      "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+      "occurrences": 9
+    },
+    {
+      "type": "chatPromptTemplate",
+      "name": "chatPromptTemplate",
+      "label": "Chat Prompt Template",
+      "category": "Prompts",
+      "version": 2,
+      "file": "chatPromptTemplate.json",
+      "description": "Schema to represent a chat prompt",
+      "occurrences": 2
+    },
+    {
+      "type": "cheerioWebScraper",
+      "name": "cheerioWebScraper",
+      "label": "Cheerio Web Scraper",
+      "category": "Document Loaders",
+      "version": 2,
+      "file": "cheerioWebScraper.json",
+      "description": "Load data from webpages",
+      "occurrences": 1
+    },
+    {
+      "type": "conditionAgentAgentflow",
+      "name": "conditionAgentAgentflow",
+      "label": "More SubAgents?",
+      "category": "Agent Flows",
+      "version": 1.1,
+      "file": "conditionAgentAgentflow.json",
+      "description": "Utilize an agent to split flows based on dynamic conditions",
+      "occurrences": 2
+    },
+    {
+      "type": "conditionAgentflow",
+      "name": "conditionAgentflow",
+      "label": "Meeting Required ",
+      "category": "Agent Flows",
+      "version": 1,
+      "file": "conditionAgentflow.json",
+      "description": "Split flows based on If Else conditions",
+      "occurrences": 1
+    },
+    {
+      "type": "conversationChain",
+      "name": "conversationChain",
+      "label": "Conversation Chain",
+      "category": "Chains",
+      "version": 3,
+      "file": "conversationChain.json",
+      "description": "Chat models specific conversational chain with memory",
+      "occurrences": 2
+    },
+    {
+      "type": "conversationalRetrievalQAChain",
+      "name": "conversationalRetrievalQAChain",
+      "label": "Conversational Retrieval QA Chain",
+      "category": "Chains",
+      "version": 3,
+      "file": "conversationalRetrievalQAChain.json",
+      "description": "Document QA - built on RetrievalQAChain to provide a chat history component",
+      "occurrences": 3
+    },
+    {
+      "type": "createFolderStructure",
+      "name": "createFolderStructure",
+      "label": "Create Folder Structure",
+      "category": "Tools",
+      "version": 1,
+      "file": "createFolderStructure.json",
+      "description": "Create a folder structure based on a text description",
+      "occurrences": 2
+    },
+    {
+      "type": "currentDateTime",
+      "name": "currentDateTime",
+      "label": "CurrentDateTime",
+      "category": "Tools",
+      "version": 1,
+      "file": "currentDateTime.json",
+      "description": "Get todays day, date and time.",
+      "occurrences": 1
+    },
+    {
+      "type": "customMCP",
+      "name": "customMCP",
+      "label": "Custom MCP",
+      "category": "Tools (MCP)",
+      "version": 1.1,
+      "file": "customMCP.json",
+      "description": "Custom MCP Config",
+      "occurrences": 1
+    },
+    {
+      "type": "customRetriever",
+      "name": "customRetriever",
+      "label": "Custom Retriever",
+      "category": "Retrievers",
+      "version": 1,
+      "file": "customRetriever.json",
+      "description": "Return results based on predefined format",
+      "occurrences": 1
+    },
+    {
+      "type": "directReplyAgentflow",
+      "name": "directReplyAgentflow",
+      "label": "Output",
+      "category": "Agent Flows",
+      "version": 1,
+      "file": "directReplyAgentflow.json",
+      "description": "Directly reply to the user with a message",
+      "occurrences": 2
+    },
+    {
+      "type": "documentStore",
+      "name": "documentStore",
+      "label": "Document Store",
+      "category": "Document Loaders",
+      "version": 1,
+      "file": "documentStore.json",
+      "description": "Load data from pre-configured document stores",
+      "occurrences": 6
+    },
+    {
+      "type": "documentStoreVS",
+      "name": "documentStoreVS",
+      "label": "Document Store (Vector)",
+      "category": "Vector Stores",
+      "version": 1,
+      "file": "documentStoreVS.json",
+      "description": "Search and retrieve documents from Document Store",
+      "occurrences": 1
+    },
+    {
+      "type": "faiss",
+      "name": "faiss",
+      "label": "Faiss",
+      "category": "Vector Stores",
+      "version": 1,
+      "file": "faiss.json",
+      "description": "Upsert embedded data and perform similarity search upon query using Faiss library from Meta",
+      "occurrences": 4
+    },
+    {
+      "type": "googleCalendarTool",
+      "name": "googleCalendarTool",
+      "label": "Google Calendar (1)",
+      "category": "Tools",
+      "version": 1,
+      "file": "googleCalendarTool.json",
+      "description": "Perform Google Calendar operations such as managing events, calendars, and checking availability",
+      "occurrences": 2
+    },
+    {
+      "type": "htmlToMarkdownTextSplitter",
+      "name": "htmlToMarkdownTextSplitter",
+      "label": "HtmlToMarkdown Text Splitter",
+      "category": "Text Splitters",
+      "version": 1,
+      "file": "htmlToMarkdownTextSplitter.json",
+      "description": "Converts Html to Markdown and then split your content into documents based on the Markdown headers",
+      "occurrences": 1
+    },
+    {
+      "type": "inMemoryCache",
+      "name": "inMemoryCache",
+      "label": "InMemory Cache",
+      "category": "Cache",
+      "version": 1,
+      "file": "inMemoryCache.json",
+      "description": "Cache LLM response in memory, will be cleared once app restarted",
+      "occurrences": 1
+    },
+    {
+      "type": "iterationAgentflow",
+      "name": "iterationAgentflow",
+      "label": "Iteration 0",
+      "category": "Agent Flows",
+      "version": 1,
+      "file": "iterationAgentflow.json",
+      "description": "Execute the nodes within the iteration block through N iterations",
+      "occurrences": 1
+    },
+    {
+      "type": "llmAgentflow",
+      "name": "llmAgentflow",
+      "label": "Gap Detector",
+      "category": "Agent Flows",
+      "version": 1,
+      "file": "llmAgentflow.json",
+      "description": "Large language models to analyze user-provided inputs and generate responses",
+      "occurrences": 5
+    },
+    {
+      "type": "loopAgentflow",
+      "name": "loopAgentflow",
+      "label": "Back to Planner",
+      "category": "Agent Flows",
+      "version": 1.1,
+      "file": "loopAgentflow.json",
+      "description": "Loop back to a previous node",
+      "occurrences": 1
+    },
+    {
+      "type": "memoryVectorStore",
+      "name": "memoryVectorStore",
+      "label": "In-Memory Vector Store",
+      "category": "Vector Stores",
+      "version": 1,
+      "file": "memoryVectorStore.json",
+      "description": "In-memory vectorstore that stores embeddings and does an exact, linear search for the most similar e",
+      "occurrences": 1
+    },
+    {
+      "type": "openAIEmbeddings",
+      "name": "openAIEmbeddings",
+      "label": "OpenAI Embeddings",
+      "category": "Embeddings",
+      "version": 4,
+      "file": "openAIEmbeddings.json",
+      "description": "OpenAI API to generate embeddings for a given text",
+      "occurrences": 5
+    },
+    {
+      "type": "readFile",
+      "name": "readFile",
+      "label": "Read File",
+      "category": "Tools",
+      "version": 1,
+      "file": "readFile.json",
+      "description": "Read file from disk",
+      "occurrences": 3
+    },
+    {
+      "type": "retrieverTool",
+      "name": "retrieverTool",
+      "label": "Retriever Tool",
+      "category": "Tools",
+      "version": 3,
+      "file": "retrieverTool.json",
+      "description": "Use a retriever as allowed tool for agent",
+      "occurrences": 3
+    },
+    {
+      "type": "slackMCP",
+      "name": "slackMCP",
+      "label": "Slack MCP",
+      "category": "Tools (MCP)",
+      "version": 1,
+      "file": "slackMCP.json",
+      "description": "MCP Server for the Slack API",
+      "occurrences": 1
+    },
+    {
+      "type": "startAgentflow",
+      "name": "startAgentflow",
+      "label": "Start",
+      "category": "Agent Flows",
+      "version": 1.1,
+      "file": "startAgentflow.json",
+      "description": "Starting point of the agentflow",
+      "occurrences": 6
+    },
+    {
+      "type": "stickyNote",
+      "name": "stickyNote",
+      "label": "Sticky Note",
+      "category": "Utilities",
+      "version": 2,
+      "file": "stickyNote.json",
+      "description": "Add a sticky note",
+      "occurrences": 1
+    },
+    {
+      "type": "stickyNoteAgentflow",
+      "name": "stickyNoteAgentflow",
+      "label": "Sticky Note",
+      "category": "Agent Flows",
+      "version": 1,
+      "file": "stickyNoteAgentflow.json",
+      "description": "Add notes to the agent flow",
+      "occurrences": 1
+    },
+    {
+      "type": "supervisor",
+      "name": "supervisor",
+      "label": "Supervisor",
+      "category": "Multi Agents",
+      "version": 3,
+      "file": "supervisor.json",
+      "description": "",
+      "occurrences": 7
+    },
+    {
+      "type": "toolAgent",
+      "name": "toolAgent",
+      "label": "Tool Agent",
+      "category": "Agents",
+      "version": 2,
+      "file": "toolAgent.json",
+      "description": "Agent that uses Function Calling to pick the tools and args to call",
+      "occurrences": 1
+    },
+    {
+      "type": "worker",
+      "name": "worker",
+      "label": "Worker",
+      "category": "Multi Agents",
+      "version": 2,
+      "file": "worker.json",
+      "description": "",
+      "occurrences": 28
+    },
+    {
+      "type": "writeFile",
+      "name": "writeFile",
+      "label": "Write File",
+      "category": "Tools",
+      "version": 1,
+      "file": "writeFile.json",
+      "description": "Write file to disk",
+      "occurrences": 5
+    }
+  ]
+}

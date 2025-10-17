@@ -1,0 +1,88 @@
+{
+  "_metadata": {
+    "node_type": "customMCP",
+    "name": "customMCP",
+    "label": "Custom MCP",
+    "category": "Tools (MCP)",
+    "version": 1.1,
+    "description": "Custom MCP Config",
+    "base_classes": [
+      "Tool"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "customMCP_0",
+    "position": {
+      "x": 2.02106655873002,
+      "y": -169.71170478566916
+    },
+    "type": "customNode",
+    "data": {
+      "loadMethods": {},
+      "label": "Custom MCP",
+      "name": "customMCP",
+      "version": 1.1,
+      "type": "Custom MCP Tool",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/MCP/CustomMCP/customMCP.png",
+      "category": "Tools (MCP)",
+      "description": "Custom MCP Config",
+      "documentation": "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search",
+      "inputs": {
+        "mcpServerConfig": "{\n  \"command\": \"npx\",\n  \"args\": [\"-y\", \"@modelcontextprotocol/server-memory\"],\n  \"env\": {\n    \"MEMORY_FILE_PATH\": \"/Users/yermek/.flowise/memory.json\"\n  }\n}",
+        "mcpActions": ""
+      },
+      "baseClasses": [
+        "Tool"
+      ],
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/MCP/CustomMCP/CustomMCP.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "MCP Server Config",
+          "name": "mcpServerConfig",
+          "type": "code",
+          "hideCodeExecute": true,
+          "hint": {
+            "label": "How to use",
+            "value": "\nYou can use variables in the MCP Server Config with double curly braces `{{ }}` and prefix `$vars.<variableName>`. \n\nFor example, you have a variable called \"var1\":\n```json\n{\n    \"command\": \"docker\",\n    \"args\": [\n        \"run\",\n        \"-i\",\n        \"--rm\",\n        \"-e\", \"API_TOKEN\"\n    ],\n    \"env\": {\n        \"API_TOKEN\": \"{{$vars.var1}}\"\n    }\n}\n```\n\nFor example, when using SSE, you can use the variable \"var1\" in the headers:\n```json\n{\n    \"url\": \"https://api.example.com/endpoint/sse\",\n    \"headers\": {\n        \"Authorization\": \"Bearer {{$vars.var1}}\"\n    }\n}\n```\n"
+          },
+          "placeholder": "{\n    \"command\": \"npx\",\n    \"args\": [\"-y\", \"@modelcontextprotocol/server-filesystem\", \"/path/to/allowed/files\"]\n}",
+          "id": "customMCP_0-input-mcpServerConfig-code",
+          "display": true
+        },
+        {
+          "label": "Available Actions",
+          "name": "mcpActions",
+          "type": "asyncMultiOptions",
+          "loadMethod": "listActions",
+          "refresh": true,
+          "id": "customMCP_0-input-mcpActions-asyncMultiOptions",
+          "display": true
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "customMCP_0-output-customMCP-Tool",
+          "name": "customMCP",
+          "label": "Custom MCP Tool",
+          "description": "Custom MCP Config",
+          "type": "Tool"
+        }
+      ],
+      "id": "customMCP_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 549,
+    "selected": false,
+    "dragging": false,
+    "positionAbsolute": {
+      "x": 2.02106655873002,
+      "y": -169.71170478566916
+    }
+  }
+}

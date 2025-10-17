@@ -33,6 +33,11 @@ class Node(BaseModel):
         type: Node type (e.g., "chatOpenAI", "vectorStore", "tool")
         data: Node configuration as key-value pairs
         position: Optional UI position with x and y coordinates
+        width: Optional UI node width in pixels
+        height: Optional UI node height in pixels
+        selected: Optional UI selection state
+        position_absolute: Optional absolute UI position
+        dragging: Optional UI dragging state
     """
 
     id: str = Field(..., min_length=1, description="Unique node identifier")
@@ -41,6 +46,13 @@ class Node(BaseModel):
     position: dict[str, float] | None = Field(
         None, description="UI position {x: float, y: float}"
     )
+    width: int | None = Field(None, description="UI node width in pixels", gt=0)
+    height: int | None = Field(None, description="UI node height in pixels", gt=0)
+    selected: bool | None = Field(None, description="UI selection state")
+    position_absolute: dict[str, float] | None = Field(
+        None, alias="positionAbsolute", description="Absolute UI position {x: float, y: float}"
+    )
+    dragging: bool | None = Field(None, description="UI dragging state")
 
     @field_validator("position")
     @classmethod
@@ -99,10 +111,12 @@ class FlowData(BaseModel):
     Attributes:
         nodes: List of workflow components
         edges: List of connections between nodes
+        viewport: Optional UI viewport state (x, y, zoom)
     """
 
     nodes: list[Node] = Field(..., description="Workflow components")
     edges: list[Edge] = Field(..., description="Connections between nodes")
+    viewport: dict[str, Any] | None = Field(None, description="UI viewport state {x, y, zoom}")
 
     @field_validator("edges")
     @classmethod
@@ -148,6 +162,13 @@ class Chatflow(BaseModel):
         flow_data: Optional JSON string of workflow structure
         chatbot_config: Optional JSON string of chatbot settings
         api_config: Optional JSON string of API settings
+        apikeyid: Optional API key identifier
+        analytic: Optional analytics configuration
+        speech_to_text: Optional speech-to-text configuration
+        text_to_speech: Optional text-to-speech configuration
+        follow_up_prompts: Optional follow-up prompts configuration
+        category: Optional chatflow category
+        workspace_id: Optional workspace identifier
         created_date: Optional creation timestamp
         updated_date: Optional last update timestamp
     """
@@ -162,5 +183,12 @@ class Chatflow(BaseModel):
     flow_data: str | None = Field(None, alias="flowData", description="JSON string of workflow structure")
     chatbot_config: str | None = Field(None, alias="chatbotConfig", description="JSON string of chatbot settings")
     api_config: str | None = Field(None, alias="apiConfig", description="JSON string of API settings")
+    apikeyid: str | None = Field(None, description="API key identifier")
+    analytic: str | None = Field(None, description="Analytics configuration")
+    speech_to_text: str | None = Field(None, alias="speechToText", description="Speech-to-text configuration")
+    text_to_speech: str | None = Field(None, alias="textToSpeech", description="Text-to-speech configuration")
+    follow_up_prompts: str | None = Field(None, alias="followUpPrompts", description="Follow-up prompts configuration")
+    category: str | None = Field(None, description="Chatflow category")
+    workspace_id: str | None = Field(None, alias="workspaceId", description="Workspace identifier")
     created_date: datetime | None = Field(None, alias="createdDate", description="Creation timestamp")
     updated_date: datetime | None = Field(None, alias="updatedDate", description="Last update timestamp")

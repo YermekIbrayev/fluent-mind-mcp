@@ -1,0 +1,129 @@
+{
+  "_metadata": {
+    "node_type": "supervisor",
+    "name": "supervisor",
+    "label": "Supervisor",
+    "category": "Multi Agents",
+    "version": 3,
+    "description": "",
+    "base_classes": [
+      "Supervisor"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "supervisor_0",
+    "position": {
+      "x": 858.1774265683389,
+      "y": 367.15387413830365
+    },
+    "type": "customNode",
+    "data": {
+      "label": "Supervisor",
+      "name": "supervisor",
+      "version": 3,
+      "type": "Supervisor",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/multiagents/Supervisor/supervisor.svg",
+      "category": "Multi Agents",
+      "baseClasses": [
+        "Supervisor"
+      ],
+      "inputs": {
+        "supervisorName": "Supervisor",
+        "supervisorPrompt": "You are a supervisor tasked with managing a conversation between the following workers: {team_members}.\nGiven the following user request, respond with the worker to act next.\nEach worker will perform a task and respond with their results and status.\nWhen finished, respond with FINISH.\nSelect strategically to minimize the number of steps taken.\n\nOrder of execution:\n1. Topic Analyzer will retrieve all previous data.\n2. Content Creator will generate data based on user input and data provided by Topic analyzer.\n3. Quality Reviewer will review the article and will send back if there some issues.\n4. Hero Picture Prompt Creator.\n5. Hero Picture Prompt Reviewer.\n6. Facebook Post Generator.\n7. Facebook Post Reviewer.\n8 Tweet Topic Generator.\n9. Tweet Topic Reviewer\n10. LinkedIn Article Generator.\n11. LinkedIn Article Reviewer.\n12. LinkedIn Post Creator.\n13. LinkedIn Post Reviewer.\n",
+        "model": "{{chatAnthropic_0.data.instance}}",
+        "agentMemory": "",
+        "summarization": "",
+        "recursionLimit": 100,
+        "inputModeration": ""
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/multiagents/Supervisor/Supervisor.js",
+      "inputAnchors": [
+        {
+          "label": "Tool Calling Chat Model",
+          "name": "model",
+          "type": "BaseChatModel",
+          "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, GroqChat. Best result with GPT-4 model",
+          "id": "supervisor_0-input-model-BaseChatModel"
+        },
+        {
+          "label": "Agent Memory",
+          "name": "agentMemory",
+          "type": "BaseCheckpointSaver",
+          "description": "Save the state of the agent",
+          "optional": true,
+          "id": "supervisor_0-input-agentMemory-BaseCheckpointSaver"
+        },
+        {
+          "label": "Input Moderation",
+          "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+          "name": "inputModeration",
+          "type": "Moderation",
+          "optional": true,
+          "list": true,
+          "id": "supervisor_0-input-inputModeration-Moderation"
+        }
+      ],
+      "inputParams": [
+        {
+          "label": "Supervisor Name",
+          "name": "supervisorName",
+          "type": "string",
+          "placeholder": "Supervisor",
+          "default": "Supervisor",
+          "id": "supervisor_0-input-supervisorName-string"
+        },
+        {
+          "label": "Supervisor Prompt",
+          "name": "supervisorPrompt",
+          "type": "string",
+          "description": "Prompt must contains {team_members}",
+          "rows": 4,
+          "default": "You are a supervisor tasked with managing a conversation between the following workers: {team_members}.\nGiven the following user request, respond with the worker to act next.\nEach worker will perform a task and respond with their results and status.\nWhen finished, respond with FINISH.\nSelect strategically to minimize the number of steps taken.",
+          "additionalParams": true,
+          "id": "supervisor_0-input-supervisorPrompt-string"
+        },
+        {
+          "label": "Summarization",
+          "name": "summarization",
+          "type": "boolean",
+          "description": "Return final output as a summarization of the conversation",
+          "optional": true,
+          "additionalParams": true,
+          "id": "supervisor_0-input-summarization-boolean"
+        },
+        {
+          "label": "Recursion Limit",
+          "name": "recursionLimit",
+          "type": "number",
+          "description": "Maximum number of times a call can recurse. If not provided, defaults to 100.",
+          "default": 100,
+          "additionalParams": true,
+          "id": "supervisor_0-input-recursionLimit-number"
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "supervisor_0-output-supervisor-Supervisor",
+          "name": "supervisor",
+          "label": "Supervisor",
+          "description": "",
+          "type": "Supervisor"
+        }
+      ],
+      "id": "supervisor_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 483,
+    "positionAbsolute": {
+      "x": 858.1774265683389,
+      "y": 367.15387413830365
+    },
+    "selected": false,
+    "dragging": false
+  }
+}

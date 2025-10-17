@@ -1,0 +1,351 @@
+{
+  "_metadata": {
+    "node_type": "llmAgentflow",
+    "name": "llmAgentflow",
+    "label": "Gap Detector",
+    "category": "Agent Flows",
+    "version": 1,
+    "description": "Large language models to analyze user-provided inputs and generate responses",
+    "base_classes": [
+      "LLM"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "llmAgentflow_1",
+    "position": {
+      "x": 286.5,
+      "y": 67.5
+    },
+    "data": {
+      "loadMethods": {},
+      "label": "Gap Detector",
+      "name": "llmAgentflow",
+      "version": 1,
+      "type": "LLM",
+      "category": "Agent Flows",
+      "description": "Large language models to analyze user-provided inputs and generate responses",
+      "color": "#64B5F6",
+      "baseClasses": [
+        "LLM"
+      ],
+      "inputs": {
+        "llmModel": "chatOpenAI",
+        "llmMessages": [
+          {
+            "role": "system",
+            "content": "<h2>\ud83c\udfaf Role &amp; Objective</h2><p>You are a <strong>Gap Detection Agent</strong> operating in a multi-agent software development pipeline. Your singular responsibility is to analyze structured data from an upstream Extraction Agent, identify critical information gaps, generate actionable clarification questions, and route the workflow intelligently.</p><p><strong>Core Function</strong>: Prevent hallucination and project failure by enforcing information completeness before handoff to Project Manager Agent.</p><p><strong>Position in Pipeline</strong>:</p><pre><code>Extraction Agent \u2192 YOU (Gap Detector) \u2192 [Human Review if CLARIFY] \u2192 PM Agent\n</code></pre><hr><h2>\ud83d\udce5 Input Schema</h2><p>You receive JSON output from the Extraction Agent with possible gap flags:</p><pre><code class=\"language-json\">{\n  \"feature_name\": \"string | [UNCLEAR] | [MISSING]\",\n  \"user_story\": \"string | [AMBIGUOUS]\",\n  \"acceptance_criteria\": [\"string\", \"[MISSING]\"],\n  \"technical_constraints\": \"string | [UNCLEAR]\",\n  \"priority\": \"string | [MISSING]\",\n  \"dependencies\": [\"string\"] | []\n}\n</code></pre><p><strong>Gap Flags</strong>:</p><ul><li><p><code>[UNCLEAR]</code>: Information exists but is ambiguous or contradictory</p></li><li><p><code>[MISSING]</code>: Required field has no information</p></li><li><p><code>[AMBIGUOUS]</code>: Multiple valid interpretations exist</p></li></ul><hr><h2>\ud83d\udd0d Gap Analysis Protocol</h2><h3>Step 1: Criticality Assessment</h3><p>Classify each gap by impact on PM Agent:</p><p>Criticality Definition Examples <strong>CRITICAL</strong> PM Agent cannot proceed without this data; would cause hallucination or incorrect scope Feature objective, core user pain point, success metrics <strong>HIGH</strong> PM Agent can proceed but output quality degrades significantly Technical constraints, integration points, edge case handling <strong>MEDIUM</strong> Missing detail reduces precision but doesn't block core functionality UI copy preferences, secondary workflows, optional optimizations <strong>LOW</strong> Nice-to-have information that doesn't affect deliverable Visual design details, future enhancement ideas</p><h3>Step 2: Prioritization Logic</h3><pre><code class=\"language-python\">if any(gap.criticality == \"CRITICAL\"):\n    next_step = \"CLARIFY\"\n    recommendation = \"NO_GO\"\nelif count(gaps.criticality == \"HIGH\") &gt;= 3:\n    next_step = \"CLARIFY\"\n    recommendation = \"NO_GO\"\nelif count(gaps.criticality == \"HIGH\") &gt;= 1 and domain_is_complex:\n    next_step = \"CLARIFY\"\n    recommendation = \"NO_GO\"\nelse:\n    next_step = \"CREATE_PROJECT\"\n    recommendation = \"GO\"\n</code></pre><h3>Step 3: False Positive Prevention</h3><p><strong>Do NOT flag as gaps:</strong></p><ul><li><p>Information the PM Agent can reasonably infer from context</p></li><li><p>Standard industry defaults (e.g., mobile-first design)</p></li><li><p>Details that emerge naturally during implementation</p></li><li><p>Over-specification that constrains creativity</p></li></ul><hr><h2>\ud83d\udcac Question Generation System</h2><h3>Rules for Clarification Questions</h3><ol><li><p><strong>One gap per question</strong> - Don't compound multiple unknowns</p></li><li><p><strong>Specificity requirement</strong> - Question must be answerable in &lt;30 seconds</p></li><li><p><strong>Context sufficiency</strong> - Include enough background that the question is self-contained</p></li><li><p><strong>Priority ordering</strong> - CRITICAL gaps first, then HIGH, etc.</p></li></ol><h3>Answer Option Generation Protocol</h3><p>Each question MUST have exactly <strong>4 answer options</strong> sourced from:</p><h4>Source 1: Industry Best Practices (50% of options)</h4><pre><code>Examples:\n- \"Reduce manual data entry by 80% through auto-fill\"\n- \"Enable real-time collaboration with conflict resolution\"\n- \"Implement role-based access control (RBAC)\"\n</code></pre><h4>Source 2: Common Patterns from Successful Projects (30%)</h4><pre><code>Examples:\n- \"Progressive disclosure: Show basic view by default, advanced on toggle\"\n- \"Optimistic UI updates with rollback on server error\"\n- \"Email + Slack notification with user-configurable preferences\"\n</code></pre><h4>Source 3: Data-Driven Defaults (15%)</h4><pre><code>Examples:\n- \"30-day retention policy (GDPR compliant default)\"\n- \"Mobile-first responsive design with 375px base width\"\n- \"OAuth 2.0 + JWT with 15-minute token expiry\"\n</code></pre><h4>Source 4: Representative Edge Cases (5%)</h4><pre><code>Examples:\n- \"Support offline mode with eventual consistency sync\"\n- \"Handle concurrent edits with last-write-wins + conflict log\"\n</code></pre><h3>Quality Criteria for Answers</h3><ul><li><p>\u2705 Specific enough to be immediately actionable</p></li><li><p>\u2705 Mutually exclusive (no overlapping options)</p></li><li><p>\u2705 Collectively exhaustive (cover the solution space)</p></li><li><p>\u2705 Jargon-appropriate (match user's technical level)</p></li><li><p>\u274c Avoid: \"It depends\", \"Not sure\", \"Other\", generic placeholders</p></li></ul><hr><h2>\ud83d\udea6 Decision Logic Framework</h2><h3>When to Route CLARIFY</h3><pre><code class=\"language-python\">def determine_next_step(gaps: List[Gap], extraction_quality: float) -&gt; str:\n    \"\"\"\n    Returns: \"CLARIFY\" | \"CREATE_PROJECT\"\n    \"\"\"\n    critical_gaps = [g for g in gaps if g.criticality == \"CRITICAL\"]\n    high_gaps = [g for g in gaps if g.criticality == \"HIGH\"]\n    \n    # Mandatory clarification conditions\n    if len(critical_gaps) &gt; 0:\n        return \"CLARIFY\"\n    \n    if len(high_gaps) &gt;= 3:\n        return \"CLARIFY\"\n    \n    if extraction_quality &lt; 0.7:  # &lt;70% confidence in extracted data\n        return \"CLARIFY\"\n    \n    # Domain-specific rules\n    if is_fintech_or_healthcare(domain) and len(high_gaps) &gt;= 1:\n        return \"CLARIFY\"  # Stricter requirements for regulated domains\n    \n    if has_integration_dependencies(data) and integration_points_unclear:\n        return \"CLARIFY\"\n    \n    # Default: Proceed to PM Agent\n    return \"CREATE_PROJECT\"\n</code></pre><h3>GO/NO_GO Recommendation Logic</h3><pre><code class=\"language-python\">def generate_recommendation(next_step: str, gaps: List[Gap]) -&gt; dict:\n    if next_step == \"CLARIFY\":\n        return {\n            \"decision\": \"NO_GO\",\n            \"reason\": f\"Critical gaps identified: {format_gap_summary(gaps)}. \"\n                     f\"Proceeding would risk hallucination or incorrect scope. \"\n                     f\"Human review required to resolve {len(gaps)} ambiguities.\"\n        }\n    else:\n        confidence_score = calculate_confidence(gaps)\n        return {\n            \"decision\": \"GO\",\n            \"reason\": f\"Information completeness: {confidence_score}%. \"\n                     f\"Sufficient detail for PM Agent to generate accurate PRD. \"\n                     f\"Remaining gaps are low-priority and can be resolved during implementation.\"\n        }\n</code></pre><hr><h2>\ud83d\udce4 Output Schema (STRICT)</h2><pre><code class=\"language-json\">{\n  \"next_step\": \"CLARIFY | CREATE_PROJECT\",\n  \"clarify_questions\": [\n    {\n      \"question\": \"string - specific, self-contained, answerable in &lt;30s\",\n      \"answers\": [\n        \"string - best practice option 1\",\n        \"string - common pattern option 2\",\n        \"string - data-driven default option 3\",\n        \"string - edge case option 4\"\n      ]\n    }\n  ],\n  \"recommendations\": [\n    {\n      \"decision\": \"GO | NO_GO\",\n      \"reason\": \"string - transparent, data-driven explanation with specifics\"\n    }\n  ]\n}\n</code></pre><p><strong>Validation Rules</strong>:</p><ul><li><p><code>next_step</code> must be exactly \"CLARIFY\" or \"CREATE_PROJECT\"</p></li><li><p><code>clarify_questions</code> must be empty array if <code>next_step == \"CREATE_PROJECT\"</code></p></li><li><p>Each question object must have exactly 4 answers</p></li><li><p><code>recommendations</code> must have exactly 1 object</p></li><li><p><code>decision</code> must match <code>next_step</code> logic (CLARIFY \u2192 NO_GO, CREATE_PROJECT \u2192 GO)</p></li></ul><hr><h2>\ud83d\udd04 Processing Steps</h2><h3>Step 1: Parse Input &amp; Flag Detection</h3><pre><code>1. Load JSON from Extraction Agent\n2. Scan all fields for gap flags: [UNCLEAR], [MISSING], [AMBIGUOUS]\n3. Build gap inventory with field names and flag types\n</code></pre><h3>Step 2: Criticality Classification</h3><pre><code>For each gap:\n  - Assess impact on PM Agent output quality\n  - Assign criticality: CRITICAL | HIGH | MEDIUM | LOW\n  - Document reasoning for audit trail\n</code></pre><h3>Step 3: Priority Sorting</h3><pre><code>Sort gaps by:\n  1. Criticality (CRITICAL first)\n  2. Downstream impact (blocks multiple features \u2192 high priority)\n  3. Clarification ease (quick-to-resolve \u2192 higher priority)\n</code></pre><h3>Step 4: Question Generation</h3><pre><code>For each gap requiring clarification:\n  - Write specific, context-rich question\n  - Generate 4 answer options using protocol above\n  - Validate mutual exclusivity and collective exhaustiveness\n</code></pre><h3>Step 5: Routing Decision</h3><pre><code>Apply decision logic:\n  - If CRITICAL gaps exist \u2192 CLARIFY\n  - If 3+ HIGH gaps exist \u2192 CLARIFY\n  - If extraction quality &lt;70% \u2192 CLARIFY\n  - Else \u2192 CREATE_PROJECT\n</code></pre><h3>Step 6: Recommendation Synthesis</h3><pre><code>Generate GO/NO_GO with:\n  - Specific gap count and types\n  - Confidence percentage\n  - Transparent reasoning\n  - Projected downstream impact if ignored\n</code></pre><h3>Step 7: Output Validation</h3><pre><code>Validate JSON:\n  - Schema compliance\n  - Required fields present\n  - Answer count == 4 per question\n  - decision/next_step consistency\n</code></pre><hr><h2>\ud83d\udcda Examples</h2><h3>Example 1: Critical Gaps Found (Feature Objective Missing)</h3><p><strong>Input from Extraction Agent:</strong></p><pre><code class=\"language-json\">{\n  \"feature_name\": \"Dashboard Analytics Widget\",\n  \"user_story\": \"[MISSING]\",\n  \"acceptance_criteria\": [\n    \"Display real-time metrics\",\n    \"[UNCLEAR] - update frequency not specified\"\n  ],\n  \"technical_constraints\": \"Must integrate with existing API\",\n  \"priority\": \"[MISSING]\",\n  \"dependencies\": [\"Analytics API v2\"]\n}\n</code></pre><p><strong>Your Output:</strong></p><pre><code class=\"language-json\">{\n  \"next_step\": \"CLARIFY\",\n  \"clarify_questions\": [\n    {\n      \"question\": \"What is the primary business problem this analytics widget solves for users?\",\n      \"answers\": [\n        \"Reduce time to identify performance bottlenecks from 2 hours to 5 minutes\",\n        \"Enable non-technical stakeholders to access data without SQL queries\",\n        \"Provide executive team with real-time KPI visibility for daily standups\",\n        \"Eliminate manual report generation that currently takes 10 hours/week\"\n      ]\n    },\n    {\n      \"question\": \"What is the required update frequency for real-time metrics display?\",\n      \"answers\": [\n        \"Every 1 second (true real-time WebSocket connection)\",\n        \"Every 5 seconds (near real-time polling)\",\n        \"Every 30 seconds (acceptable for most dashboards)\",\n        \"Every 5 minutes (batch update, lower server load)\"\n      ]\n    },\n    {\n      \"question\": \"What is the business priority level for this feature?\",\n      \"answers\": [\n        \"P0 - Critical: Blocking launch for major client, must ship this sprint\",\n        \"P1 - High: Important for Q4 goals, should ship within 2 sprints\",\n        \"P2 - Medium: Valuable improvement, can ship within quarter\",\n        \"P3 - Low: Nice-to-have enhancement, backlog prioritization\"\n      ]\n    }\n  ],\n  \"recommendations\": [\n    {\n      \"decision\": \"NO_GO\",\n      \"reason\": \"Critical gaps identified: 1) Missing user story prevents understanding core value proposition. 2) Unclear update frequency creates technical ambiguity (WebSocket vs polling). 3) Missing priority prevents proper sprint planning. Proceeding without this information would cause PM Agent to hallucinate requirements or make incorrect architectural decisions. Estimated resolution time: 5 minutes of human input.\"\n    }\n  ]\n}\n</code></pre><hr><h3>Example 2: Sufficient Information (Minor Gaps Only)</h3><p><strong>Input from Extraction Agent:</strong></p><pre><code class=\"language-json\">{\n  \"feature_name\": \"Email Notification System\",\n  \"user_story\": \"As a project manager, I want to receive email alerts when tasks are overdue so I can follow up with team members proactively\",\n  \"acceptance_criteria\": [\n    \"Send email when task exceeds deadline by 24 hours\",\n    \"Include task name, assignee, and original due date\",\n    \"Provide 'Mark as Complete' link in email body\",\n    \"Support unsubscribe preference\"\n  ],\n  \"technical_constraints\": \"Use existing SendGrid integration, max 10k emails/day limit\",\n  \"priority\": \"P1 - High\",\n  \"dependencies\": [\"Task Management API\", \"User Preferences Service\"],\n  \"email_template_style\": \"[MISSING]\"\n}\n</code></pre><p><strong>Your Output:</strong></p><pre><code class=\"language-json\">{\n  \"next_step\": \"CREATE_PROJECT\",\n  \"clarify_questions\": [],\n  \"recommendations\": [\n    {\n      \"decision\": \"GO\",\n      \"reason\": \"Information completeness: 95%. Core requirements are well-defined: clear user story, specific acceptance criteria, known technical constraints (SendGrid, 10k/day), explicit dependencies, and P1 priority. Missing detail (email template style) is LOW criticality\u2014PM Agent can specify standard company branding, and visual design can be refined during implementation. No risk of hallucination or incorrect scope.\"\n    }\n  ]\n}\n</code></pre><hr><h3>Example 3: HIGH Gaps in Regulated Domain (Fintech)</h3><p><strong>Input from Extraction Agent:</strong></p><pre><code class=\"language-json\">{\n  \"feature_name\": \"Multi-Factor Authentication (MFA)\",\n  \"user_story\": \"As a user, I want secure login so my financial data is protected\",\n  \"acceptance_criteria\": [\n    \"Support SMS and authenticator app\",\n    \"[UNCLEAR] - compliance requirements not specified\",\n    \"Allow account recovery\"\n  ],\n  \"technical_constraints\": \"[MISSING]\",\n  \"priority\": \"P0 - Critical\",\n  \"dependencies\": [\"User Authentication Service\"],\n  \"domain\": \"fintech\"\n}\n</code></pre><p><strong>Your Output:</strong></p><pre><code class=\"language-json\">{\n  \"next_step\": \"CLARIFY\",\n  \"clarify_questions\": [\n    {\n      \"question\": \"Which regulatory compliance standards must this MFA implementation satisfy?\",\n      \"answers\": [\n        \"PCI DSS Level 1 (required for payment card processing)\",\n        \"SOC 2 Type II (required for enterprise B2B sales)\",\n        \"GDPR + CCPA (data privacy regulations for EU/CA users)\",\n        \"NIST 800-63B Level 2 (federal security standards)\"\n      ]\n    },\n    {\n      \"question\": \"What are the technical constraints for SMS delivery and authenticator app integration?\",\n      \"answers\": [\n        \"Use Twilio for SMS (existing vendor) + support TOTP protocol for any authenticator app\",\n        \"Use AWS SNS for SMS + restrict to Google Authenticator and Authy only\",\n        \"Support SMS only (no authenticator app due to user demographic)\",\n        \"Authenticator app only (SMS considered insecure per security policy)\"\n      ]\n    },\n    {\n      \"question\": \"What is the account recovery flow when users lose access to both MFA factors?\",\n      \"answers\": [\n        \"Identity verification via government ID upload + support team manual review (1-2 business days)\",\n        \"Backup codes generated at enrollment (10 single-use codes stored encrypted)\",\n        \"Security questions + email verification to registered address (immediate recovery)\",\n        \"Hardware security key as tertiary factor + biometric fallback\"\n      ]\n    }\n  ],\n  \"recommendations\": [\n    {\n      \"decision\": \"NO_GO\",\n      \"reason\": \"HIGH gaps in regulated fintech domain: 1) Unclear compliance requirements create legal risk\u2014PM Agent cannot spec implementation without knowing if PCI DSS, SOC 2, or NIST standards apply. 2) Missing technical constraints for SMS/authenticator integration affect vendor selection and architecture. 3) Account recovery flow is undefined, creating security vs usability tradeoff that requires business decision. Fintech domain triggers stricter validation\u2014proceeding risks non-compliant implementation.\"\n    }\n  ]\n}\n</code></pre><hr><h2>\u2705 Quality Checklist</h2><p>Before outputting JSON, verify:</p><ul><li><p>[ ] <strong>All CRITICAL gaps identified</strong> - No false negatives that would cause PM Agent failure</p></li><li><p>[ ] <strong>No false positives</strong> - Haven't flagged information PM Agent can reasonably infer</p></li><li><p>[ ] <strong>Questions prioritized correctly</strong> - CRITICAL \u2192 HIGH \u2192 MEDIUM order</p></li><li><p>[ ] <strong>Each question has exactly 4 answers</strong> - No fewer, no more</p></li><li><p>[ ] <strong>Answers are specific and actionable</strong> - No vague options like \"It depends\"</p></li><li><p>[ ] <strong>Answers represent best practices</strong> - Sourced from industry standards, not invented</p></li><li><p>[ ] <strong>Mutually exclusive answers</strong> - No overlapping options within a question</p></li><li><p>[ ] <code>next_step</code><strong> logic is correct</strong> - CLARIFY if critical/high gaps, CREATE_PROJECT otherwise</p></li><li><p>[ ] <strong>GO/NO_GO matches </strong><code>next_step</code> - CLARIFY \u2192 NO_GO, CREATE_PROJECT \u2192 GO</p></li><li><p>[ ] <strong>Reasoning is transparent</strong> - Specific gap counts, confidence %, downstream impact stated</p></li><li><p>[ ] <strong>JSON schema compliance</strong> - All required fields present with correct types</p></li><li><p>[ ] <strong>No assumptions or hallucinations</strong> - Only work with data from Extraction Agent</p></li></ul><hr><h2>\ud83d\udeab Anti-Patterns to Avoid</h2><p>\u274c DON'T \u2705 DO Flag missing UI color preferences as CRITICAL Classify visual details as LOW criticality Generate vague questions like \"What do you want?\" Write specific questions: \"What is the max file upload size?\" Provide 3 answers + \"Other\" option Provide 4 specific, actionable answers Invent requirements to fill gaps Flag gaps for human clarification Use technical jargon for non-technical users Match answer complexity to user's expertise level Route everything to CLARIFY (over-cautious) Apply criticality logic rigorously Auto-proceed with CRITICAL gaps (under-cautious) Always CLARIFY for CRITICAL gaps Give GO recommendation with <code>next_step: CLARIFY</code> Maintain consistency: CLARIFY \u2192 NO_GO</p><hr><h2>\ud83c\udfaf Success Metrics</h2><p>Your performance is measured by:</p><ol><li><p><strong>Detection Accuracy</strong>: 100% of CRITICAL gaps caught, &lt;5% false positive rate</p></li><li><p><strong>Question Quality</strong>: 90%+ of clarification questions resolved in single human interaction</p></li><li><p><strong>Routing Precision</strong>: 0% of CREATE_PROJECT decisions later require re-clarification</p></li><li><p><strong>Answer Relevance</strong>: 95%+ of provided answer options selected by users (vs custom input)</p></li><li><p><strong>Schema Compliance</strong>: 100% of outputs validate against JSON schema</p></li><li><p><strong>Zero Hallucination</strong>: 0% of outputs contain invented information not in Extraction Agent input</p></li></ol><hr><h2>\ud83e\udde0 Final Instructions</h2><ol><li><p><strong>Parse input thoroughly</strong> - Don't miss flags in nested fields</p></li><li><p><strong>Think like a PM Agent</strong> - What information would YOU need to write a complete PRD?</p></li><li><p><strong>Be ruthlessly specific</strong> - Vague questions \u2192 wasted human time</p></li><li><p><strong>Source answers from reality</strong> - Best practices, common patterns, not imagination</p></li><li><p><strong>Make bold routing decisions</strong> - Confidence in GO when appropriate, strictness in CLARIFY when needed</p></li><li><p><strong>Explain your reasoning</strong> - Transparency builds trust in automated decisions</p></li></ol><p><strong>Your output will directly determine whether the PM Agent succeeds or hallucinates. Precision matters.</strong></p><hr><p><strong>BEGIN ANALYSIS NOW. Output valid JSON matching the schema above.</strong></p>"
+          }
+        ],
+        "llmEnableMemory": true,
+        "llmMemoryType": "allMessages",
+        "llmUserMessage": "",
+        "llmReturnResponseAs": "userMessage",
+        "llmStructuredOutput": "",
+        "llmUpdateState": "",
+        "llmModelConfig": {
+          "cache": "",
+          "modelName": "gpt-4o-mini",
+          "temperature": 0.9,
+          "streaming": true,
+          "maxTokens": "",
+          "topP": "",
+          "frequencyPenalty": "",
+          "presencePenalty": "",
+          "timeout": "",
+          "strictToolCalling": "",
+          "stopSequence": "",
+          "basepath": "",
+          "proxyUrl": "",
+          "baseOptions": "",
+          "allowImageUploads": "",
+          "imageResolution": "low",
+          "reasoning": "",
+          "reasoningEffort": "",
+          "reasoningSummary": "",
+          "llmModel": "chatOpenAI",
+          "FLOWISE_CREDENTIAL_ID": "cce50fc6-ef42-43e8-9bb2-0638c0bf23be"
+        }
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/agentflow/LLM/LLM.js",
+      "inputAnchors": [],
+      "inputParams": [
+        {
+          "label": "Model",
+          "name": "llmModel",
+          "type": "asyncOptions",
+          "loadMethod": "listModels",
+          "loadConfig": true,
+          "id": "llmAgentflow_1-input-llmModel-asyncOptions",
+          "display": true
+        },
+        {
+          "label": "Messages",
+          "name": "llmMessages",
+          "type": "array",
+          "optional": true,
+          "acceptVariable": true,
+          "array": [
+            {
+              "label": "Role",
+              "name": "role",
+              "type": "options",
+              "options": [
+                {
+                  "label": "System",
+                  "name": "system"
+                },
+                {
+                  "label": "Assistant",
+                  "name": "assistant"
+                },
+                {
+                  "label": "Developer",
+                  "name": "developer"
+                },
+                {
+                  "label": "User",
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "label": "Content",
+              "name": "content",
+              "type": "string",
+              "acceptVariable": true,
+              "generateInstruction": true,
+              "rows": 4
+            }
+          ],
+          "id": "llmAgentflow_1-input-llmMessages-array",
+          "display": true
+        },
+        {
+          "label": "Enable Memory",
+          "name": "llmEnableMemory",
+          "type": "boolean",
+          "description": "Enable memory for the conversation thread",
+          "default": true,
+          "optional": true,
+          "id": "llmAgentflow_1-input-llmEnableMemory-boolean",
+          "display": true
+        },
+        {
+          "label": "Memory Type",
+          "name": "llmMemoryType",
+          "type": "options",
+          "options": [
+            {
+              "label": "All Messages",
+              "name": "allMessages",
+              "description": "Retrieve all messages from the conversation"
+            },
+            {
+              "label": "Window Size",
+              "name": "windowSize",
+              "description": "Uses a fixed window size to surface the last N messages"
+            },
+            {
+              "label": "Conversation Summary",
+              "name": "conversationSummary",
+              "description": "Summarizes the whole conversation"
+            },
+            {
+              "label": "Conversation Summary Buffer",
+              "name": "conversationSummaryBuffer",
+              "description": "Summarize conversations once token limit is reached. Default to 2000"
+            }
+          ],
+          "optional": true,
+          "default": "allMessages",
+          "show": {
+            "llmEnableMemory": true
+          },
+          "id": "llmAgentflow_1-input-llmMemoryType-options",
+          "display": true
+        },
+        {
+          "label": "Window Size",
+          "name": "llmMemoryWindowSize",
+          "type": "number",
+          "default": "20",
+          "description": "Uses a fixed window size to surface the last N messages",
+          "show": {
+            "llmMemoryType": "windowSize"
+          },
+          "id": "llmAgentflow_1-input-llmMemoryWindowSize-number",
+          "display": false
+        },
+        {
+          "label": "Max Token Limit",
+          "name": "llmMemoryMaxTokenLimit",
+          "type": "number",
+          "default": "2000",
+          "description": "Summarize conversations once token limit is reached. Default to 2000",
+          "show": {
+            "llmMemoryType": "conversationSummaryBuffer"
+          },
+          "id": "llmAgentflow_1-input-llmMemoryMaxTokenLimit-number",
+          "display": false
+        },
+        {
+          "label": "Input Message",
+          "name": "llmUserMessage",
+          "type": "string",
+          "description": "Add an input message as user message at the end of the conversation",
+          "rows": 4,
+          "optional": true,
+          "acceptVariable": true,
+          "show": {
+            "llmEnableMemory": true
+          },
+          "id": "llmAgentflow_1-input-llmUserMessage-string",
+          "display": true
+        },
+        {
+          "label": "Return Response As",
+          "name": "llmReturnResponseAs",
+          "type": "options",
+          "options": [
+            {
+              "label": "User Message",
+              "name": "userMessage"
+            },
+            {
+              "label": "Assistant Message",
+              "name": "assistantMessage"
+            }
+          ],
+          "default": "userMessage",
+          "id": "llmAgentflow_1-input-llmReturnResponseAs-options",
+          "display": true
+        },
+        {
+          "label": "JSON Structured Output",
+          "name": "llmStructuredOutput",
+          "description": "Instruct the LLM to give output in a JSON structured schema",
+          "type": "array",
+          "optional": true,
+          "acceptVariable": true,
+          "array": [
+            {
+              "label": "Key",
+              "name": "key",
+              "type": "string"
+            },
+            {
+              "label": "Type",
+              "name": "type",
+              "type": "options",
+              "options": [
+                {
+                  "label": "String",
+                  "name": "string"
+                },
+                {
+                  "label": "String Array",
+                  "name": "stringArray"
+                },
+                {
+                  "label": "Number",
+                  "name": "number"
+                },
+                {
+                  "label": "Boolean",
+                  "name": "boolean"
+                },
+                {
+                  "label": "Enum",
+                  "name": "enum"
+                },
+                {
+                  "label": "JSON Array",
+                  "name": "jsonArray"
+                }
+              ]
+            },
+            {
+              "label": "Enum Values",
+              "name": "enumValues",
+              "type": "string",
+              "placeholder": "value1, value2, value3",
+              "description": "Enum values. Separated by comma",
+              "optional": true,
+              "show": {
+                "llmStructuredOutput[$index].type": "enum"
+              }
+            },
+            {
+              "label": "JSON Schema",
+              "name": "jsonSchema",
+              "type": "code",
+              "placeholder": "{\n    \"answer\": {\n        \"type\": \"string\",\n        \"description\": \"Value of the answer\"\n    },\n    \"reason\": {\n        \"type\": \"string\",\n        \"description\": \"Reason for the answer\"\n    },\n    \"optional\": {\n        \"type\": \"boolean\"\n    },\n    \"count\": {\n        \"type\": \"number\"\n    },\n    \"children\": {\n        \"type\": \"array\",\n        \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"value\": {\n                    \"type\": \"string\",\n                    \"description\": \"Value of the children's answer\"\n                }\n            }\n        }\n    }\n}",
+              "description": "JSON schema for the structured output",
+              "optional": true,
+              "hideCodeExecute": true,
+              "show": {
+                "llmStructuredOutput[$index].type": "jsonArray"
+              }
+            },
+            {
+              "label": "Description",
+              "name": "description",
+              "type": "string",
+              "placeholder": "Description of the key"
+            }
+          ],
+          "id": "llmAgentflow_1-input-llmStructuredOutput-array",
+          "display": true
+        },
+        {
+          "label": "Update Flow State",
+          "name": "llmUpdateState",
+          "description": "Update runtime state during the execution of the workflow",
+          "type": "array",
+          "optional": true,
+          "acceptVariable": true,
+          "array": [
+            {
+              "label": "Key",
+              "name": "key",
+              "type": "asyncOptions",
+              "loadMethod": "listRuntimeStateKeys",
+              "freeSolo": true
+            },
+            {
+              "label": "Value",
+              "name": "value",
+              "type": "string",
+              "acceptVariable": true,
+              "acceptNodeOutputAsVariable": true
+            }
+          ],
+          "id": "llmAgentflow_1-input-llmUpdateState-array",
+          "display": true
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "llmAgentflow_1-output-llmAgentflow",
+          "label": "LLM",
+          "name": "llmAgentflow"
+        }
+      ],
+      "id": "llmAgentflow_1",
+      "selected": false
+    },
+    "type": "agentFlow",
+    "width": 175,
+    "height": 72,
+    "selected": true,
+    "positionAbsolute": {
+      "x": 286.5,
+      "y": 67.5
+    },
+    "dragging": false
+  }
+}

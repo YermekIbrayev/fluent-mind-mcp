@@ -1,0 +1,181 @@
+{
+  "_metadata": {
+    "node_type": "chatAnthropic",
+    "name": "chatAnthropic",
+    "label": "ChatAnthropic",
+    "category": "Chat Models",
+    "version": 8,
+    "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+    "base_classes": [
+      "ChatAnthropic",
+      "ChatAnthropicMessages",
+      "BaseChatModel",
+      "BaseLanguageModel",
+      "Runnable"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "chatAnthropic_0",
+    "position": {
+      "x": 408.8952175044468,
+      "y": 273.84063051224086
+    },
+    "type": "customNode",
+    "data": {
+      "loadMethods": {},
+      "label": "ChatAnthropic",
+      "name": "chatAnthropic",
+      "version": 8,
+      "type": "ChatAnthropic",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/chatmodels/ChatAnthropic/Anthropic.svg",
+      "category": "Chat Models",
+      "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+      "baseClasses": [
+        "ChatAnthropic",
+        "ChatAnthropicMessages",
+        "BaseChatModel",
+        "BaseLanguageModel",
+        "Runnable"
+      ],
+      "credential": "d1a974bc-9604-43d0-8a3b-8bcc01271352",
+      "inputs": {
+        "cache": "",
+        "modelName": "claude-3-7-sonnet-latest",
+        "temperature": 0.9,
+        "streaming": true,
+        "maxTokensToSample": "",
+        "topP": "",
+        "topK": "",
+        "extendedThinking": "",
+        "budgetTokens": 1024,
+        "allowImageUploads": ""
+      },
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/chatmodels/ChatAnthropic/ChatAnthropic.js",
+      "inputAnchors": [
+        {
+          "label": "Cache",
+          "name": "cache",
+          "type": "BaseCache",
+          "optional": true,
+          "id": "chatAnthropic_0-input-cache-BaseCache"
+        }
+      ],
+      "inputParams": [
+        {
+          "label": "Connect Credential",
+          "name": "credential",
+          "type": "credential",
+          "credentialNames": [
+            "anthropicApi"
+          ],
+          "id": "chatAnthropic_0-input-credential-credential"
+        },
+        {
+          "label": "Model Name",
+          "name": "modelName",
+          "type": "asyncOptions",
+          "loadMethod": "listModels",
+          "default": "claude-3-haiku",
+          "id": "chatAnthropic_0-input-modelName-asyncOptions"
+        },
+        {
+          "label": "Temperature",
+          "name": "temperature",
+          "type": "number",
+          "step": 0.1,
+          "default": 0.9,
+          "optional": true,
+          "id": "chatAnthropic_0-input-temperature-number"
+        },
+        {
+          "label": "Streaming",
+          "name": "streaming",
+          "type": "boolean",
+          "default": true,
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-streaming-boolean"
+        },
+        {
+          "label": "Max Tokens",
+          "name": "maxTokensToSample",
+          "type": "number",
+          "step": 1,
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-maxTokensToSample-number"
+        },
+        {
+          "label": "Top P",
+          "name": "topP",
+          "type": "number",
+          "step": 0.1,
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-topP-number"
+        },
+        {
+          "label": "Top K",
+          "name": "topK",
+          "type": "number",
+          "step": 0.1,
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-topK-number"
+        },
+        {
+          "label": "Extended Thinking",
+          "name": "extendedThinking",
+          "type": "boolean",
+          "description": "Enable extended thinking for reasoning model such as Claude Sonnet 3.7",
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-extendedThinking-boolean"
+        },
+        {
+          "label": "Budget Tokens",
+          "name": "budgetTokens",
+          "type": "number",
+          "step": 1,
+          "default": 1024,
+          "description": "Maximum number of tokens Claude is allowed use for its internal reasoning process",
+          "optional": true,
+          "additionalParams": true,
+          "id": "chatAnthropic_0-input-budgetTokens-number"
+        },
+        {
+          "label": "Allow Image Uploads",
+          "name": "allowImageUploads",
+          "type": "boolean",
+          "description": "Allow image input. Refer to the <a href=\"https://docs.flowiseai.com/using-flowise/uploads#image\" target=\"_blank\">docs</a> for more details.",
+          "default": false,
+          "optional": true,
+          "id": "chatAnthropic_0-input-allowImageUploads-boolean"
+        }
+      ],
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "chatAnthropic_0-output-chatAnthropic-ChatAnthropic|ChatAnthropicMessages|BaseChatModel|BaseLanguageModel|Runnable",
+          "name": "chatAnthropic",
+          "label": "ChatAnthropic",
+          "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+          "type": "ChatAnthropic | ChatAnthropicMessages | BaseChatModel | BaseLanguageModel | Runnable"
+        }
+      ],
+      "id": "chatAnthropic_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 670,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 408.8952175044468,
+      "y": 273.84063051224086
+    },
+    "dragging": false
+  }
+}

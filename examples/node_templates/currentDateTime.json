@@ -1,0 +1,62 @@
+{
+  "_metadata": {
+    "node_type": "currentDateTime",
+    "name": "currentDateTime",
+    "label": "CurrentDateTime",
+    "category": "Tools",
+    "version": 1,
+    "description": "Get todays day, date and time.",
+    "base_classes": [
+      "CurrentDateTime",
+      "Tool"
+    ],
+    "extracted_date": "2025-10-17",
+    "source": "Flowise instance",
+    "usage_note": "Replace ID and customize inputs before use"
+  },
+  "node": {
+    "id": "currentDateTime_0",
+    "position": {
+      "x": 570.3272283911791,
+      "y": 9.341832956407643
+    },
+    "type": "customNode",
+    "data": {
+      "label": "CurrentDateTime",
+      "name": "currentDateTime",
+      "version": 1,
+      "type": "CurrentDateTime",
+      "icon": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/CurrentDateTime/currentDateTime.svg",
+      "category": "Tools",
+      "description": "Get todays day, date and time.",
+      "baseClasses": [
+        "CurrentDateTime",
+        "Tool"
+      ],
+      "filePath": "/home/yermek/Flowise/packages/server/node_modules/flowise-components/dist/nodes/tools/CurrentDateTime/CurrentDateTime.js",
+      "inputAnchors": [],
+      "inputParams": [],
+      "inputs": {},
+      "outputs": {},
+      "outputAnchors": [
+        {
+          "id": "currentDateTime_0-output-currentDateTime-CurrentDateTime|Tool",
+          "name": "currentDateTime",
+          "label": "CurrentDateTime",
+          "description": "Get todays day, date and time.",
+          "type": "CurrentDateTime | Tool"
+        }
+      ],
+      "id": "currentDateTime_0",
+      "selected": false
+    },
+    "width": 300,
+    "height": 149,
+    "selected": false,
+    "positionAbsolute": {
+      "x": 570.3272283911791,
+      "y": 9.341832956407643
+    },
+    "dragging": false
+  }
+}
