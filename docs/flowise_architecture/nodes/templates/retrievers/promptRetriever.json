@@ -1,0 +1,20 @@
+{
+  "id": "promptRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "promptRetriever_0",
+    "name": "promptRetriever",
+    "label": "Prompt Retriever",
+    "version": 1,
+    "type": "PromptRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "PromptRetriever"
+    ],
+    "inputs": {}
+  }
+}

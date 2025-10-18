@@ -1,0 +1,20 @@
+{
+  "id": "webBrowser_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "webBrowser_0",
+    "name": "webBrowser",
+    "label": "Web Browser",
+    "version": 1,
+    "type": "WebBrowser",
+    "category": "Tools",
+    "baseClasses": [
+      "WebBrowser"
+    ],
+    "inputs": {}
+  }
+}

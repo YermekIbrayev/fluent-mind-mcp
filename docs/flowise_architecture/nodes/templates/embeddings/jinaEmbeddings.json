@@ -1,0 +1,21 @@
+{
+  "id": "jinaEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "jinaEmbeddings_0",
+    "name": "jinaEmbeddings",
+    "label": "Jina Embeddings",
+    "version": 3,
+    "type": "JinaEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "JinaEmbeddings"
+    ],
+    "credential": "jinaAIApi_credential_id",
+    "inputs": {}
+  }
+}

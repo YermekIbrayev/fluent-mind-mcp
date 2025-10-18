@@ -1,0 +1,21 @@
+{
+  "id": "AWSBedrockEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "AWSBedrockEmbeddings_0",
+    "name": "AWSBedrockEmbeddings",
+    "label": "AWS Bedrock Embeddings",
+    "version": 5,
+    "type": "AWSBedrockEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "AWSBedrockEmbeddings"
+    ],
+    "credential": "awsApi_credential_id",
+    "inputs": {}
+  }
+}

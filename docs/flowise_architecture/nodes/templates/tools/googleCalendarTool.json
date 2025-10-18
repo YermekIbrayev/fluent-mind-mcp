@@ -1,0 +1,21 @@
+{
+  "id": "googleCalendarTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googleCalendarTool_0",
+    "name": "googleCalendarTool",
+    "label": "Google Calendar",
+    "version": 1,
+    "type": "GoogleCalendar",
+    "category": "Tools",
+    "baseClasses": [
+      "GoogleCalendar"
+    ],
+    "credential": "googleCalendarOAuth2_credential_id",
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "searXNG_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "searXNG_0",
+    "name": "searXNG",
+    "label": "SearXNG",
+    "version": 3,
+    "type": "SearXNG",
+    "category": "Tools",
+    "baseClasses": [
+      "SearXNG"
+    ],
+    "inputs": {}
+  }
+}

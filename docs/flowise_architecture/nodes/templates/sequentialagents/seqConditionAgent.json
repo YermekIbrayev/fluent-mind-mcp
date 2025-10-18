@@ -1,0 +1,20 @@
+{
+  "id": "seqConditionAgent_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqConditionAgent_0",
+    "name": "seqConditionAgent",
+    "label": "Condition Agent",
+    "version": 3.1,
+    "type": "ConditionAgent",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "ConditionAgent"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "bufferWindowMemory_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "bufferWindowMemory_0",
+    "name": "bufferWindowMemory",
+    "label": "Buffer Window Memory",
+    "version": 2,
+    "type": "BufferWindowMemory",
+    "category": "Memory",
+    "baseClasses": [
+      "BufferWindowMemory"
+    ],
+    "inputs": {}
+  }
+}

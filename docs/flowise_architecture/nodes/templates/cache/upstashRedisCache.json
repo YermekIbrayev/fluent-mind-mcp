@@ -1,0 +1,21 @@
+{
+  "id": "upstashRedisCache_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "upstashRedisCache_0",
+    "name": "upstashRedisCache",
+    "label": "Upstash Redis Cache",
+    "version": 1,
+    "type": "UpstashRedisCache",
+    "category": "Cache",
+    "baseClasses": [
+      "UpstashRedisCache"
+    ],
+    "credential": "upstashRedisApi_credential_id",
+    "inputs": {}
+  }
+}

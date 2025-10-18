@@ -1,0 +1,20 @@
+{
+  "id": "iterationAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "iterationAgentflow_0",
+    "name": "iterationAgentflow",
+    "label": "Iteration",
+    "version": 1,
+    "type": "Iteration",
+    "category": "Agentflow",
+    "baseClasses": [
+      "Iteration"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "customListOutputParser_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "customListOutputParser_0",
+    "name": "customListOutputParser",
+    "label": "Custom List Output Parser",
+    "version": 1,
+    "type": "CustomListOutputParser",
+    "category": "Outputparsers",
+    "baseClasses": [
+      "CustomListOutputParser"
+    ],
+    "inputs": {}
+  }
+}

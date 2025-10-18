@@ -1,0 +1,20 @@
+{
+  "id": "requestsPost_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "requestsPost_0",
+    "name": "requestsPost",
+    "label": "Requests Post",
+    "version": 2,
+    "type": "RequestsPost",
+    "category": "Tools",
+    "baseClasses": [
+      "RequestsPost"
+    ],
+    "inputs": {}
+  }
+}

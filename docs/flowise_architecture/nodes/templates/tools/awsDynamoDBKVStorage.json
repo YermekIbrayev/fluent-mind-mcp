@@ -1,0 +1,21 @@
+{
+  "id": "awsDynamoDBKVStorage_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "awsDynamoDBKVStorage_0",
+    "name": "awsDynamoDBKVStorage",
+    "label": "AWS DynamoDB KV Storage",
+    "version": 1,
+    "type": "AWSDynamoDBKVStorage",
+    "category": "Tools",
+    "baseClasses": [
+      "AWSDynamoDBKVStorage"
+    ],
+    "credential": "awsApi_credential_id",
+    "inputs": {}
+  }
+}

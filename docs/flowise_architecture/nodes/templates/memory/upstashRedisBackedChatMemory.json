@@ -1,0 +1,21 @@
+{
+  "id": "upstashRedisBackedChatMemory_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "upstashRedisBackedChatMemory_0",
+    "name": "upstashRedisBackedChatMemory",
+    "label": "Upstash Redis-Backed Chat Memory",
+    "version": 2,
+    "type": "UpstashRedisBackedChatMemory",
+    "category": "Memory",
+    "baseClasses": [
+      "UpstashRedisBackedChatMemory"
+    ],
+    "credential": "upstashRedisMemoryApi_credential_id",
+    "inputs": {}
+  }
+}

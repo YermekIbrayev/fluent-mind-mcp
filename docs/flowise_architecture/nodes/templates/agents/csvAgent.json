@@ -1,0 +1,20 @@
+{
+  "id": "csvAgent_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "csvAgent_0",
+    "name": "csvAgent",
+    "label": "CSV Agent",
+    "version": 3,
+    "type": "AgentExecutor",
+    "category": "Agents",
+    "baseClasses": [
+      "AgentExecutor"
+    ],
+    "inputs": {}
+  }
+}

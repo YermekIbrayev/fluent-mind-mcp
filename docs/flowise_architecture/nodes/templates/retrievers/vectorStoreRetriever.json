@@ -1,0 +1,20 @@
+{
+  "id": "vectorStoreRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "vectorStoreRetriever_0",
+    "name": "vectorStoreRetriever",
+    "label": "Vector Store Retriever",
+    "version": 1,
+    "type": "VectorStoreRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "VectorStoreRetriever"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cheerioWebScraper_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "cheerioWebScraper_0",
+    "name": "cheerioWebScraper",
+    "label": "Cheerio Web Scraper",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

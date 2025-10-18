@@ -1,0 +1,20 @@
+{
+  "id": "worker_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "worker_0",
+    "name": "worker",
+    "label": "Worker",
+    "version": 2,
+    "type": "Worker",
+    "category": "Multiagents",
+    "baseClasses": [
+      "Worker"
+    ],
+    "inputs": {}
+  }
+}

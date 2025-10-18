@@ -1,0 +1,21 @@
+{
+  "id": "airtableAgent_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "airtableAgent_0",
+    "name": "airtableAgent",
+    "label": "Airtable Agent",
+    "version": 2,
+    "type": "AgentExecutor",
+    "category": "Agents",
+    "baseClasses": [
+      "AgentExecutor"
+    ],
+    "credential": "airtableApi_credential_id",
+    "inputs": {}
+  }
+}

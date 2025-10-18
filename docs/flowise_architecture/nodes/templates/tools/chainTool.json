@@ -1,0 +1,20 @@
+{
+  "id": "chainTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chainTool_0",
+    "name": "chainTool",
+    "label": "Chain Tool",
+    "version": 1,
+    "type": "ChainTool",
+    "category": "Tools",
+    "baseClasses": [
+      "ChainTool"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "supabase_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "supabase_0",
+    "name": "supabase",
+    "label": "Supabase",
+    "version": 4,
+    "type": "Supabase",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Supabase"
+    ],
+    "credential": "supabaseApi_credential_id",
+    "inputs": {}
+  }
+}

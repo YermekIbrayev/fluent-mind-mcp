@@ -1,0 +1,20 @@
+{
+  "id": "jsonPathExtractor_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "jsonPathExtractor_0",
+    "name": "jsonPathExtractor",
+    "label": "JSON Path Extractor",
+    "version": 1,
+    "type": "JSONPathExtractor",
+    "category": "Tools",
+    "baseClasses": [
+      "JSONPathExtractor"
+    ],
+    "inputs": {}
+  }
+}

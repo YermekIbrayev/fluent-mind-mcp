@@ -1,0 +1,21 @@
+{
+  "id": "googleDocsTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googleDocsTool_0",
+    "name": "googleDocsTool",
+    "label": "Google Docs",
+    "version": 1,
+    "type": "GoogleDocs",
+    "category": "Tools",
+    "baseClasses": [
+      "GoogleDocs"
+    ],
+    "credential": "googleDocsOAuth2_credential_id",
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "chatPromptTemplate_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatPromptTemplate_0",
+    "name": "chatPromptTemplate",
+    "label": "Chat Prompt Template",
+    "version": 2,
+    "type": "ChatPromptTemplate",
+    "category": "Prompts",
+    "baseClasses": [
+      "ChatPromptTemplate"
+    ],
+    "inputs": {}
+  }
+}

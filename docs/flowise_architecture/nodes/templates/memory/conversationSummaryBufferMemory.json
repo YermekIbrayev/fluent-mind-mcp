@@ -1,0 +1,20 @@
+{
+  "id": "conversationSummaryBufferMemory_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "conversationSummaryBufferMemory_0",
+    "name": "conversationSummaryBufferMemory",
+    "label": "Conversation Summary Buffer Memory",
+    "version": 1,
+    "type": "ConversationSummaryBufferMemory",
+    "category": "Memory",
+    "baseClasses": [
+      "ConversationSummaryBufferMemory"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "notionDB_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "notionDB_0",
+    "name": "notionDB",
+    "label": "Notion Database",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "credential": "notionApi_credential_id",
+    "inputs": {}
+  }
+}

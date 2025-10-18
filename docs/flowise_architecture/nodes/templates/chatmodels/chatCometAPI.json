@@ -1,0 +1,21 @@
+{
+  "id": "chatCometAPI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatCometAPI_0",
+    "name": "chatCometAPI",
+    "label": "ChatCometAPI",
+    "version": 1,
+    "type": "ChatCometAPI",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatCometAPI"
+    ],
+    "credential": "cometApi_credential_id",
+    "inputs": {}
+  }
+}

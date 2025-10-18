@@ -1,0 +1,20 @@
+{
+  "id": "refineLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "refineLlamaIndex_0",
+    "name": "refineLlamaIndex",
+    "label": "Refine",
+    "version": 1,
+    "type": "Refine",
+    "category": "Responsesynthesizer",
+    "baseClasses": [
+      "Refine"
+    ],
+    "inputs": {}
+  }
+}

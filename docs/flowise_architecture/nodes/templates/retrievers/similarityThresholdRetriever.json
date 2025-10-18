@@ -1,0 +1,20 @@
+{
+  "id": "similarityThresholdRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "similarityThresholdRetriever_0",
+    "name": "similarityThresholdRetriever",
+    "label": "Similarity Score Threshold Retriever",
+    "version": 2,
+    "type": "SimilarityThresholdRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "SimilarityThresholdRetriever"
+    ],
+    "inputs": {}
+  }
+}

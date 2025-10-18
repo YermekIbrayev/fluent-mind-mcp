@@ -1,0 +1,21 @@
+{
+  "id": "googleSheets_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googleSheets_0",
+    "name": "googleSheets",
+    "label": "Google Sheets",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "credential": "googleSheetsOAuth2_credential_id",
+    "inputs": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "codeInterpreterE2B_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "codeInterpreterE2B_0",
+    "name": "codeInterpreterE2B",
+    "label": "Code Interpreter by E2B",
+    "version": 1,
+    "type": "CodeInterpreter",
+    "category": "Tools",
+    "baseClasses": [
+      "CodeInterpreter"
+    ],
+    "credential": "E2BApi_credential_id",
+    "inputs": {}
+  }
+}

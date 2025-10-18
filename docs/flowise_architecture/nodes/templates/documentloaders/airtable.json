@@ -1,0 +1,21 @@
+{
+  "id": "airtable_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "airtable_0",
+    "name": "airtable",
+    "label": "Airtable",
+    "version": 3.02,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "credential": "airtableApi_credential_id",
+    "inputs": {}
+  }
+}

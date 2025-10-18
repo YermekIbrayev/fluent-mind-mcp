@@ -1,0 +1,20 @@
+{
+  "id": "customTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "customTool_0",
+    "name": "customTool",
+    "label": "Custom Tool",
+    "version": 3,
+    "type": "CustomTool",
+    "category": "Tools",
+    "baseClasses": [
+      "CustomTool"
+    ],
+    "inputs": {}
+  }
+}

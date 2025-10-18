@@ -1,0 +1,20 @@
+{
+  "id": "advancedStructuredOutputParser_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "advancedStructuredOutputParser_0",
+    "name": "advancedStructuredOutputParser",
+    "label": "Advanced Structured Output Parser",
+    "version": 1,
+    "type": "AdvancedStructuredOutputParser",
+    "category": "Outputparsers",
+    "baseClasses": [
+      "AdvancedStructuredOutputParser"
+    ],
+    "inputs": {}
+  }
+}

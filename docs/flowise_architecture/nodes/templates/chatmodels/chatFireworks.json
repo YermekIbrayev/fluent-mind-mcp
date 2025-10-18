@@ -1,0 +1,21 @@
+{
+  "id": "chatFireworks_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatFireworks_0",
+    "name": "chatFireworks",
+    "label": "ChatFireworks",
+    "version": 2,
+    "type": "ChatFireworks",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatFireworks"
+    ],
+    "credential": "fireworksApi_credential_id",
+    "inputs": {}
+  }
+}

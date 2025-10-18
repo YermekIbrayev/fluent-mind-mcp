@@ -1,0 +1,21 @@
+{
+  "id": "chatPerplexity_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatPerplexity_0",
+    "name": "chatPerplexity",
+    "label": "ChatPerplexity",
+    "version": 0.1,
+    "type": "ChatPerplexity",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatPerplexity"
+    ],
+    "credential": "perplexityApi_credential_id",
+    "inputs": {}
+  }
+}

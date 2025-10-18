@@ -1,0 +1,21 @@
+{
+  "id": "agentAsTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "agentAsTool_0",
+    "name": "agentAsTool",
+    "label": "Agent as Tool",
+    "version": 1,
+    "type": "AgentAsTool",
+    "category": "Tools",
+    "baseClasses": [
+      "AgentAsTool"
+    ],
+    "credential": "agentflowApi_credential_id",
+    "inputs": {}
+  }
+}

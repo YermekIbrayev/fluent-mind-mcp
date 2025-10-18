@@ -1,0 +1,21 @@
+{
+  "id": "chatCerebras_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatCerebras_0",
+    "name": "chatCerebras",
+    "label": "ChatCerebras",
+    "version": 2,
+    "type": "ChatCerebras",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatCerebras"
+    ],
+    "credential": "cerebrasAIApi_credential_id",
+    "inputs": {}
+  }
+}

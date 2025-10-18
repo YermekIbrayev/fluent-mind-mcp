@@ -1,0 +1,20 @@
+{
+  "id": "playwrightWebScraper_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "playwrightWebScraper_0",
+    "name": "playwrightWebScraper",
+    "label": "Playwright Web Scraper",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

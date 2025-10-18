@@ -1,0 +1,21 @@
+{
+  "id": "unstructuredFolderLoader_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "unstructuredFolderLoader_0",
+    "name": "unstructuredFolderLoader",
+    "label": "Unstructured Folder Loader",
+    "version": 3,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "credential": "unstructuredApi_credential_id",
+    "inputs": {}
+  }
+}

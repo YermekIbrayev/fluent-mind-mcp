@@ -1,0 +1,20 @@
+{
+  "id": "folderFiles_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "folderFiles_0",
+    "name": "folderFiles",
+    "label": "Folder with Files",
+    "version": 4,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "{nodeName}_{index}",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "{nodeName}_{index}",
+    "name": "{nodeName}",
+    "label": "{NodeLabel}",
+    "version": 1.0,
+    "type": "{NodeType}",
+    "category": "{Category}",
+    "baseClasses": ["{NodeType}", "{BaseClass1}", "{BaseClass2}"],
+    "inputs": {
+      "_comment": "Place input parameter values here",
+      "paramName1": "value1",
+      "paramName2": "value2"
+    },
+    "inputParams": [
+      {
+        "label": "{Parameter Display Name}",
+        "name": "{parameterName}",
+        "type": "{string|number|boolean|options|json}",
+        "optional": true,
+        "default": "{defaultValue}"
+      }
+    ],
+    "inputAnchors": [
+      {
+        "label": "{Connection Display Name}",
+        "name": "{connectionName}",
+        "type": "{NodeTypeToConnect}",
+        "id": "{nodeId}-input-{connectionName}-{NodeTypeToConnect}"
+      }
+    ],
+    "outputAnchors": [
+      {
+        "id": "{nodeId}-output-{outputName}-{TypeChain}",
+        "name": "{outputName}",
+        "label": "{Output Display Name}",
+        "type": "{TypeChain}"
+      }
+    ]
+  }
+}

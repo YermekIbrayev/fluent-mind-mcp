@@ -1,0 +1,20 @@
+{
+  "id": "humanInputAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "humanInputAgentflow_0",
+    "name": "humanInputAgentflow",
+    "label": "Human Input",
+    "version": 1,
+    "type": "HumanInput",
+    "category": "Agentflow",
+    "baseClasses": [
+      "HumanInput"
+    ],
+    "inputs": {}
+  }
+}

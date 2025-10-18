@@ -1,0 +1,21 @@
+{
+  "id": "chatOpenAI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatOpenAI_0",
+    "name": "chatOpenAI",
+    "label": "ChatOpenAI",
+    "version": 8.3,
+    "type": "ChatOpenAI",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatOpenAI"
+    ],
+    "credential": "openAIApi_credential_id",
+    "inputs": {}
+  }
+}

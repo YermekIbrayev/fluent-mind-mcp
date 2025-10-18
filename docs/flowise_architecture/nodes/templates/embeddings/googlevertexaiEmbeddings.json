@@ -1,0 +1,21 @@
+{
+  "id": "googlevertexaiEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googlevertexaiEmbeddings_0",
+    "name": "googlevertexaiEmbeddings",
+    "label": "GoogleVertexAI Embeddings",
+    "version": 2.1,
+    "type": "GoogleVertexAIEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "GoogleVertexAIEmbeddings"
+    ],
+    "credential": "googleVertexAuth_credential_id",
+    "inputs": {}
+  }
+}

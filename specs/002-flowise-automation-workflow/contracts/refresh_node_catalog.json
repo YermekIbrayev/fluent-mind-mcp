@@ -1,0 +1,27 @@
+{
+  "tool": "refresh_node_catalog",
+  "description": "Manually refresh node catalog from Flowise server. Auto-called by build_flow if cache stale (>24h). Updates vector DB with latest nodes.",
+  "user_story": "User Story 6 - Dynamic Node Catalog Refresh",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "force": {"type": "boolean", "description": "Force refresh even if cache fresh", "default": false}
+    }
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "status": {"type": "string", "enum": ["success", "no_changes", "fallback"]},
+      "nodes_added": {"type": "integer"},
+      "nodes_updated": {"type": "integer"},
+      "nodes_deprecated": {"type": "integer"},
+      "total_nodes": {"type": "integer"},
+      "duration_seconds": {"type": "number"}
+    }
+  },
+  "errors": [
+    {"code": "FLOWISE_UNREACHABLE", "message": "Flowise unreachable. Using cached catalog.", "tokens": 40},
+    {"code": "CIRCUIT_OPEN", "message": "Flowise circuit open. Using cached catalog.", "tokens": 40}
+  ],
+  "performance": {"target": "10s", "max": "30s", "token_budget": 50}
+}

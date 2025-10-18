@@ -1,0 +1,20 @@
+{
+  "id": "microsoftPowerpoint_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "microsoftPowerpoint_0",
+    "name": "microsoftPowerpoint",
+    "label": "Microsoft PowerPoint",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "conditionAgentAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "conditionAgentAgentflow_0",
+    "name": "conditionAgentAgentflow",
+    "label": "Condition Agent",
+    "version": 1.1,
+    "type": "ConditionAgent",
+    "category": "Agentflow",
+    "baseClasses": [
+      "ConditionAgent"
+    ],
+    "inputs": {}
+  }
+}

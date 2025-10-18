@@ -1,0 +1,20 @@
+{
+  "id": "csvFile_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "csvFile_0",
+    "name": "csvFile",
+    "label": "Csv File",
+    "version": 3,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "plainText_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "plainText_0",
+    "name": "plainText",
+    "label": "Plain Text",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

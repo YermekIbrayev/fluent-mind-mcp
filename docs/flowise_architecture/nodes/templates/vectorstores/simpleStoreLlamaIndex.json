@@ -1,0 +1,20 @@
+{
+  "id": "simpleStoreLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "simpleStoreLlamaIndex_0",
+    "name": "simpleStoreLlamaIndex",
+    "label": "SimpleStore",
+    "version": 1,
+    "type": "SimpleVectorStore",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "SimpleVectorStore"
+    ],
+    "inputs": {}
+  }
+}

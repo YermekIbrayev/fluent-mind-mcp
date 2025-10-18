@@ -1,0 +1,20 @@
+{
+  "id": "tokenTextSplitter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "tokenTextSplitter_0",
+    "name": "tokenTextSplitter",
+    "label": "Token Text Splitter",
+    "version": 1,
+    "type": "TokenTextSplitter",
+    "category": "Textsplitters",
+    "baseClasses": [
+      "TokenTextSplitter"
+    ],
+    "inputs": {}
+  }
+}

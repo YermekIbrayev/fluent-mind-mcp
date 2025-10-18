@@ -1,0 +1,20 @@
+{
+  "id": "directReplyAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "directReplyAgentflow_0",
+    "name": "directReplyAgentflow",
+    "label": "Direct Reply",
+    "version": 1,
+    "type": "DirectReply",
+    "category": "Agentflow",
+    "baseClasses": [
+      "DirectReply"
+    ],
+    "inputs": {}
+  }
+}

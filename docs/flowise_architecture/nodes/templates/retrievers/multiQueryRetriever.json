@@ -1,0 +1,20 @@
+{
+  "id": "multiQueryRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "multiQueryRetriever_0",
+    "name": "multiQueryRetriever",
+    "label": "Multi Query Retriever",
+    "version": 1,
+    "type": "MultiQueryRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "MultiQueryRetriever"
+    ],
+    "inputs": {}
+  }
+}

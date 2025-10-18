@@ -1,0 +1,20 @@
+{
+  "id": "microsoftWord_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "microsoftWord_0",
+    "name": "microsoftWord",
+    "label": "Microsoft Word",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

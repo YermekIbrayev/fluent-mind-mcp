@@ -1,0 +1,20 @@
+{
+  "id": "currentDateTime_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "currentDateTime_0",
+    "name": "currentDateTime",
+    "label": "CurrentDateTime",
+    "version": 1,
+    "type": "CurrentDateTime",
+    "category": "Tools",
+    "baseClasses": [
+      "CurrentDateTime"
+    ],
+    "inputs": {}
+  }
+}

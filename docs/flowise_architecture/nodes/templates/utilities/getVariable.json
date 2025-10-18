@@ -1,0 +1,20 @@
+{
+  "id": "getVariable_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "getVariable_0",
+    "name": "getVariable",
+    "label": "Get Variable",
+    "version": 2,
+    "type": "GetVariable",
+    "category": "Utilities",
+    "baseClasses": [
+      "GetVariable"
+    ],
+    "inputs": {}
+  }
+}

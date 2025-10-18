@@ -1,0 +1,20 @@
+{
+  "id": "customFunction_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "customFunction_0",
+    "name": "customFunction",
+    "label": "Custom JS Function",
+    "version": 3,
+    "type": "CustomFunction",
+    "category": "Utilities",
+    "baseClasses": [
+      "CustomFunction"
+    ],
+    "inputs": {}
+  }
+}

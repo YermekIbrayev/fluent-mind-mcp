@@ -1,0 +1,20 @@
+{
+  "id": "seqStart_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqStart_0",
+    "name": "seqStart",
+    "label": "Start",
+    "version": 2,
+    "type": "Start",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "Start"
+    ],
+    "inputs": {}
+  }
+}

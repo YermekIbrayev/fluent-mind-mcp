@@ -1,0 +1,21 @@
+{
+  "id": "confluence_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "confluence_0",
+    "name": "confluence",
+    "label": "Confluence",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "credential": "confluenceCloudApi_credential_id",
+    "inputs": {}
+  }
+}

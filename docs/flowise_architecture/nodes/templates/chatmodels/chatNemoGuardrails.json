@@ -1,0 +1,20 @@
+{
+  "id": "chatNemoGuardrails_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatNemoGuardrails_0",
+    "name": "chatNemoGuardrails",
+    "label": "Chat Nemo Guardrails",
+    "version": 1,
+    "type": "ChatNemoGuardrails",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatNemoGuardrails"
+    ],
+    "inputs": {}
+  }
+}

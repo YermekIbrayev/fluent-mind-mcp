@@ -1,0 +1,21 @@
+{
+  "id": "mistralAIEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "mistralAIEmbeddings_0",
+    "name": "mistralAIEmbeddings",
+    "label": "MistralAI Embeddings",
+    "version": 2,
+    "type": "MistralAIEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "MistralAIEmbeddings"
+    ],
+    "credential": "mistralAIApi_credential_id",
+    "inputs": {}
+  }
+}

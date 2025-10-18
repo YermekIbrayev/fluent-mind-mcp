@@ -1,0 +1,20 @@
+{
+  "id": "seqCustomFunction_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqCustomFunction_0",
+    "name": "seqCustomFunction",
+    "label": "Custom JS Function",
+    "version": 1,
+    "type": "CustomFunction",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "CustomFunction"
+    ],
+    "inputs": {}
+  }
+}

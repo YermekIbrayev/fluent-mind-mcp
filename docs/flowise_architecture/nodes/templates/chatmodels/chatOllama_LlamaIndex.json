@@ -1,0 +1,20 @@
+{
+  "id": "chatOllama_LlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatOllama_LlamaIndex_0",
+    "name": "chatOllama_LlamaIndex",
+    "label": "ChatOllama",
+    "version": 1,
+    "type": "ChatOllama",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatOllama"
+    ],
+    "inputs": {}
+  }
+}

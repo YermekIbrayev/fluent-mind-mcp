@@ -1,0 +1,47 @@
+{
+  "tool": "search_nodes",
+  "description": "Search vector DB for Flowise nodes using natural language. Returns compact summaries (<50 tokens/result) ranked by similarity.",
+  "user_story": "User Story 1 - Vector Search for Node Selection",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Natural language description (e.g., 'chat with memory', 'document search')",
+        "minLength": 3,
+        "maxLength": 100
+      },
+      "max_results": {"type": "integer", "default": 5, "minimum": 1, "maximum": 10},
+      "similarity_threshold": {"type": "number", "default": 0.7, "minimum": 0.0, "maximum": 1.0},
+      "category": {
+        "type": "string",
+        "enum": ["Chat Models", "Memory", "Tools", "Vector Stores", "Chains", "Agents"]
+      }
+    },
+    "required": ["query"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "node_name": {"type": "string"},
+            "label": {"type": "string"},
+            "description": {"type": "string"},
+            "category": {"type": "string"},
+            "base_classes": {"type": "array", "items": {"type": "string"}},
+            "relevance_score": {"type": "number"}
+          }
+        }
+      }
+    }
+  },
+  "errors": [
+    {"code": "NO_RESULTS", "message": "No nodes match. Try broader terms.", "tokens": 30},
+    {"code": "VECTOR_DB_ERROR", "message": "Vector DB unavailable. Retry.", "tokens": 30}
+  ],
+  "performance": {"target": "500ms", "max": "2s", "token_budget": 300}
+}

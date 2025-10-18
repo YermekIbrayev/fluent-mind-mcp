@@ -1,0 +1,20 @@
+{
+  "id": "jsonlinesFile_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "jsonlinesFile_0",
+    "name": "jsonlinesFile",
+    "label": "Json Lines File",
+    "version": 3,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

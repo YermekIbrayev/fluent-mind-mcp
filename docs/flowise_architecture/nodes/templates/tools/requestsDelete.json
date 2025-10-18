@@ -1,0 +1,20 @@
+{
+  "id": "requestsDelete_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "requestsDelete_0",
+    "name": "requestsDelete",
+    "label": "Requests Delete",
+    "version": 1,
+    "type": "RequestsDelete",
+    "category": "Tools",
+    "baseClasses": [
+      "RequestsDelete"
+    ],
+    "inputs": {}
+  }
+}

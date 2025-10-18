@@ -1,0 +1,21 @@
+{
+  "id": "singlestore_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "singlestore_0",
+    "name": "singlestore",
+    "label": "SingleStore",
+    "version": 1,
+    "type": "SingleStore",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "SingleStore"
+    ],
+    "credential": "singleStoreApi_credential_id",
+    "inputs": {}
+  }
+}

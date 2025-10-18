@@ -1,0 +1,20 @@
+{
+  "id": "seqLoop_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqLoop_0",
+    "name": "seqLoop",
+    "label": "Loop",
+    "version": 2.1,
+    "type": "Loop",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "Loop"
+    ],
+    "inputs": {}
+  }
+}

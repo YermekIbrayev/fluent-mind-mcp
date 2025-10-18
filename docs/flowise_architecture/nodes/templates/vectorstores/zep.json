@@ -1,0 +1,21 @@
+{
+  "id": "zep_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "zep_0",
+    "name": "zep",
+    "label": "Zep Collection - Open Source",
+    "version": 2,
+    "type": "Zep",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Zep"
+    ],
+    "credential": "zepMemoryApi_credential_id",
+    "inputs": {}
+  }
+}

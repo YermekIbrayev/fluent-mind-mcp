@@ -1,0 +1,21 @@
+{
+  "id": "googleCustomSearch_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googleCustomSearch_0",
+    "name": "googleCustomSearch",
+    "label": "Google Custom Search",
+    "version": 1,
+    "type": "GoogleCustomSearchAPI",
+    "category": "Tools",
+    "baseClasses": [
+      "GoogleCustomSearchAPI"
+    ],
+    "credential": "googleCustomSearchApi_credential_id",
+    "inputs": {}
+  }
+}

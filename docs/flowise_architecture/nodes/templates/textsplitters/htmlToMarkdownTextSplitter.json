@@ -1,0 +1,20 @@
+{
+  "id": "htmlToMarkdownTextSplitter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "htmlToMarkdownTextSplitter_0",
+    "name": "htmlToMarkdownTextSplitter",
+    "label": "HtmlToMarkdown Text Splitter",
+    "version": 1,
+    "type": "HtmlToMarkdownTextSplitter",
+    "category": "Textsplitters",
+    "baseClasses": [
+      "HtmlToMarkdownTextSplitter"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "fileLoader_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "fileLoader_0",
+    "name": "fileLoader",
+    "label": "File Loader",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

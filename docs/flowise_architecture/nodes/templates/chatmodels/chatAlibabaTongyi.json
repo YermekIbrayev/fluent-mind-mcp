@@ -1,0 +1,21 @@
+{
+  "id": "chatAlibabaTongyi_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatAlibabaTongyi_0",
+    "name": "chatAlibabaTongyi",
+    "label": "ChatAlibabaTongyi",
+    "version": 2,
+    "type": "ChatAlibabaTongyi",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatAlibabaTongyi"
+    ],
+    "credential": "AlibabaApi_credential_id",
+    "inputs": {}
+  }
+}

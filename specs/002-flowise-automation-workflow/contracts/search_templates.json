@@ -1,0 +1,42 @@
+{
+  "tool": "search_templates",
+  "description": "Search vector DB for chatflow templates. Returns metadata only (not full flowData) for token efficiency.",
+  "user_story": "User Story 2 - Flow Template Retrieval",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Natural language (e.g., 'customer support with knowledge base', 'RAG chatbot')",
+        "minLength": 3,
+        "maxLength": 100
+      },
+      "max_results": {"type": "integer", "default": 3, "minimum": 1, "maximum": 5},
+      "similarity_threshold": {"type": "number", "default": 0.7, "minimum": 0.0, "maximum": 1.0}
+    },
+    "required": ["query"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "template_id": {"type": "string"},
+            "name": {"type": "string"},
+            "description": {"type": "string"},
+            "required_nodes": {"type": "array", "items": {"type": "string"}},
+            "customizable_params": {"type": "array", "items": {"type": "string"}},
+            "relevance_score": {"type": "number"}
+          }
+        }
+      }
+    }
+  },
+  "errors": [
+    {"code": "NO_TEMPLATES", "message": "No templates match. Use build_flow with nodes.", "tokens": 30}
+  ],
+  "performance": {"target": "500ms", "max": "2s", "token_budget": 200}
+}

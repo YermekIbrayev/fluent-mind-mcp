@@ -1,0 +1,20 @@
+{
+  "id": "seqState_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqState_0",
+    "name": "seqState",
+    "label": "State",
+    "version": 2,
+    "type": "State",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "State"
+    ],
+    "inputs": {}
+  }
+}

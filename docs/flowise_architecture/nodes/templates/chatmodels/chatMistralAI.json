@@ -1,0 +1,21 @@
+{
+  "id": "chatMistralAI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatMistralAI_0",
+    "name": "chatMistralAI",
+    "label": "ChatMistralAI",
+    "version": 4,
+    "type": "ChatMistralAI",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatMistralAI"
+    ],
+    "credential": "mistralAIApi_credential_id",
+    "inputs": {}
+  }
+}

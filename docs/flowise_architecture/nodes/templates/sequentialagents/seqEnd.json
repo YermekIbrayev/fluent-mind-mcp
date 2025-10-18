@@ -1,0 +1,20 @@
+{
+  "id": "seqEnd_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqEnd_0",
+    "name": "seqEnd",
+    "label": "End",
+    "version": 2.1,
+    "type": "End",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "End"
+    ],
+    "inputs": {}
+  }
+}

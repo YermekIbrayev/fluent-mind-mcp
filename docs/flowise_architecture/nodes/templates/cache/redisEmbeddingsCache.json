@@ -1,0 +1,21 @@
+{
+  "id": "redisEmbeddingsCache_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "redisEmbeddingsCache_0",
+    "name": "redisEmbeddingsCache",
+    "label": "Redis Embeddings Cache",
+    "version": 1,
+    "type": "RedisEmbeddingsCache",
+    "category": "Cache",
+    "baseClasses": [
+      "RedisEmbeddingsCache"
+    ],
+    "credential": "redisCacheApi_credential_id",
+    "inputs": {}
+  }
+}
