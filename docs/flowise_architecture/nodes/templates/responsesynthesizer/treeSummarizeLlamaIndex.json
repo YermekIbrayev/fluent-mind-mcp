@@ -1,0 +1,20 @@
+{
+  "id": "treeSummarizeLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "treeSummarizeLlamaIndex_0",
+    "name": "treeSummarizeLlamaIndex",
+    "label": "TreeSummarize",
+    "version": 1,
+    "type": "TreeSummarize",
+    "category": "Responsesynthesizer",
+    "baseClasses": [
+      "TreeSummarize"
+    ],
+    "inputs": {}
+  }
+}

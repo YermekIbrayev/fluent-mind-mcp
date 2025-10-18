@@ -1,0 +1,21 @@
+{
+  "id": "composio_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "composio_0",
+    "name": "composio",
+    "label": "Composio",
+    "version": 2,
+    "type": "Composio",
+    "category": "Tools",
+    "baseClasses": [
+      "Composio"
+    ],
+    "credential": "composioApi_credential_id",
+    "inputs": {}
+  }
+}

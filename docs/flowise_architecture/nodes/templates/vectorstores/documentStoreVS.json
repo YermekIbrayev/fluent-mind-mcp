@@ -1,0 +1,20 @@
+{
+  "id": "documentStoreVS_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "documentStoreVS_0",
+    "name": "documentStoreVS",
+    "label": "Document Store (Vector)",
+    "version": 1,
+    "type": "DocumentStoreVS",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "DocumentStoreVS"
+    ],
+    "inputs": {}
+  }
+}

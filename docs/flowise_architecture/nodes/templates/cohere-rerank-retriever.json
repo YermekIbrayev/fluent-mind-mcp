@@ -1,0 +1,24 @@
+{
+  "id": "cohereRerankRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 400,
+    "y": 300
+  },
+  "data": {
+    "id": "cohereRerankRetriever_0",
+    "name": "cohereRerankRetriever",
+    "label": "Cohere Rerank Retriever",
+    "version": 1.0,
+    "type": "Cohere Rerank Retriever",
+    "category": "Retrievers",
+    "baseClasses": ["Cohere Rerank Retriever", "BaseRetriever"],
+    "credential": "cohereApi_credential_id",
+    "inputs": {
+      "baseRetriever": "{{vectorStoreRetriever_0.data.instance}}",
+      "model": "rerank-v3.5",
+      "query": "",
+      "topK": 4
+    }
+  }
+}

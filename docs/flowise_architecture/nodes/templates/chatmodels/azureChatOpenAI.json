@@ -1,0 +1,21 @@
+{
+  "id": "azureChatOpenAI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "azureChatOpenAI_0",
+    "name": "azureChatOpenAI",
+    "label": "Azure ChatOpenAI",
+    "version": 7.1,
+    "type": "AzureChatOpenAI",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "AzureChatOpenAI"
+    ],
+    "credential": "azureOpenAIApi_credential_id",
+    "inputs": {}
+  }
+}

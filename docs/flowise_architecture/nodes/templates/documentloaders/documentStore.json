@@ -1,0 +1,20 @@
+{
+  "id": "documentStore_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "documentStore_0",
+    "name": "documentStore",
+    "label": "Document Store",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

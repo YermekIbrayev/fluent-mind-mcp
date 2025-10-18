@@ -1,0 +1,20 @@
+{
+  "id": "customFunctionAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "customFunctionAgentflow_0",
+    "name": "customFunctionAgentflow",
+    "label": "Custom Function",
+    "version": 1,
+    "type": "CustomFunction",
+    "category": "Agentflow",
+    "baseClasses": [
+      "CustomFunction"
+    ],
+    "inputs": {}
+  }
+}

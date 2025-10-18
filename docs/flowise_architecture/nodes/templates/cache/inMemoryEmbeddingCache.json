@@ -1,0 +1,20 @@
+{
+  "id": "inMemoryEmbeddingCache_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "inMemoryEmbeddingCache_0",
+    "name": "inMemoryEmbeddingCache",
+    "label": "InMemory Embedding Cache",
+    "version": 1,
+    "type": "InMemoryEmbeddingCache",
+    "category": "Cache",
+    "baseClasses": [
+      "InMemoryEmbeddingCache"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "tool": "get_system_health",
+  "description": "Check chatflow automation system health. Reports vector DB, embedding model, Flowise API, and circuit breaker states.",
+  "user_story": "Testing Infrastructure (FR-115)",
+  "parameters": {"type": "object", "properties": {}},
+  "returns": {
+    "type": "object",
+    "properties": {
+      "overall_status": {"type": "string", "enum": ["healthy", "degraded", "unhealthy"]},
+      "components": {
+        "type": "object",
+        "properties": {
+          "vector_db": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["ok", "error"]},
+              "collections": {"type": "integer"},
+              "total_entries": {"type": "integer"}
+            }
+          },
+          "embedding_model": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["ok", "error"]},
+              "model_name": {"type": "string"}
+            }
+          },
+          "flowise_api": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["ok", "error"]},
+              "circuit_breaker": {"type": "string", "enum": ["CLOSED", "OPEN", "HALF_OPEN"]},
+              "consecutive_failures": {"type": "integer"}
+            }
+          },
+          "node_catalog": {
+            "type": "object",
+            "properties": {
+              "status": {"type": "string", "enum": ["fresh", "stale"]},
+              "age_hours": {"type": "number"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "performance": {"target": "1s", "max": "3s", "token_budget": 100}
+}

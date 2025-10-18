@@ -1,0 +1,20 @@
+{
+  "id": "retrieverTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "retrieverTool_0",
+    "name": "retrieverTool",
+    "label": "Retriever Tool",
+    "version": 3,
+    "type": "RetrieverTool",
+    "category": "Tools",
+    "baseClasses": [
+      "RetrieverTool"
+    ],
+    "inputs": {}
+  }
+}

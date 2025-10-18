@@ -1,0 +1,20 @@
+{
+  "id": "SQLiteRecordManager_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "SQLiteRecordManager_0",
+    "name": "SQLiteRecordManager",
+    "label": "SQLite Record Manager",
+    "version": 1.1,
+    "type": "SQLite RecordManager",
+    "category": "Recordmanager",
+    "baseClasses": [
+      "SQLite RecordManager"
+    ],
+    "inputs": {}
+  }
+}

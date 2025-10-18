@@ -1,0 +1,20 @@
+{
+  "id": "seqToolNode_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqToolNode_0",
+    "name": "seqToolNode",
+    "label": "Tool Node",
+    "version": 2.1,
+    "type": "ToolNode",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "ToolNode"
+    ],
+    "inputs": {}
+  }
+}

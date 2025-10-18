@@ -1,0 +1,21 @@
+{
+  "id": "openAIEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "openAIEmbeddings_0",
+    "name": "openAIEmbeddings",
+    "label": "OpenAI Embeddings",
+    "version": 4,
+    "type": "OpenAIEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "OpenAIEmbeddings"
+    ],
+    "credential": "openAIApi_credential_id",
+    "inputs": {}
+  }
+}

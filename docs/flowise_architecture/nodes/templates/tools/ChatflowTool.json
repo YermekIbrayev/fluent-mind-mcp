@@ -1,0 +1,21 @@
+{
+  "id": "ChatflowTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "ChatflowTool_0",
+    "name": "ChatflowTool",
+    "label": "Chatflow Tool",
+    "version": 5.1,
+    "type": "ChatflowTool",
+    "category": "Tools",
+    "baseClasses": [
+      "ChatflowTool"
+    ],
+    "credential": "chatflowApi_credential_id",
+    "inputs": {}
+  }
+}

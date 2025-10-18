@@ -1,0 +1,20 @@
+{
+  "id": "extractMetadataRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "extractMetadataRetriever_0",
+    "name": "extractMetadataRetriever",
+    "label": "Extract Metadata Retriever",
+    "version": 1,
+    "type": "ExtractMetadataRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "ExtractMetadataRetriever"
+    ],
+    "inputs": {}
+  }
+}

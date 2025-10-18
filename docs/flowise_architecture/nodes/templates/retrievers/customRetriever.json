@@ -1,0 +1,20 @@
+{
+  "id": "customRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "customRetriever_0",
+    "name": "customRetriever",
+    "label": "Custom Retriever",
+    "version": 1,
+    "type": "CustomRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "CustomRetriever"
+    ],
+    "inputs": {}
+  }
+}

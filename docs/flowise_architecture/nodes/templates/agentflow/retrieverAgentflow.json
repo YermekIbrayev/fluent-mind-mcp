@@ -1,0 +1,20 @@
+{
+  "id": "retrieverAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "retrieverAgentflow_0",
+    "name": "retrieverAgentflow",
+    "label": "Retriever",
+    "version": 1,
+    "type": "Retriever",
+    "category": "Agentflow",
+    "baseClasses": [
+      "Retriever"
+    ],
+    "inputs": {}
+  }
+}

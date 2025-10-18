@@ -1,0 +1,21 @@
+{
+  "id": "chatGoogleGenerativeAI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatGoogleGenerativeAI_0",
+    "name": "chatGoogleGenerativeAI",
+    "label": "ChatGoogleGenerativeAI",
+    "version": 3.1,
+    "type": "ChatGoogleGenerativeAI",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatGoogleGenerativeAI"
+    ],
+    "credential": "googleGenerativeAI_credential_id",
+    "inputs": {}
+  }
+}

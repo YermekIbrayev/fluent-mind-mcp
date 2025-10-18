@@ -1,0 +1,20 @@
+{
+  "id": "ifElseFunction_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "ifElseFunction_0",
+    "name": "ifElseFunction",
+    "label": "IfElse Function",
+    "version": 2,
+    "type": "IfElseFunction",
+    "category": "Utilities",
+    "baseClasses": [
+      "IfElseFunction"
+    ],
+    "inputs": {}
+  }
+}

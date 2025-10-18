@@ -1,0 +1,20 @@
+{
+  "id": "RRFRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "RRFRetriever_0",
+    "name": "RRFRetriever",
+    "label": "Reciprocal Rank Fusion Retriever",
+    "version": 1,
+    "type": "RRFRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "RRFRetriever"
+    ],
+    "inputs": {}
+  }
+}

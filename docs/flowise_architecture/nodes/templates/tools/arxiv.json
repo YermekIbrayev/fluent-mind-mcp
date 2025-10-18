@@ -1,0 +1,20 @@
+{
+  "id": "arxiv_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "arxiv_0",
+    "name": "arxiv",
+    "label": "Arxiv",
+    "version": 1,
+    "type": "Arxiv",
+    "category": "Tools",
+    "baseClasses": [
+      "Arxiv"
+    ],
+    "inputs": {}
+  }
+}

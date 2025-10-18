@@ -1,0 +1,20 @@
+{
+  "id": "stickyNote_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "stickyNote_0",
+    "name": "stickyNote",
+    "label": "Sticky Note",
+    "version": 2,
+    "type": "StickyNote",
+    "category": "Utilities",
+    "baseClasses": [
+      "StickyNote"
+    ],
+    "inputs": {}
+  }
+}

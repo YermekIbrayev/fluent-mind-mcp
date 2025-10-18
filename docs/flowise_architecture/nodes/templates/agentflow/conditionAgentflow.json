@@ -1,0 +1,20 @@
+{
+  "id": "conditionAgentflow_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "conditionAgentflow_0",
+    "name": "conditionAgentflow",
+    "label": "Condition",
+    "version": 1,
+    "type": "Condition",
+    "category": "Agentflow",
+    "baseClasses": [
+      "Condition"
+    ],
+    "inputs": {}
+  }
+}

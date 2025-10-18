@@ -1,0 +1,20 @@
+{
+  "id": "babyAGI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "babyAGI_0",
+    "name": "babyAGI",
+    "label": "BabyAGI",
+    "version": 2,
+    "type": "BabyAGI",
+    "category": "Agents",
+    "baseClasses": [
+      "BabyAGI"
+    ],
+    "inputs": {}
+  }
+}

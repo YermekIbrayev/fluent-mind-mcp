@@ -1,0 +1,20 @@
+{
+  "id": "markdownTextSplitter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "markdownTextSplitter_0",
+    "name": "markdownTextSplitter",
+    "label": "Markdown Text Splitter",
+    "version": 1.1,
+    "type": "MarkdownTextSplitter",
+    "category": "Textsplitters",
+    "baseClasses": [
+      "MarkdownTextSplitter"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "seqLLMNode_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqLLMNode_0",
+    "name": "seqLLMNode",
+    "label": "LLM Node",
+    "version": 4.1,
+    "type": "LLMNode",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "LLMNode"
+    ],
+    "inputs": {}
+  }
+}

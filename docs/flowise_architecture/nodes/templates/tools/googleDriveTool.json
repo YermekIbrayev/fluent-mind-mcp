@@ -1,0 +1,21 @@
+{
+  "id": "googleDriveTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "googleDriveTool_0",
+    "name": "googleDriveTool",
+    "label": "Google Drive",
+    "version": 1,
+    "type": "GoogleDrive",
+    "category": "Tools",
+    "baseClasses": [
+      "GoogleDrive"
+    ],
+    "credential": "googleDriveOAuth2_credential_id",
+    "inputs": {}
+  }
+}

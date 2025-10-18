@@ -1,0 +1,20 @@
+{
+  "id": "memoryVectorStore_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "memoryVectorStore_0",
+    "name": "memoryVectorStore",
+    "label": "In-Memory Vector Store",
+    "version": 1,
+    "type": "Memory",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Memory"
+    ],
+    "inputs": {}
+  }
+}

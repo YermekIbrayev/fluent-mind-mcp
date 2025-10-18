@@ -1,0 +1,20 @@
+{
+  "id": "codeTextSplitter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "codeTextSplitter_0",
+    "name": "codeTextSplitter",
+    "label": "Code Text Splitter",
+    "version": 1,
+    "type": "CodeTextSplitter",
+    "category": "Textsplitters",
+    "baseClasses": [
+      "CodeTextSplitter"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "csvOutputParser_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "csvOutputParser_0",
+    "name": "csvOutputParser",
+    "label": "CSV Output Parser",
+    "version": 1,
+    "type": "CSVListOutputParser",
+    "category": "Outputparsers",
+    "baseClasses": [
+      "CSVListOutputParser"
+    ],
+    "inputs": {}
+  }
+}

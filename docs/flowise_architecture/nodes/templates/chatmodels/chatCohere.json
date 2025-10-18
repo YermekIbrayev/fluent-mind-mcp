@@ -1,0 +1,21 @@
+{
+  "id": "chatCohere_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatCohere_0",
+    "name": "chatCohere",
+    "label": "ChatCohere",
+    "version": 2,
+    "type": "ChatCohere",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatCohere"
+    ],
+    "credential": "cohereApi_credential_id",
+    "inputs": {}
+  }
+}

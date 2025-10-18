@@ -1,0 +1,21 @@
+{
+  "id": "pineconeLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "pineconeLlamaIndex_0",
+    "name": "pineconeLlamaIndex",
+    "label": "Pinecone",
+    "version": 1,
+    "type": "Pinecone",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Pinecone"
+    ],
+    "credential": "pineconeApi_credential_id",
+    "inputs": {}
+  }
+}

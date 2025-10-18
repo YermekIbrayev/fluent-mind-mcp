@@ -1,0 +1,20 @@
+{
+  "id": "simpleResponseBuilderLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "simpleResponseBuilderLlamaIndex_0",
+    "name": "simpleResponseBuilderLlamaIndex",
+    "label": "Simple Response Builder",
+    "version": 1,
+    "type": "SimpleResponseBuilder",
+    "category": "Responsesynthesizer",
+    "baseClasses": [
+      "SimpleResponseBuilder"
+    ],
+    "inputs": {}
+  }
+}

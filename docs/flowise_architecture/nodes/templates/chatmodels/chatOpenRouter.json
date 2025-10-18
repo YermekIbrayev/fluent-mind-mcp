@@ -1,0 +1,21 @@
+{
+  "id": "chatOpenRouter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatOpenRouter_0",
+    "name": "chatOpenRouter",
+    "label": "ChatOpenRouter",
+    "version": 1,
+    "type": "ChatOpenRouter",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatOpenRouter"
+    ],
+    "credential": "openRouterApi_credential_id",
+    "inputs": {}
+  }
+}

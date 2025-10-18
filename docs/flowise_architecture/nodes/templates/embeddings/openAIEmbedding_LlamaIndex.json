@@ -1,0 +1,21 @@
+{
+  "id": "openAIEmbedding_LlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "openAIEmbedding_LlamaIndex_0",
+    "name": "openAIEmbedding_LlamaIndex",
+    "label": "OpenAI Embedding",
+    "version": 2,
+    "type": "OpenAIEmbedding",
+    "category": "Embeddings",
+    "baseClasses": [
+      "OpenAIEmbedding"
+    ],
+    "credential": "openAIApi_credential_id",
+    "inputs": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "MongoDBAtlasChatMemory_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "MongoDBAtlasChatMemory_0",
+    "name": "MongoDBAtlasChatMemory",
+    "label": "MongoDB Atlas Chat Memory",
+    "version": 1,
+    "type": "MongoDBAtlasChatMemory",
+    "category": "Memory",
+    "baseClasses": [
+      "MongoDBAtlasChatMemory"
+    ],
+    "credential": "mongoDBUrlApi_credential_id",
+    "inputs": {}
+  }
+}

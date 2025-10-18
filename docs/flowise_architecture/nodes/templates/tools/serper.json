@@ -1,0 +1,21 @@
+{
+  "id": "serper_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "serper_0",
+    "name": "serper",
+    "label": "Serper",
+    "version": 1,
+    "type": "Serper",
+    "category": "Tools",
+    "baseClasses": [
+      "Serper"
+    ],
+    "credential": "serperApi_credential_id",
+    "inputs": {}
+  }
+}

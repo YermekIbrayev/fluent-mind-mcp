@@ -1,0 +1,20 @@
+{
+  "id": "HydeRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "HydeRetriever_0",
+    "name": "HydeRetriever",
+    "label": "HyDE Retriever",
+    "version": 3,
+    "type": "HydeRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "HydeRetriever"
+    ],
+    "inputs": {}
+  }
+}

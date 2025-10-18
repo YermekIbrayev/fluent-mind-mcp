@@ -1,0 +1,20 @@
+{
+  "id": "llmFilterRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "llmFilterRetriever_0",
+    "name": "llmFilterRetriever",
+    "label": "LLM Filter Retriever",
+    "version": 1,
+    "type": "LLMFilterRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "LLMFilterRetriever"
+    ],
+    "inputs": {}
+  }
+}

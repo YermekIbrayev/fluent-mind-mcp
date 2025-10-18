@@ -1,0 +1,20 @@
+{
+  "id": "calculator_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "calculator_0",
+    "name": "calculator",
+    "label": "Calculator",
+    "version": 1,
+    "type": "Calculator",
+    "category": "Tools",
+    "baseClasses": [
+      "Calculator"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "gitbook_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "gitbook_0",
+    "name": "gitbook",
+    "label": "GitBook",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

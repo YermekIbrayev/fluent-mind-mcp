@@ -1,0 +1,21 @@
+{
+  "id": "huggingFaceInferenceEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "huggingFaceInferenceEmbeddings_0",
+    "name": "huggingFaceInferenceEmbeddings",
+    "label": "HuggingFace Inference Embeddings",
+    "version": 1,
+    "type": "HuggingFaceInferenceEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "HuggingFaceInferenceEmbeddings"
+    ],
+    "credential": "huggingFaceApi_credential_id",
+    "inputs": {}
+  }
+}

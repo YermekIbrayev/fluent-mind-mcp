@@ -1,0 +1,21 @@
+{
+  "id": "chatDeepseek_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatDeepseek_0",
+    "name": "chatDeepseek",
+    "label": "ChatDeepseek",
+    "version": 1,
+    "type": "chatDeepseek",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "chatDeepseek"
+    ],
+    "credential": "deepseekApi_credential_id",
+    "inputs": {}
+  }
+}

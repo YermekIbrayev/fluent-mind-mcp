@@ -1,0 +1,20 @@
+{
+  "id": "setVariable_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "setVariable_0",
+    "name": "setVariable",
+    "label": "Set Variable",
+    "version": 2.1,
+    "type": "SetVariable",
+    "category": "Utilities",
+    "baseClasses": [
+      "SetVariable"
+    ],
+    "inputs": {}
+  }
+}

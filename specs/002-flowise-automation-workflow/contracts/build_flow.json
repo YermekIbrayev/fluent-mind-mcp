@@ -1,0 +1,42 @@
+{
+  "tool": "build_flow",
+  "description": "Create Flowise chatflow using template_id OR custom node list. Generates flowData internally, returns only chatflow_id (<30 tokens).",
+  "user_story": "User Story 3 - Compact build_flow Function",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "template_id": {"type": "string", "description": "Template from search_templates"},
+      "nodes": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Custom node list (e.g., ['chatOpenAI', 'bufferMemory'])",
+        "minItems": 1,
+        "maxItems": 10
+      },
+      "connections": {"type": "string", "enum": ["auto"], "default": "auto"},
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "model": {"type": "string"},
+          "temperature": {"type": "number", "minimum": 0.0, "maximum": 2.0},
+          "name": {"type": "string"}
+        }
+      }
+    },
+    "oneOf": [{"required": ["template_id"]}, {"required": ["nodes"]}]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "chatflow_id": {"type": "string"},
+      "name": {"type": "string"},
+      "status": {"type": "string", "enum": ["success"]}
+    }
+  },
+  "errors": [
+    {"code": "INVALID_TEMPLATE", "message": "Template not found. Use search_templates.", "tokens": 40},
+    {"code": "CONNECTION_FAILED", "message": "Cannot connect nodes. Check compatibility.", "tokens": 50},
+    {"code": "CIRCUIT_OPEN", "message": "Flowise circuit open. Retry in {time}s.", "tokens": 30}
+  ],
+  "performance": {"target": "5s", "max": "15s", "token_budget_success": 30}
+}

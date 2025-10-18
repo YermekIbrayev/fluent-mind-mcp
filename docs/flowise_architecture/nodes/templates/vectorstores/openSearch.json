@@ -1,0 +1,21 @@
+{
+  "id": "openSearch_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "openSearch_0",
+    "name": "openSearch",
+    "label": "OpenSearch",
+    "version": 3,
+    "type": "OpenSearch",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "OpenSearch"
+    ],
+    "credential": "openSearchUrl_credential_id",
+    "inputs": {}
+  }
+}

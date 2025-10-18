@@ -1,0 +1,21 @@
+{
+  "id": "searchAPI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "searchAPI_0",
+    "name": "searchAPI",
+    "label": "SearchApi",
+    "version": 1,
+    "type": "SearchAPI",
+    "category": "Tools",
+    "baseClasses": [
+      "SearchAPI"
+    ],
+    "credential": "searchApi_credential_id",
+    "inputs": {}
+  }
+}

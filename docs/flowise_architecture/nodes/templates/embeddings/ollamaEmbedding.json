@@ -1,0 +1,20 @@
+{
+  "id": "ollamaEmbedding_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "ollamaEmbedding_0",
+    "name": "ollamaEmbedding",
+    "label": "Ollama Embeddings",
+    "version": 1,
+    "type": "OllamaEmbeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "OllamaEmbeddings"
+    ],
+    "inputs": {}
+  }
+}

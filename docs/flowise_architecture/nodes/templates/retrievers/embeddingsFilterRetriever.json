@@ -1,0 +1,20 @@
+{
+  "id": "embeddingsFilterRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "embeddingsFilterRetriever_0",
+    "name": "embeddingsFilterRetriever",
+    "label": "Embeddings Filter Retriever",
+    "version": 1,
+    "type": "EmbeddingsFilterRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "EmbeddingsFilterRetriever"
+    ],
+    "inputs": {}
+  }
+}

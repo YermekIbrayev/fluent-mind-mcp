@@ -1,0 +1,23 @@
+{
+  "id": "tavilyAPI_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "tavilyAPI_0",
+    "name": "tavilyAPI",
+    "label": "Tavily API",
+    "version": 1.2,
+    "type": "TavilyAPI",
+    "category": "Tools",
+    "baseClasses": ["TavilyAPI", "Tool", "StructuredTool"],
+    "credential": "tavilyApi_credential_id",
+    "inputs": {
+      "topic": "general",
+      "searchDepth": "basic",
+      "maxResults": 5
+    }
+  }
+}

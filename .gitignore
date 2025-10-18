@@ -79,3 +79,9 @@ coverage.xml
 # Distribution / packaging
 pip-log.txt
 pip-delete-this-directory.txt
+
+# ChromaDB / Vector Database
+chroma_db/
+*.chromadb
+*.db-shm
+*.db-wal

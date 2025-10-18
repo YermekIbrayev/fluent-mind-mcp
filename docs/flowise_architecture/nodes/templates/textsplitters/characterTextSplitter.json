@@ -1,0 +1,20 @@
+{
+  "id": "characterTextSplitter_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "characterTextSplitter_0",
+    "name": "characterTextSplitter",
+    "label": "Character Text Splitter",
+    "version": 1,
+    "type": "CharacterTextSplitter",
+    "category": "Textsplitters",
+    "baseClasses": [
+      "CharacterTextSplitter"
+    ],
+    "inputs": {}
+  }
+}

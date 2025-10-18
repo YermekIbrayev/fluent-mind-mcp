@@ -1,0 +1,21 @@
+{
+  "id": "localAIEmbeddings_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "localAIEmbeddings_0",
+    "name": "localAIEmbeddings",
+    "label": "LocalAI Embeddings",
+    "version": 1,
+    "type": "LocalAI Embeddings",
+    "category": "Embeddings",
+    "baseClasses": [
+      "LocalAI Embeddings"
+    ],
+    "credential": "localAIApi_credential_id",
+    "inputs": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "notionFolder_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "notionFolder_0",
+    "name": "notionFolder",
+    "label": "Notion Folder",
+    "version": 2,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

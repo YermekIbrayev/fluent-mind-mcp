@@ -1,0 +1,20 @@
+{
+  "id": "fewShotPromptTemplate_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "fewShotPromptTemplate_0",
+    "name": "fewShotPromptTemplate",
+    "label": "Few Shot Prompt Template",
+    "version": 1,
+    "type": "FewShotPromptTemplate",
+    "category": "Prompts",
+    "baseClasses": [
+      "FewShotPromptTemplate"
+    ],
+    "inputs": {}
+  }
+}

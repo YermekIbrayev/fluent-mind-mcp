@@ -1,0 +1,20 @@
+{
+  "id": "apiLoader_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "apiLoader_0",
+    "name": "apiLoader",
+    "label": "API Loader",
+    "version": 2.1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "elasticsearch_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "elasticsearch_0",
+    "name": "elasticsearch",
+    "label": "Elasticsearch",
+    "version": 2,
+    "type": "Elasticsearch",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Elasticsearch"
+    ],
+    "credential": "elasticsearchApi_credential_id",
+    "inputs": {}
+  }
+}

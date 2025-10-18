@@ -1,0 +1,20 @@
+{
+  "id": "epubFile_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "epubFile_0",
+    "name": "epubFile",
+    "label": "Epub File",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

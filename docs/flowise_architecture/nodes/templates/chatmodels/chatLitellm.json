@@ -1,0 +1,21 @@
+{
+  "id": "chatLitellm_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "chatLitellm_0",
+    "name": "chatLitellm",
+    "label": "ChatLitellm",
+    "version": 1,
+    "type": "ChatLitellm",
+    "category": "Chatmodels",
+    "baseClasses": [
+      "ChatLitellm"
+    ],
+    "credential": "litellmApi_credential_id",
+    "inputs": {}
+  }
+}

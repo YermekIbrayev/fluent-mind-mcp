@@ -1,0 +1,21 @@
+{
+  "id": "pinecone_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "pinecone_0",
+    "name": "pinecone",
+    "label": "Pinecone",
+    "version": 5,
+    "type": "Pinecone",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Pinecone"
+    ],
+    "credential": "pineconeApi_credential_id",
+    "inputs": {}
+  }
+}

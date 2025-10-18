@@ -1,0 +1,20 @@
+{
+  "id": "webScraperTool_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "webScraperTool_0",
+    "name": "webScraperTool",
+    "label": "Web Scraper Tool",
+    "version": 1.1,
+    "type": "Tool",
+    "category": "Tools",
+    "baseClasses": [
+      "Tool"
+    ],
+    "inputs": {}
+  }
+}

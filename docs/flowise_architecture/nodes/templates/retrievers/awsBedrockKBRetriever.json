@@ -1,0 +1,21 @@
+{
+  "id": "awsBedrockKBRetriever_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "awsBedrockKBRetriever_0",
+    "name": "awsBedrockKBRetriever",
+    "label": "AWS Bedrock Knowledge Base Retriever",
+    "version": 1,
+    "type": "AWSBedrockKBRetriever",
+    "category": "Retrievers",
+    "baseClasses": [
+      "AWSBedrockKBRetriever"
+    ],
+    "credential": "awsApi_credential_id",
+    "inputs": {}
+  }
+}

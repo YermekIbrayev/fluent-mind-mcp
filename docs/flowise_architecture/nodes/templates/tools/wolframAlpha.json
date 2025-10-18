@@ -1,0 +1,21 @@
+{
+  "id": "wolframAlpha_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "wolframAlpha_0",
+    "name": "wolframAlpha",
+    "label": "WolframAlpha",
+    "version": 1,
+    "type": "WolframAlpha",
+    "category": "Tools",
+    "baseClasses": [
+      "WolframAlpha"
+    ],
+    "credential": "wolframAlphaAppId_credential_id",
+    "inputs": {}
+  }
+}

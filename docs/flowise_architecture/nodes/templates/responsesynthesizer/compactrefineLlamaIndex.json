@@ -1,0 +1,20 @@
+{
+  "id": "compactrefineLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "compactrefineLlamaIndex_0",
+    "name": "compactrefineLlamaIndex",
+    "label": "Compact and Refine",
+    "version": 1,
+    "type": "CompactRefine",
+    "category": "Responsesynthesizer",
+    "baseClasses": [
+      "CompactRefine"
+    ],
+    "inputs": {}
+  }
+}

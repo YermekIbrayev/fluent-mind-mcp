@@ -1,0 +1,20 @@
+{
+  "id": "seqAgent_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "seqAgent_0",
+    "name": "seqAgent",
+    "label": "Agent",
+    "version": 4.1,
+    "type": "Agent",
+    "category": "Sequentialagents",
+    "baseClasses": [
+      "Agent"
+    ],
+    "inputs": {}
+  }
+}

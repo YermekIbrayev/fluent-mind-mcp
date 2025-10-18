@@ -1,0 +1,20 @@
+{
+  "id": "queryEngineToolLlamaIndex_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "queryEngineToolLlamaIndex_0",
+    "name": "queryEngineToolLlamaIndex",
+    "label": "QueryEngine Tool",
+    "version": 2,
+    "type": "QueryEngineTool",
+    "category": "Tools",
+    "baseClasses": [
+      "QueryEngineTool"
+    ],
+    "inputs": {}
+  }
+}

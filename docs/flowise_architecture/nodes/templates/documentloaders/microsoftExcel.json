@@ -1,0 +1,20 @@
+{
+  "id": "microsoftExcel_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "microsoftExcel_0",
+    "name": "microsoftExcel",
+    "label": "Microsoft Excel",
+    "version": 1,
+    "type": "Document",
+    "category": "Documentloaders",
+    "baseClasses": [
+      "Document"
+    ],
+    "inputs": {}
+  }
+}

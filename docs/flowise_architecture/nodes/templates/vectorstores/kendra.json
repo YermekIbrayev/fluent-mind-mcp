@@ -1,0 +1,21 @@
+{
+  "id": "kendra_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "kendra_0",
+    "name": "kendra",
+    "label": "AWS Kendra",
+    "version": 1,
+    "type": "Kendra",
+    "category": "Vectorstores",
+    "baseClasses": [
+      "Kendra"
+    ],
+    "credential": "awsApi_credential_id",
+    "inputs": {}
+  }
+}

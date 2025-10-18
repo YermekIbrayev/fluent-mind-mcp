@@ -1,0 +1,20 @@
+{
+  "id": "openAPIToolkit_0",
+  "type": "customNode",
+  "position": {
+    "x": 100,
+    "y": 200
+  },
+  "data": {
+    "id": "openAPIToolkit_0",
+    "name": "openAPIToolkit",
+    "label": "OpenAPI Toolkit",
+    "version": 2.1,
+    "type": "OpenAPIToolkit",
+    "category": "Tools",
+    "baseClasses": [
+      "OpenAPIToolkit"
+    ],
+    "inputs": {}
+  }
+}
