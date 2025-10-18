@@ -26,15 +26,17 @@ from fluent_mind_mcp.client.exceptions import (
     FlowiseClientError,
     NotFoundError,
     RateLimitError,
-    ValidationError,
 )
+from fluent_mind_mcp.client.exceptions import ValidationError as ClientValidationError
 from fluent_mind_mcp.client.flowise_client import FlowiseClient
 from fluent_mind_mcp.client.vector_db_client import VectorDatabaseClient
 from fluent_mind_mcp.logging.operation_logger import OperationLogger
 from fluent_mind_mcp.models.chatflow import ChatflowType
 from fluent_mind_mcp.models.config import FlowiseConfig
+from fluent_mind_mcp.services.build_flow_service import BuildFlowService
 from fluent_mind_mcp.services.chatflow_service import ChatflowService
 from fluent_mind_mcp.services.vector_search_service import VectorSearchService
+from fluent_mind_mcp.utils.exceptions import ValidationError
 from fluent_mind_mcp.utils.layout import apply_hierarchical_layout
 
 
@@ -50,13 +52,15 @@ class ServerContext:
         client: FlowiseClient,
         service: ChatflowService,
         logger: OperationLogger,
-        vector_search: VectorSearchService
+        vector_search: VectorSearchService,
+        build_flow: BuildFlowService
     ):
         self.config = config
         self.client = client
         self.service = service
         self.logger = logger
         self.vector_search = vector_search
+        self.build_flow = build_flow
 
 
 # Global context (initialized during lifespan)
@@ -147,7 +151,7 @@ def _translate_error(error: Exception) -> dict[str, Any]:
         }
 
     # Validation errors - invalid input
-    elif isinstance(error, ValidationError):
+    elif isinstance(error, (ClientValidationError, ValidationError)):
         return {
             "error": "ValidationError",
             "message": str(error),
@@ -208,12 +212,16 @@ async def server_lifespan(_server: FastMCP) -> AsyncIterator[ServerContext]:
     embedder = EmbeddingClient()
     vector_search = VectorSearchService(vector_db, embedder)
 
+    # Initialize build flow service
+    build_flow = BuildFlowService(vector_db_client=vector_db, flowise_client=client)
+
     server_context = ServerContext(
         config=config,
         client=client,
         service=service,
         logger=logger,
-        vector_search=vector_search
+        vector_search=vector_search,
+        build_flow=build_flow
     )
 
     logger.info(
@@ -968,6 +976,105 @@ async def search_templates(
             "results": results,
             "count": len(results),
             "query": query
+        }
+
+    except Exception as e:
+        # Translate exception to user-friendly error
+        error_response = _translate_error(e)
+        raise RuntimeError(f"{error_response['error']}: {error_response['message']}")
+
+
+@mcp.tool()
+async def build_flow(
+    template_id: str | None = None,
+    nodes: list[str] | None = None,
+    connections: str = "auto",
+    parameters: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """Build Flowise chatflow from template_id OR custom node list (User Story 3).
+
+    WHY: Enables AI assistants to create chatflows with minimal token usage
+    (<20 tokens for template, <50 tokens for custom nodes) by generating flowData
+    internally and returning only essential metadata (chatflow_id, name, status).
+
+    Creates a complete Flowise chatflow using either:
+    1. Template-based: Uses pre-built template from search_templates
+    2. Custom nodes: Builds from scratch with automatic connection inference
+
+    Args:
+        template_id: Template identifier from search_templates (mutually exclusive with nodes)
+        nodes: List of node names for custom flow (mutually exclusive with template_id)
+        connections: Connection strategy - only "auto" supported (default: "auto")
+        parameters: Optional template parameters (model, temperature, name)
+
+    Returns:
+        Dictionary containing:
+            - chatflow_id: Unique identifier for created chatflow
+            - name: Chatflow name
+            - status: Creation status ("success")
+
+    Raises:
+        ValidationError: Neither or both template_id and nodes provided, empty nodes list
+        TemplateNotFoundError: Invalid template_id
+        ConnectionInferenceError: Cannot connect nodes automatically
+        BuildFlowError: flowData generation failed
+
+    Performance: <10s for templates, <15s for custom nodes (NFR-004)
+    Token Budget: <20 tokens (template), <50 tokens (custom nodes)
+
+    Examples:
+        # Build from template
+        result = await build_flow(
+            template_id="tmpl_simple_chat",
+            parameters={"model": "gpt-4", "temperature": 0.7}
+        )
+        # Returns: {"chatflow_id": "abc-123", "name": "Simple Chat", "status": "success"}
+
+        # Build from custom nodes with auto-connections
+        result = await build_flow(
+            nodes=["chatOpenAI", "bufferMemory", "conversationChain"],
+            connections="auto"
+        )
+        # Returns: {"chatflow_id": "def-456", "name": "Custom Flow (3 nodes)", "status": "success"}
+    """
+    try:
+        if server_context is None:
+            raise RuntimeError("Service not initialized")
+
+        # Validate oneOf constraint: exactly one of template_id or nodes required
+        if template_id is None and nodes is None:
+            raise ValidationError(
+                message="Either template_id or nodes must be provided (not both, not neither)"
+            )
+        if template_id is not None and nodes is not None:
+            raise ValidationError(
+                message="Cannot specify both template_id and nodes (mutually exclusive)"
+            )
+
+        # Route to appropriate build method
+        if template_id is not None:
+            # Template-based flow
+            chatflow_name = parameters.get("name") if parameters else None
+            response = await server_context.build_flow.build_from_template(
+                template_id=template_id,
+                chatflow_name=chatflow_name,
+                parameters=parameters
+            )
+        else:
+            # Custom node-based flow
+            chatflow_name = parameters.get("name") if parameters else None
+            response = await server_context.build_flow.build_from_nodes(
+                nodes=nodes,  # type: ignore
+                chatflow_name=chatflow_name,
+                connections=connections,
+                parameters=parameters
+            )
+
+        # Return compact response (<30 tokens)
+        return {
+            "chatflow_id": response.chatflow_id,
+            "name": response.name,
+            "status": response.status.value
         }
 
     except Exception as e:

@@ -1,362 +1,419 @@
-"""Unit tests for BuildFlowService (Phase 1 - User Story 3).
+"""Unit tests for BuildFlowService (T032 - TDD-RED Phase).
 
-Tests template-based chatflow creation functionality.
+Tests for User Story 3: build_flow function.
 
-Coverage:
-- Build from template (Phase 1 scope)
-- FlowData structure validation
-- Node positioning algorithm
-- Success rate validation (>95% per NFR-093)
+PURPOSE: Define BuildFlowService API contract (Red phase).
+All tests WILL FAIL until BuildFlowService is implemented (T035-T049).
 
-WHY: Validates chatflow creation service for User Story 3.
+WHY: TDD Red phase - tests define the API contract before implementation.
+These tests will FAIL with ImportError/AttributeError until implementation is complete.
 """
 
 import pytest
 
-from fluent_mind_mcp.services.build_flow_service import BuildFlowService
-from fluent_mind_mcp.client.vector_db_client import VectorDatabaseClient
-from fluent_mind_mcp.utils.exceptions import TemplateNotFoundError
+from fluent_mind_mcp.models.flowdata_models import BuildFlowResponse
+from fluent_mind_mcp.utils.exceptions import (
+    BuildFlowError,
+    ConnectionInferenceError,
+    TemplateNotFoundError,
+    ValidationError,
+)
+from tests.unit.phase1.test_builders import EdgeBuilder, FlowDataBuilder, NodeBuilder
+from tests.unit.phase1.test_constants import (
+    CHARS_PER_TOKEN,
+    MAX_ERROR_TOKENS,
+    MAX_RESPONSE_TIME_SECONDS,
+    MIN_COMPLEX_FLOW_EDGES,
+    MIN_SIMPLE_FLOW_EDGES,
+    NODE_SPACING_X,
+)
 
 
 @pytest.mark.unit
 @pytest.mark.phase1
-class TestBuildFlowServiceTemplateBasedCreation:
-    """Test template-based chatflow creation (Phase 1 scope)."""
+@pytest.mark.us3
+class TestBuildFlowServiceTemplateBasic:
+    """Test basic template-based chatflow creation."""
 
     @pytest.mark.asyncio
-    async def test_build_from_template_creates_chatflow(self, tmp_path):
-        """
-        GIVEN: Template "simple_chat" exists
-        WHEN: build_from_template("simple_chat") is called
-        THEN: Creates chatflow and returns chatflow_id
+    async def test_build_from_template_basic(self, build_flow_service):
+        """Build from valid template_id returns BuildFlowResponse.
 
-        WHY: Core functionality for User Story 3.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
+        GIVEN: Valid template_id exists in ChromaDB
+        WHEN: build_from_template("tmpl_simple_chat") is called
+        THEN: Returns BuildFlowResponse with chatflow_id, name, status="success"
 
-        # Add test template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_simple_chat"],
-            documents=["Simple chat template"],
-            metadatas=[{
-                "template_id": "tmpl_simple_chat",
-                "name": "Simple Chat",
-                "nodes": "chatOpenAI,bufferMemory,conversationChain"
-            }]
+        WHY: Core template-based creation (SC-003: <20 token invocation).
+        """
+        # This will FAIL until implementation exists
+        result = await build_flow_service.build_from_template("tmpl_simple_chat")
+
+        assert isinstance(result, BuildFlowResponse)
+        assert result.status == "success"
+        assert result.chatflow_id is not None
+        assert result.name is not None
+
+    @pytest.mark.asyncio
+    async def test_build_from_template_with_parameters(self, build_flow_service):
+        """Custom parameters (model, temperature) substituted.
+
+        GIVEN: Template with {{model}} and {{temperature}} placeholders
+        WHEN: build_from_template(template_id, parameters={"model": "gpt-4", "temperature": 0.7})
+        THEN: FlowData has gpt-4 and 0.7 substituted
+
+        WHY: Template customization for different use cases.
+        """
+        result = await build_flow_service.build_from_template(
+            "tmpl_chat",
+            parameters={"model": "gpt-4", "temperature": 0.7}
         )
 
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template(template_id="tmpl_simple_chat")
-
-        assert "chatflow_id" in result
-        assert result["chatflow_id"] is not None
-        assert result["status"] == "success"
+        assert isinstance(result, BuildFlowResponse)
+        assert result.status == "success"
 
     @pytest.mark.asyncio
-    async def test_build_from_template_generates_valid_flow_data(self, tmp_path):
-        """
-        GIVEN: Template with nodes list
-        WHEN: Building chatflow
-        THEN: Generated flowData has correct structure (nodes, edges, positions)
+    async def test_build_from_template_invalid_id(self, build_flow_service):
+        """Invalid template_id raises TemplateNotFoundError.
 
-        WHY: Validates flowData structure compliance with Flowise API.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add test template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_simple_chat"],
-            documents=["Simple chat template"],
-            metadatas=[{
-                "template_id": "tmpl_simple_chat",
-                "name": "Simple Chat",
-                "nodes": "chatOpenAI,bufferMemory,conversationChain"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_simple_chat")
-
-        flow_data = result["flow_data"]
-        assert "nodes" in flow_data
-        assert "edges" in flow_data
-        assert len(flow_data["nodes"]) > 0
-
-        # Each node has position
-        for node in flow_data["nodes"]:
-            assert "position" in node
-            assert "x" in node["position"]
-            assert "y" in node["position"]
-
-    @pytest.mark.asyncio
-    async def test_build_from_template_positions_nodes_left_to_right(self, tmp_path):
-        """
-        GIVEN: Template with 3 nodes
-        WHEN: Building flowData
-        THEN: Nodes are positioned left-to-right with 300px horizontal spacing
-
-        WHY: Ensures readable visual layout in Flowise canvas.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add test template with 3 nodes
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_simple_chat"],
-            documents=["Simple chat template"],
-            metadatas=[{
-                "template_id": "tmpl_simple_chat",
-                "name": "Simple Chat",
-                "nodes": "chatOpenAI,bufferMemory,conversationChain"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_simple_chat")
-
-        nodes = result["flow_data"]["nodes"]
-        positions = [node["position"]["x"] for node in nodes]
-
-        # Should be increasing (left to right)
-        assert positions == sorted(positions), "Nodes not positioned left-to-right"
-
-        # Check spacing (~300px)
-        if len(positions) > 1:
-            spacing = positions[1] - positions[0]
-            assert 250 <= spacing <= 350, f"Spacing {spacing}px not in range 250-350px"
-
-    @pytest.mark.asyncio
-    async def test_build_from_template_nonexistent_template_raises_error(self, tmp_path):
-        """
-        GIVEN: Template "nonexistent" does not exist
+        GIVEN: template_id="nonexistent" does not exist
         WHEN: build_from_template("nonexistent") is called
-        THEN: Raises TemplateNotFoundError with clear message
+        THEN: Raises TemplateNotFoundError with message "Template nonexistent not found"
 
-        WHY: Explicit error handling for user feedback.
+        WHY: Clear error handling for invalid template IDs.
         """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Create empty templates collection
-        vector_db_client.get_or_create_collection("templates")
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-
         with pytest.raises(TemplateNotFoundError) as exc_info:
-            await service.build_from_template("nonexistent")
+            await build_flow_service.build_from_template("nonexistent")
 
-        assert "not found" in str(exc_info.value).lower() or "nonexistent" in str(exc_info.value).lower()
-
-
-@pytest.mark.unit
-@pytest.mark.phase1
-class TestBuildFlowServiceFlowDataValidation:
-    """Test flowData structure validation."""
-
-    @pytest.mark.asyncio
-    async def test_flow_data_has_required_node_fields(self, tmp_path):
-        """
-        GIVEN: Generated flowData
-        WHEN: Examining node structure
-        THEN: Each node has required fields: id, type, data, position
-
-        WHY: Ensures Flowise API compatibility.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add test template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_simple_chat"],
-            documents=["Simple chat template"],
-            metadatas=[{
-                "template_id": "tmpl_simple_chat",
-                "name": "Simple Chat",
-                "nodes": "chatOpenAI,bufferMemory"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_simple_chat")
-
-        for node in result["flow_data"]["nodes"]:
-            assert "id" in node
-            assert "type" in node
-            assert "data" in node
-            assert "position" in node
-
-    @pytest.mark.asyncio
-    async def test_flow_data_nodes_have_unique_ids(self, tmp_path):
-        """
-        GIVEN: Generated flowData with multiple nodes
-        WHEN: Examining node IDs
-        THEN: All node IDs are unique
-
-        WHY: Prevents ID collision errors in Flowise.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add test template with multiple nodes
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_rag_flow"],
-            documents=["RAG flow template"],
-            metadatas=[{
-                "template_id": "tmpl_rag_flow",
-                "name": "RAG Flow",
-                "nodes": "chatOpenAI,openAIEmbeddings,faiss,conversationalRetrievalQAChain"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_rag_flow")
-
-        node_ids = [node["id"] for node in result["flow_data"]["nodes"]]
-        assert len(node_ids) == len(set(node_ids)), "Duplicate node IDs found"
-
-    @pytest.mark.asyncio
-    async def test_flow_data_includes_edges_between_nodes(self, tmp_path):
-        """
-        GIVEN: Template with multiple nodes
-        WHEN: Building flowData
-        THEN: Edges connect nodes in sequence
-
-        WHY: Creates valid flow connections for Flowise.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add test template with 3 nodes
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_test"],
-            documents=["Test template"],
-            metadatas=[{
-                "template_id": "tmpl_test",
-                "name": "Test",
-                "nodes": "node1,node2,node3"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_test")
-
-        flow_data = result["flow_data"]
-        nodes = flow_data["nodes"]
-        edges = flow_data["edges"]
-
-        # Should have N-1 edges for N nodes (linear connection)
-        assert len(edges) == len(nodes) - 1
-
-        # Each edge should have source and target
-        for edge in edges:
-            assert "id" in edge
-            assert "source" in edge
-            assert "target" in edge
+        assert "not found" in str(exc_info.value).lower()
 
 
 @pytest.mark.unit
 @pytest.mark.phase1
-class TestBuildFlowServiceEdgeCases:
-    """Test edge cases and error handling."""
+@pytest.mark.us3
+class TestBuildFlowServiceCustomNodes:
+    """Test custom node list creation."""
 
     @pytest.mark.asyncio
-    async def test_build_from_empty_template_creates_minimal_flow(self, tmp_path):
-        """
-        GIVEN: Template with no nodes
-        WHEN: Building flowData
-        THEN: Creates minimal flow structure (empty nodes array)
+    async def test_build_from_nodes_basic(self, build_flow_service):
+        """Build from node list with auto connections.
 
-        WHY: Handles edge case gracefully.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
+        GIVEN: nodes=["chatOpenAI", "bufferMemory"], connections="auto"
+        WHEN: build_from_nodes(nodes, connections) is called
+        THEN: Creates flowData with 2 nodes and automatic connection
 
-        # Add empty template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_empty"],
-            documents=["Empty template"],
-            metadatas=[{
-                "template_id": "tmpl_empty",
-                "name": "Empty",
-                "nodes": ""
-            }]
+        WHY: Custom chatflow creation without templates.
+        """
+        result = await build_flow_service.build_from_nodes(
+            nodes=["chatOpenAI", "bufferMemory"],
+            connections="auto"
         )
 
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_empty")
-
-        flow_data = result["flow_data"]
-        assert "nodes" in flow_data
-        assert "edges" in flow_data
-        assert len(flow_data["nodes"]) == 0
-        assert len(flow_data["edges"]) == 0
+        assert isinstance(result, BuildFlowResponse)
+        assert result.status == "success"
 
     @pytest.mark.asyncio
-    async def test_build_from_template_with_single_node(self, tmp_path):
+    async def test_build_from_nodes_invalid_name(self, build_flow_service):
+        """Invalid node name raises ValidationError.
+
+        GIVEN: nodes=["nonexistent_node"]
+        WHEN: build_from_nodes(nodes) is called
+        THEN: Raises ValidationError with message "Node nonexistent_node not found"
+
+        WHY: Validates node names exist in vector DB.
         """
-        GIVEN: Template with only one node
-        WHEN: Building flowData
-        THEN: Creates flow with one node and no edges
+        with pytest.raises(ValidationError) as exc_info:
+            await build_flow_service.build_from_nodes(nodes=["nonexistent_node"])
 
-        WHY: Edge case validation for minimal templates.
-        """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
-
-        # Add single-node template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_single"],
-            documents=["Single node template"],
-            metadatas=[{
-                "template_id": "tmpl_single",
-                "name": "Single",
-                "nodes": "chatOpenAI"
-            }]
-        )
-
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_single")
-
-        flow_data = result["flow_data"]
-        assert len(flow_data["nodes"]) == 1
-        assert len(flow_data["edges"]) == 0  # No edges for single node
+        assert "not found" in str(exc_info.value).lower()
 
     @pytest.mark.asyncio
-    async def test_build_result_includes_template_id(self, tmp_path):
+    async def test_build_from_nodes_empty_list(self, build_flow_service):
+        """Empty nodes list raises ValidationError.
+
+        GIVEN: nodes=[]
+        WHEN: build_from_nodes(nodes) is called
+        THEN: Raises ValidationError with message "Nodes list cannot be empty"
+
+        WHY: Prevents meaningless chatflow creation.
         """
-        GIVEN: Template build succeeds
-        WHEN: Examining result
-        THEN: Result includes template_id for traceability
+        with pytest.raises(ValidationError) as exc_info:
+            await build_flow_service.build_from_nodes(nodes=[])
 
-        WHY: Enables tracking of which template was used.
+        assert "empty" in str(exc_info.value).lower()
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+class TestBuildFlowServiceTemplateRetrieval:
+    """Test template retrieval and validation."""
+
+    @pytest.mark.asyncio
+    async def test_template_retrieval(self, build_flow_service):
+        """_retrieve_template loads full flowData.
+
+        GIVEN: Template exists with nodes metadata
+        WHEN: _retrieve_template("tmpl_123") is called
+        THEN: Returns FlowTemplate with template_id, name, nodes list
+
+        WHY: Retrieves template from ChromaDB for building.
         """
-        vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
+        # Access internal method for testing
+        template = await build_flow_service._retrieve_template("tmpl_123")
 
-        # Add test template
-        collection = vector_db_client.get_or_create_collection("templates")
-        collection.add(
-            ids=["tmpl_test"],
-            documents=["Test template"],
-            metadatas=[{
-                "template_id": "tmpl_test",
-                "name": "Test",
-                "nodes": "chatOpenAI"
-            }]
-        )
+        assert template is not None
+        assert hasattr(template, 'template_id')
+        assert hasattr(template, 'nodes')
 
-        # Test
-        service = BuildFlowService(vector_db_client)
-        result = await service.build_from_template("tmpl_test")
+    @pytest.mark.asyncio
+    async def test_parameter_substitution(self, build_flow_service):
+        """_substitute_parameters replaces {{model}}, {{temperature}}.
 
-        assert "template_id" in result
-        assert result["template_id"] == "tmpl_test"
+        GIVEN: flowData with {{"model": "{{model}}", "temperature": {{temperature}}}}
+        WHEN: _substitute_parameters(flowData, {"model": "gpt-4", "temperature": 0.7})
+        THEN: Returns flowData with "gpt-4" and 0.7
+
+        WHY: Template parameter customization.
+        """
+        node_with_params = (NodeBuilder()
+                           .with_id("1")
+                           .with_data({"model": "{{model}}", "temperature": "{{temperature}}"})
+                           .build())
+        flow_data = FlowDataBuilder().add_node(node_with_params).build()
+        parameters = {"model": "gpt-4", "temperature": 0.7}
+
+        result = build_flow_service._substitute_parameters(flow_data, parameters)
+
+        assert result["nodes"][0]["data"]["model"] == "gpt-4"
+        assert result["nodes"][0]["data"]["temperature"] == 0.7
+
+    @pytest.mark.asyncio
+    async def test_parameter_validation(self, build_flow_service):
+        """Invalid parameter type raises ValidationError.
+
+        GIVEN: parameters={"temperature": "invalid"}  # should be float
+        WHEN: _substitute_parameters(flowData, parameters) is called
+        THEN: Raises ValidationError with message "Invalid type for temperature"
+
+        WHY: Type safety for template parameters.
+        """
+        node_with_param = (NodeBuilder()
+                          .with_id("1")
+                          .with_data({"temperature": "{{temperature}}"})
+                          .build())
+        flow_data = FlowDataBuilder().add_node(node_with_param).build()
+        parameters = {"temperature": "invalid"}
+
+        with pytest.raises(ValidationError):
+            build_flow_service._substitute_parameters(flow_data, parameters)
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+class TestBuildFlowServiceConnectionInference:
+    """Test automatic connection inference."""
+
+    @pytest.mark.asyncio
+    async def test_connection_inference_simple(
+        self, build_flow_service, document_loader_node, chat_openai_node, conversation_chain_node
+    ):
+        """2-3 nodes connected correctly (Input→Processing→Output).
+
+        GIVEN: nodes=[DocumentLoader, ChatOpenAI, ConversationChain]
+        WHEN: _infer_connections(nodes) is called
+        THEN: Creates edges: DocumentLoader→ChatOpenAI→ConversationChain
+
+        WHY: Simple linear flow connection inference.
+        """
+        nodes = [document_loader_node, chat_openai_node, conversation_chain_node]
+
+        edges = await build_flow_service._infer_connections(nodes)
+
+        assert len(edges) >= MIN_SIMPLE_FLOW_EDGES
+        assert all(isinstance(edge, dict) for edge in edges)
+
+    @pytest.mark.asyncio
+    async def test_connection_inference_complex(self, build_flow_service):
+        """5+ nodes with memory and tools connected.
+
+        GIVEN: nodes=[DocumentLoader, Embeddings, VectorStore, ChatOpenAI, Memory, Agent]
+        WHEN: _infer_connections(nodes) is called
+        THEN: Creates edges with proper RAG+memory+tools connections
+
+        WHY: Complex multi-branch flow handling.
+        """
+        nodes = [
+            NodeBuilder().with_id("1").with_name("documentLoader").with_base_classes(["BaseLoader"]).build(),
+            NodeBuilder().with_id("2").with_name("embeddings").with_base_classes(["Embeddings"]).build(),
+            NodeBuilder().with_id("3").with_name("vectorStore").with_base_classes(["VectorStore"]).build(),
+            NodeBuilder().with_id("4").with_name("chatOpenAI").with_base_classes(["BaseChatModel"]).build(),
+            NodeBuilder().with_id("5").with_name("memory").with_base_classes(["BaseMemory"]).build(),
+            NodeBuilder().with_id("6").with_name("agent").with_base_classes(["BaseAgent"]).build(),
+        ]
+
+        edges = await build_flow_service._infer_connections(nodes)
+
+        assert len(edges) >= MIN_COMPLEX_FLOW_EDGES
+
+    @pytest.mark.asyncio
+    async def test_connection_inference_validation(self, build_flow_service, agent_node):
+        """Missing required inputs raises ConnectionInferenceError.
+
+        GIVEN: nodes=[Agent] (missing required ChatModel input)
+        WHEN: _infer_connections(nodes) is called
+        THEN: Raises ConnectionInferenceError with message "Agent requires ChatModel"
+
+        WHY: Validates all required inputs are satisfied.
+        """
+        nodes = [agent_node]
+
+        with pytest.raises(ConnectionInferenceError):
+            await build_flow_service._infer_connections(nodes)
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+class TestBuildFlowServiceNodePositioning:
+    """Test node positioning algorithm."""
+
+    @pytest.mark.asyncio
+    async def test_node_positioning_linear(self, build_flow_service):
+        """3 nodes positioned left-to-right with NODE_SPACING_X intervals.
+
+        GIVEN: 3 nodes in sequence
+        WHEN: _calculate_positions(nodes, edges) is called
+        THEN: Nodes positioned with increasing x coordinates
+
+        WHY: Readable left-to-right layout for Flowise canvas.
+        """
+        nodes = [
+            NodeBuilder().with_id("1").build(),
+            NodeBuilder().with_id("2").build(),
+            NodeBuilder().with_id("3").build(),
+        ]
+        edges = [
+            EdgeBuilder().from_node("1").to_node("2").build(),
+            EdgeBuilder().from_node("2").to_node("3").build(),
+        ]
+
+        positions = build_flow_service._calculate_positions(nodes, edges)
+
+        assert positions["1"]["x"] < positions["2"]["x"]
+        assert positions["2"]["x"] < positions["3"]["x"]
+        assert positions["2"]["x"] - positions["1"]["x"] == NODE_SPACING_X
+
+    @pytest.mark.asyncio
+    async def test_node_positioning_multi_row(self, build_flow_service):
+        """6+ nodes use multiple rows.
+
+        GIVEN: 6 nodes exceeding single row capacity
+        WHEN: _calculate_positions(nodes, edges) is called
+        THEN: Uses multiple rows with 200px vertical spacing
+
+        WHY: Prevents horizontal overflow for large flows.
+        """
+        nodes = [{"id": str(i)} for i in range(1, 7)]
+        edges = [{"source": str(i), "target": str(i+1)} for i in range(1, 6)]
+
+        positions = build_flow_service._calculate_positions(nodes, edges)
+
+        # Check that some nodes have different y positions
+        y_positions = [pos["y"] for pos in positions.values()]
+        assert len(set(y_positions)) > 1  # Multiple rows
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+class TestBuildFlowServiceValidation:
+    """Test flowData validation."""
+
+    @pytest.mark.asyncio
+    async def test_flowdata_validation(self, build_flow_service):
+        """_validate_flowData catches missing nodes/edges/invalid refs.
+
+        GIVEN: flowData with edge referencing non-existent node ID
+        WHEN: _validate_flowData(flowData) is called
+        THEN: Raises BuildFlowError with message "Edge references unknown node"
+
+        WHY: Pre-submission validation prevents Flowise API errors.
+        """
+        node = NodeBuilder().with_id("1").build()
+        invalid_edge = EdgeBuilder().from_node("1").to_node("999").build()
+        flow_data = FlowDataBuilder().add_node(node).add_edge(invalid_edge).build()
+
+        with pytest.raises(BuildFlowError):
+            build_flow_service._validate_flowData(flow_data)
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+class TestBuildFlowServiceResponseFormat:
+    """Test compact response format."""
+
+    @pytest.mark.asyncio
+    async def test_compact_response_format(self, build_flow_service):
+        """BuildFlowResponse <30 tokens (chatflow_id, name, status).
+
+        GIVEN: Successful chatflow creation
+        WHEN: build_from_template() returns response
+        THEN: Response has only: chatflow_id, name, status (excludes flowData)
+
+        WHY: Meets NFR-004 token budget (<30 tokens response).
+        """
+        result = await build_flow_service.build_from_template("tmpl_simple_chat")
+
+        # Check only required fields present
+        result_dict = result.model_dump() if hasattr(result, 'model_dump') else result.__dict__
+        assert "chatflow_id" in result_dict
+        assert "name" in result_dict
+        assert "status" in result_dict
+        # flowData should NOT be in response
+        assert "flowData" not in result_dict
+
+    @pytest.mark.asyncio
+    async def test_error_response_format(self, build_flow_service):
+        """Error responses within MAX_ERROR_TOKENS with recovery guidance.
+
+        GIVEN: Template not found error
+        WHEN: build_from_template("invalid") fails
+        THEN: Error response within token budget with actionable message
+
+        WHY: Actionable error messages within token budget.
+        """
+        with pytest.raises(TemplateNotFoundError) as exc_info:
+            await build_flow_service.build_from_template("invalid")
+
+        error_msg = str(exc_info.value)
+        estimated_tokens = len(error_msg) / CHARS_PER_TOKEN
+        assert estimated_tokens < MAX_ERROR_TOKENS
+
+
+@pytest.mark.unit
+@pytest.mark.phase1
+@pytest.mark.us3
+@pytest.mark.performance
+class TestBuildFlowServicePerformance:
+    """Test performance requirements."""
+
+    @pytest.mark.asyncio
+    async def test_performance_template(self, build_flow_service):
+        """Build from template within MAX_RESPONSE_TIME_SECONDS (per NFR-004).
+
+        GIVEN: Standard template with 5 nodes
+        WHEN: build_from_template() is called
+        THEN: Completes within performance target
+
+        WHY: Meets NFR-004 performance target.
+        """
+        import time
+
+        start = time.time()
+        await build_flow_service.build_from_template("tmpl_simple_chat")
+        duration = time.time() - start
+
+        assert duration < MAX_RESPONSE_TIME_SECONDS, \
+            f"Should complete in <{MAX_RESPONSE_TIME_SECONDS}s, took {duration:.2f}s"

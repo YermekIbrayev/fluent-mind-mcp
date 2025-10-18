@@ -127,6 +127,41 @@ class BuildFlowRequest(BaseModel):
         return v
 
 
+class FlowTemplate(BaseModel):
+    """
+    Template retrieved from vector database.
+
+    WHY: Proper model class for template data structure ensures type safety
+    and provides attribute access (template.template_id) while maintaining
+    dict compatibility through model_dump().
+    """
+
+    template_id: str = Field(..., description="Unique template identifier")
+    name: str = Field(..., description="Human-readable template name")
+    flow_data: dict[str, Any] = Field(
+        ...,
+        description="Complete flowData structure (nodes, edges, viewport)"
+    )
+    nodes: list[dict] = Field(
+        default_factory=list,
+        description="Node list for backward compatibility with tests"
+    )
+
+    def __getitem__(self, key: str) -> Any:
+        """Support dict-style access template['key'].
+
+        WHY: Maintains backward compatibility with code expecting dict access.
+        """
+        return getattr(self, key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Support dict.get() method.
+
+        WHY: Maintains backward compatibility with template.get('key', default).
+        """
+        return getattr(self, key, default)
+
+
 class BuildFlowResponse(BaseModel):
     """
     Output from build_flow function.
