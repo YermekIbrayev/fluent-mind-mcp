@@ -30,6 +30,8 @@ class VectorSearchService:
     DEFAULT_NODE_LIMIT = 5
     DEFAULT_TEMPLATE_LIMIT = 3
     TEMPLATE_FETCH_MULTIPLIER = 2
+    CATEGORY_FILTER_THRESHOLD_REDUCTION = 0.8  # Reduce threshold by 20% when category filter provides precision
+    FILTER_FETCH_MULTIPLIER = 2  # Fetch extra results to account for threshold filtering
 
     def __init__(
         self,
@@ -101,11 +103,18 @@ class VectorSearchService:
             max_tokens=self.DEFAULT_TOKEN_BUDGET
         )
 
+        # Parse base_classes from comma-separated string
+        base_classes_str = metadata.get("base_classes", "")
+        base_classes = [cls.strip() for cls in base_classes_str.split(",")] if base_classes_str else []
+
         return {
+            "node_name": metadata["name"],
             "name": metadata["name"],
             "label": metadata["label"],
             "category": metadata["category"],
             "description": truncated_description,
+            "base_classes": base_classes,
+            "deprecated": metadata.get("deprecated", False),
             "relevance_score": round(relevance_score, 3)
         }
 
@@ -160,15 +169,17 @@ class VectorSearchService:
     async def search_nodes(
         self,
         query: str,
-        limit: int = DEFAULT_NODE_LIMIT,
-        filter_metadata: Optional[dict[str, Any]] = None
+        max_results: int = DEFAULT_NODE_LIMIT,
+        similarity_threshold: float = 0.7,
+        category: Optional[str] = None
     ) -> list[dict[str, Any]]:
         """Search for nodes using semantic similarity (User Story 1).
 
         Args:
             query: Search query text
-            limit: Maximum number of results
-            filter_metadata: Optional metadata filters (e.g., {"category": "Chat Models"})
+            max_results: Maximum number of results (default 5)
+            similarity_threshold: Minimum relevance score (default 0.7)
+            category: Optional category filter (e.g., "Chat Models")
 
         Returns:
             List of node results with metadata and relevance scores
@@ -184,33 +195,30 @@ class VectorSearchService:
         """
         self._validate_query(query)
 
-        if limit == 0:
+        if max_results == 0:
             return []
 
         # Generate query embedding
         query_embedding = self.embedder.generate_embedding(query)
 
+        # Calculate fetch count and effective threshold
+        has_category = category is not None
+        fetch_count = self._calculate_fetch_count(max_results, similarity_threshold, has_category)
+        effective_threshold = self._calculate_effective_threshold(similarity_threshold, has_category)
+
         # Query vector database
-        results = self.vector_db.query(
+        filter_metadata = {"category": category} if has_category else None
+        raw_results = self.vector_db.query(
             collection_name="nodes",
             query_embeddings=[query_embedding],
-            n_results=limit,
+            n_results=fetch_count,
             where=filter_metadata
         )
 
-        # Format results
-        if not results["ids"][0]:  # No results
-            return []
-
-        return [
-            self._format_node_result(
-                node_id=results["ids"][0][i],
-                metadata=results["metadatas"][0][i],
-                distance=results["distances"][0][i],
-                document=results["documents"][0][i]
-            )
-            for i in range(len(results["ids"][0]))
-        ]
+        # Filter, format, sort, and limit results
+        formatted_results = self._filter_and_format_results(raw_results, effective_threshold)
+        sorted_results = self._sort_by_deprecated_and_relevance(formatted_results)
+        return sorted_results[:max_results]
 
     async def search_templates(
         self,
@@ -266,6 +274,89 @@ class VectorSearchService:
         formatted_results.sort(key=lambda x: x["relevance_score"], reverse=True)
 
         return formatted_results[:limit]
+
+    def _calculate_fetch_count(self, max_results: int, similarity_threshold: float, has_category: bool) -> int:
+        """Calculate how many results to fetch from vector DB.
+
+        Args:
+            max_results: Maximum results requested by caller
+            similarity_threshold: Similarity threshold for filtering
+            has_category: Whether category filter is applied
+
+        Returns:
+            Number of results to fetch (may be higher than max_results to account for filtering)
+
+        WHY: Fetches extra results when filtering is applied to ensure we have enough
+             results after threshold and deprecated node filtering.
+        """
+        if similarity_threshold > 0.0 or has_category:
+            return max_results * self.FILTER_FETCH_MULTIPLIER
+        return max_results
+
+    def _calculate_effective_threshold(self, similarity_threshold: float, has_category: bool) -> float:
+        """Calculate effective similarity threshold based on whether category filter is applied.
+
+        Args:
+            similarity_threshold: Base similarity threshold
+            has_category: Whether category filter is applied
+
+        Returns:
+            Effective threshold (possibly reduced if category filter provides precision)
+
+        WHY: Category filtering already provides precision, so we can be more lenient
+             with relevance threshold to avoid filtering out good matches.
+        """
+        if has_category:
+            return similarity_threshold * self.CATEGORY_FILTER_THRESHOLD_REDUCTION
+        return similarity_threshold
+
+    def _filter_and_format_results(
+        self,
+        raw_results: dict[str, Any],
+        effective_threshold: float
+    ) -> list[dict[str, Any]]:
+        """Filter and format raw vector DB results by relevance threshold.
+
+        Args:
+            raw_results: Raw results from ChromaDB query
+            effective_threshold: Minimum relevance score to include
+
+        Returns:
+            List of formatted results that meet threshold
+
+        WHY: Separates result formatting and filtering logic for clarity and testability.
+        """
+        if not raw_results["ids"][0]:
+            return []
+
+        formatted_results = []
+        for i in range(len(raw_results["ids"][0])):
+            result = self._format_node_result(
+                node_id=raw_results["ids"][0][i],
+                metadata=raw_results["metadatas"][0][i],
+                distance=raw_results["distances"][0][i],
+                document=raw_results["documents"][0][i]
+            )
+
+            if result["relevance_score"] >= effective_threshold:
+                formatted_results.append(result)
+
+        return formatted_results
+
+    def _sort_by_deprecated_and_relevance(self, results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Sort results with deprecated nodes last, then by relevance within each group.
+
+        Args:
+            results: List of formatted search results
+
+        Returns:
+            Sorted list (non-deprecated first, each group sorted by relevance DESC)
+
+        WHY: Prioritizes actively maintained nodes over deprecated ones while
+             maintaining relevance ordering within each group.
+        """
+        results.sort(key=lambda x: (x.get("deprecated", False), -x["relevance_score"]))
+        return results
 
     def _truncate_to_token_budget(self, text: str, max_tokens: int = DEFAULT_TOKEN_BUDGET) -> str:
         """Truncate text to approximate token budget.
