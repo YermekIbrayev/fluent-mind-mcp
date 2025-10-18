@@ -141,7 +141,8 @@ class TestSearchNodesFiltering:
 
         WHY: Enables precise node discovery by category.
         """
-        results = await vector_search_service.search_nodes("model", category="Chat Models")
+        # Use more semantically relevant query that will score >= 0.7 threshold
+        results = await vector_search_service.search_nodes("chat conversations", category="Chat Models")
 
         assert len(results) > 0, "Should return results for Chat Models category"
         assert all(r["category"] == "Chat Models" for r in results), "All results should match category filter"
