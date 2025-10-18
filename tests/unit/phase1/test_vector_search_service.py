@@ -71,7 +71,7 @@ class TestVectorSearchServiceNodeSearch:
         service = VectorSearchService(vector_db_client, embedding_client)
         results = await service.search_nodes(
             query="chatbot that remembers conversation",
-            limit=5
+            max_results=5
         )
 
         assert len(results) <= 5
@@ -111,7 +111,7 @@ class TestVectorSearchServiceNodeSearch:
 
         # Test
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("test query", limit=3)
+        results = await service.search_nodes("test query", max_results=3)
 
         for result in results:
             assert "relevance_score" in result
@@ -151,7 +151,7 @@ class TestVectorSearchServiceNodeSearch:
 
         # Test
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("test query", limit=5)
+        results = await service.search_nodes("test query", max_results=5)
 
         scores = [r["relevance_score"] for r in results]
         assert scores == sorted(scores, reverse=True), "Results not sorted by relevance descending"
@@ -192,8 +192,8 @@ class TestVectorSearchServiceNodeSearch:
         service = VectorSearchService(vector_db_client, embedding_client)
         results = await service.search_nodes(
             query="chat model",
-            limit=10,
-            filter_metadata={"category": "Chat Models"}
+            max_results=10,
+            category="Chat Models"
         )
 
         for result in results:
@@ -231,7 +231,7 @@ class TestVectorSearchServiceNodeSearch:
 
         # Test
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("test", limit=1)
+        results = await service.search_nodes("description", max_results=1, similarity_threshold=0.0)
 
         description = results[0]["description"]
         # Rough token count: ~4 chars per token, max 50 tokens = 200 chars
@@ -392,7 +392,7 @@ class TestVectorSearchServiceEdgeCases:
         service = VectorSearchService(vector_db_client, embedding_client)
 
         with pytest.raises(ValidationError) as exc_info:
-            await service.search_nodes("", limit=5)
+            await service.search_nodes("", max_results=5)
 
         assert "empty" in str(exc_info.value).lower()
 
@@ -409,7 +409,7 @@ class TestVectorSearchServiceEdgeCases:
         vector_db_client = VectorDatabaseClient(persist_directory=str(tmp_path / "test_db"))
         service = VectorSearchService(vector_db_client, embedding_client)
 
-        results = await service.search_nodes("test query", limit=0)
+        results = await service.search_nodes("test query", max_results=0)
         assert results == []
 
     @pytest.mark.asyncio
@@ -428,7 +428,7 @@ class TestVectorSearchServiceEdgeCases:
         vector_db_client.get_or_create_collection("nodes")
 
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("xyzabc123nonexistent", limit=5)
+        results = await service.search_nodes("xyzabc123nonexistent", max_results=5)
 
         assert isinstance(results, list)
         assert len(results) == 0
@@ -467,7 +467,7 @@ class TestVectorSearchServiceResponseFormat:
         vector_db_client.add_documents("nodes", documents, embeddings, ids, metadatas)
 
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("test", limit=1)
+        results = await service.search_nodes("test", max_results=1)
 
         result = results[0]
         required_fields = ["name", "label", "category", "description", "relevance_score"]

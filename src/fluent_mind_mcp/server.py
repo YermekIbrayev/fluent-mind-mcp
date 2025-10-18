@@ -1,12 +1,13 @@
 """MCP server entry point for Fluent Mind Flowise integration.
 
-This module defines the FastMCP server with 10 MCP tools for managing
-Flowise chatflows and discovering nodes. Currently implements:
-- US1 (P1): Read and execute operations (list, get, run) + Vector search (search_nodes)
-- US2 (P2): Create new chatflows
-- US3 (P3): Update chatflows (update, deploy, delete)
-- US4 (P4): Generate AgentFlow V2 from descriptions
-- US5 (P5): Connect nodes with automatic beautiful layout
+This module defines the FastMCP server with 11 MCP tools for managing
+Flowise chatflows and discovering nodes/templates. Currently implements:
+- US1 (P1): Read and execute operations (list, get, run) + Node search (search_nodes)
+- US2 (P1): Template discovery (search_templates)
+- US3 (P2): Create new chatflows
+- US4 (P3): Update chatflows (update, deploy, delete)
+- US5 (P4): Generate AgentFlow V2 from descriptions
+- US6 (P5): Connect nodes with automatic beautiful layout
 
 WHY: Provides MCP protocol interface for AI assistants to interact with Flowise.
 """
@@ -887,6 +888,79 @@ async def search_nodes(
             max_results=max_results,
             similarity_threshold=similarity_threshold,
             category=category
+        )
+
+        # Return formatted response
+        return {
+            "results": results,
+            "count": len(results),
+            "query": query
+        }
+
+    except Exception as e:
+        # Translate exception to user-friendly error
+        error_response = _translate_error(e)
+        raise RuntimeError(f"{error_response['error']}: {error_response['message']}")
+
+
+@mcp.tool()
+async def search_templates(
+    query: str,
+    limit: int = 3,
+    threshold: float = 0.7
+) -> dict[str, Any]:
+    """Search for flow templates using semantic similarity (User Story 2).
+
+    WHY: Enables AI assistants to discover pre-built chatflow templates based on
+    natural language intent, accelerating chatflow creation by starting from
+    proven patterns rather than building from scratch.
+
+    Searches the vector database for chatflow templates that match the semantic
+    meaning of the query. Returns compact template summaries with relevance scores,
+    optimized for token efficiency (<100 tokens per result).
+
+    Args:
+        query: Natural language search query describing desired functionality (required, non-empty)
+        limit: Maximum number of templates to return (default: 3)
+        threshold: Minimum relevance score 0.0-1.0 (default: 0.7)
+
+    Returns:
+        Dictionary containing:
+            - results: Array of template objects with template_id, name, description, required_nodes, relevance
+            - count: Number of templates returned
+            - query: Original search query
+
+    Raises:
+        ValidationError: Empty query or invalid parameters
+        ConnectionError: Vector database unreachable
+
+    Performance: <500ms (NFR-020)
+    Accuracy: >90% template relevance (NFR-093)
+
+    Example:
+        # Find customer support templates
+        result = await search_templates(
+            query="chatbot for customer support with knowledge base",
+            limit=3,
+            threshold=0.7
+        )
+        # Returns: {"results": [...], "count": 2, "query": "chatbot for..."}
+
+        # Find data analysis templates
+        result = await search_templates(
+            query="agent that analyzes data",
+            limit=5
+        )
+    """
+    try:
+        if server_context is None:
+            raise RuntimeError("Service not initialized")
+
+        # Call vector search service
+        results = await server_context.vector_search.search_templates(
+            query=query,
+            limit=limit,
+            threshold=threshold
         )
 
         # Return formatted response
