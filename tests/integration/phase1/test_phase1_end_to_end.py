@@ -104,7 +104,7 @@ class TestUserStory1VectorSearchNodes:
         setup_test_nodes(vector_db_client, embedding_client)
 
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("chatbot that remembers conversation", limit=5)
+        results = await service.search_nodes("chatbot that remembers conversation", max_results=5)
 
         # Verify results
         assert len(results) <= 5
@@ -138,7 +138,7 @@ class TestUserStory1VectorSearchNodes:
         setup_test_nodes(vector_db_client, embedding_client)
 
         service = VectorSearchService(vector_db_client, embedding_client)
-        results = await service.search_nodes("search documents using embeddings", limit=5)
+        results = await service.search_nodes("search documents using embeddings", max_results=5)
 
         top_3_names = [r["name"] for r in results[:3]] if len(results) >= 3 else [r["name"] for r in results]
         expected = ["openAIEmbeddings", "faiss", "conversationalRetrievalQAChain"]
@@ -162,7 +162,7 @@ class TestUserStory1VectorSearchNodes:
         service = VectorSearchService(vector_db_client, embedding_client)
 
         start = time.time()
-        results = await service.search_nodes("test query", limit=5)
+        results = await service.search_nodes("test query", max_results=5)
         duration = time.time() - start
 
         assert duration < 5.0, f"Search took {duration}s, expected <5s"
@@ -338,7 +338,7 @@ class TestPhase1CompleteWorkflow:
         # Step 1: Search for relevant nodes
         node_results = await search_service.search_nodes(
             "chatbot that remembers conversation",
-            limit=5
+            max_results=5
         )
         assert len(node_results) <= 5
         assert any("chat" in r["name"].lower() for r in node_results)
@@ -384,7 +384,7 @@ class TestPhase1CompleteWorkflow:
         start = time.time()
 
         # Complete workflow
-        await search_service.search_nodes("test", limit=5)
+        await search_service.search_nodes("test", max_results=5)
         await search_service.search_templates("test", limit=3)
         result = await build_service.build_from_template("tmpl_simple_chat")
 
