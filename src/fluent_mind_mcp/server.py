@@ -1,8 +1,8 @@
 """MCP server entry point for Fluent Mind Flowise integration.
 
-This module defines the FastMCP server with 9 MCP tools for managing
-Flowise chatflows. Currently implements:
-- US1 (P1): Read and execute operations (list, get, run)
+This module defines the FastMCP server with 10 MCP tools for managing
+Flowise chatflows and discovering nodes. Currently implements:
+- US1 (P1): Read and execute operations (list, get, run) + Vector search (search_nodes)
 - US2 (P2): Create new chatflows
 - US3 (P3): Update chatflows (update, deploy, delete)
 - US4 (P4): Generate AgentFlow V2 from descriptions
@@ -18,6 +18,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from fluent_mind_mcp.client.embedding_client import EmbeddingClient
 from fluent_mind_mcp.client.exceptions import (
     AuthenticationError,
     ConnectionError,
@@ -27,10 +28,12 @@ from fluent_mind_mcp.client.exceptions import (
     ValidationError,
 )
 from fluent_mind_mcp.client.flowise_client import FlowiseClient
+from fluent_mind_mcp.client.vector_db_client import VectorDatabaseClient
 from fluent_mind_mcp.logging.operation_logger import OperationLogger
 from fluent_mind_mcp.models.chatflow import ChatflowType
 from fluent_mind_mcp.models.config import FlowiseConfig
 from fluent_mind_mcp.services.chatflow_service import ChatflowService
+from fluent_mind_mcp.services.vector_search_service import VectorSearchService
 from fluent_mind_mcp.utils.layout import apply_hierarchical_layout
 
 
@@ -45,12 +48,14 @@ class ServerContext:
         config: FlowiseConfig,
         client: FlowiseClient,
         service: ChatflowService,
-        logger: OperationLogger
+        logger: OperationLogger,
+        vector_search: VectorSearchService
     ):
         self.config = config
         self.client = client
         self.service = service
         self.logger = logger
+        self.vector_search = vector_search
 
 
 # Global context (initialized during lifespan)
@@ -197,11 +202,17 @@ async def server_lifespan(_server: FastMCP) -> AsyncIterator[ServerContext]:
     client = FlowiseClient(config)
     service = ChatflowService(client=client, logger=logger)
 
+    # Initialize vector search components
+    vector_db = VectorDatabaseClient()
+    embedder = EmbeddingClient()
+    vector_search = VectorSearchService(vector_db, embedder)
+
     server_context = ServerContext(
         config=config,
         client=client,
         service=service,
-        logger=logger
+        logger=logger,
+        vector_search=vector_search
     )
 
     logger.info(
@@ -806,6 +817,83 @@ async def connect_nodes(
                 "edge_id": edge_id,
                 "auto_layout_applied": auto_layout
             }
+        }
+
+    except Exception as e:
+        # Translate exception to user-friendly error
+        error_response = _translate_error(e)
+        raise RuntimeError(f"{error_response['error']}: {error_response['message']}")
+
+
+@mcp.tool()
+async def search_nodes(
+    query: str,
+    max_results: int = 5,
+    similarity_threshold: float = 0.7,
+    category: str | None = None
+) -> dict[str, Any]:
+    """Search for Flowise nodes using semantic similarity (User Story 1).
+
+    WHY: Enables AI assistants to discover relevant Flowise nodes based on
+    natural language descriptions, significantly improving node selection
+    accuracy and reducing token usage compared to listing all nodes.
+
+    Searches the vector database for Flowise nodes that match the semantic
+    meaning of the query. Returns compact results with relevance scores,
+    optimized for token efficiency (<50 tokens per result).
+
+    Args:
+        query: Natural language search query (required, non-empty)
+        max_results: Maximum number of results to return (default: 5)
+        similarity_threshold: Minimum relevance score 0.0-1.0 (default: 0.7)
+        category: Optional category filter (e.g., "Chat Models", "Memory", "Tools")
+
+    Returns:
+        Dictionary containing:
+            - results: Array of node objects with name, description, category, relevance
+            - count: Number of results returned
+            - query: Original search query
+
+    Raises:
+        ValidationError: Empty query or invalid parameters
+        ConnectionError: Vector database unreachable
+
+    Performance: <500ms for 87 nodes (NFR-020)
+    Accuracy: >90% top-5 relevance (NFR-093)
+
+    Example:
+        # Find chat model nodes
+        result = await search_nodes(
+            query="chat model with streaming",
+            max_results=5,
+            similarity_threshold=0.7
+        )
+        # Returns: {"results": [...], "count": 3, "query": "chat model with streaming"}
+
+        # Filter by category
+        result = await search_nodes(
+            query="memory",
+            category="Memory",
+            max_results=3
+        )
+    """
+    try:
+        if server_context is None:
+            raise RuntimeError("Service not initialized")
+
+        # Call vector search service
+        results = await server_context.vector_search.search_nodes(
+            query=query,
+            max_results=max_results,
+            similarity_threshold=similarity_threshold,
+            category=category
+        )
+
+        # Return formatted response
+        return {
+            "results": results,
+            "count": len(results),
+            "query": query
         }
 
     except Exception as e:
