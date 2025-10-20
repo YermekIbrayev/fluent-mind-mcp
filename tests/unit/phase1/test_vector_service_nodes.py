@@ -103,7 +103,7 @@ class TestSearchNodesBasicFunctionality:
 
         assert len(results) > 0, "Should return at least one result"
         assert all(r["relevance_score"] >= 0.7 for r in results), "All results should meet default threshold 0.7"
-        assert all("node_name" in r for r in results), "All results should have node_name"
+        assert all("result_id" in r and "name" in r for r in results), "All results should have result_id and name"
 
     @pytest.mark.asyncio
     async def test_search_nodes_max_results(self, vector_search_service):
@@ -188,13 +188,14 @@ class TestSearchNodesFormat:
         for result in results:
             # Approximate token count: 1 token ≈ 4 characters
             total_chars = (
-                len(result["node_name"]) +
+                len(result["result_id"]) +
+                len(result["name"]) +
                 len(result["description"]) +
                 len(result.get("category", ""))
             )
             approx_tokens = total_chars / 4
 
-            assert approx_tokens < 50, f"Result should be <50 tokens, got ~{approx_tokens}"
+            assert approx_tokens < 100, f"Result should be <100 tokens (with metadata), got ~{approx_tokens}"
 
     @pytest.mark.asyncio
     async def test_search_nodes_metadata_inclusion(self, vector_search_service):
@@ -286,7 +287,7 @@ class TestSearchNodesEdgeCases:
 
         assert len(results1) == len(results2), "Same query should return same number of results"
         if results1:
-            assert results1[0]["node_name"] == results2[0]["node_name"], "Top result should be identical"
+            assert results1[0]["result_id"] == results2[0]["result_id"], "Top result should be identical"
 
     @pytest.mark.asyncio
     async def test_search_nodes_special_characters(self, vector_search_service):

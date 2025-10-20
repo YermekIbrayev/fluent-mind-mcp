@@ -168,16 +168,16 @@ class TestUS1ChatbotMemoryScenario:
         assert len(results) > 0, "Should return results for chatbot memory query"
         assert len(results) <= 5, "Should respect limit of 5"
 
-        # Extract node names from results
-        result_names = [r["name"] for r in results]
+        # Extract node IDs from results (result_id contains node identifier)
+        result_ids = [r["result_id"] for r in results]
 
         # At least 2 of the 3 expected nodes should be in top 5
         expected_nodes = {"chatOpenAI", "bufferMemory", "conversationChain"}
-        found_nodes = expected_nodes & set(result_names)
+        found_nodes = expected_nodes & set(result_ids)
 
         assert len(found_nodes) >= 2, (
             f"Expected at least 2 of {expected_nodes} in results, "
-            f"but only found {found_nodes} in {result_names}"
+            f"but only found {found_nodes} in {result_ids}"
         )
 
         # Verify results are relevant (high relevance scores)
@@ -214,8 +214,8 @@ class TestUS1DocumentRetrievalScenario:
         # Should return results
         assert len(results) > 0, "Should return results for document search query"
 
-        # Extract node names and categories
-        result_names = [r["name"] for r in results]
+        # Extract node IDs and categories (result_id contains node identifier)
+        result_ids = [r["result_id"] for r in results]
         result_categories = [r["category"] for r in results]
 
         # Expected components for document search: embeddings, vector store, retrieval
@@ -225,7 +225,7 @@ class TestUS1DocumentRetrievalScenario:
             "conversationalRetrievalQAChain",
             "cheerioWebScraper"
         }
-        found_nodes = expected_nodes & set(result_names)
+        found_nodes = expected_nodes & set(result_ids)
 
         # Should find at least 2 relevant nodes
         assert len(found_nodes) >= 2, (
