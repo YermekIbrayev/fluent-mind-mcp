@@ -40,6 +40,15 @@ class ChatflowAutomationError(Exception):
             return f"[{self.error_code}] {self.message}"
         return self.message
 
+    def get_message(self) -> str:
+        """Return user-friendly error message for compatibility.
+
+        WHY: Template Method pattern - base class provides default implementation.
+             Subclasses inherit this behavior without code duplication.
+             Supports legacy APIs that expect get_message() method.
+        """
+        return self.message
+
 
 class ValidationError(ChatflowAutomationError):
     """
@@ -219,5 +228,127 @@ class ConnectionInferenceError(ChatflowAutomationError):
         super().__init__(
             message=message,
             error_code="CONNECTION_INFERENCE_ERROR",
+            details=error_details,
+        )
+
+
+class NoResultsError(ChatflowAutomationError):
+    """
+    Search returned no results.
+
+    Raised when vector search finds no matching nodes or templates
+    above the similarity threshold.
+    """
+
+    def __init__(
+        self,
+        query: Optional[str] = None,
+        details: Optional[dict] = None,
+    ):
+        """
+        Initialize no results error.
+
+        Args:
+            query: Search query that returned no results
+            details: Additional context
+        """
+        if query:
+            message = f"No results found for query: {query}. Try broader or simpler terms."
+        else:
+            message = "No results found. Try refining your search."
+
+        error_details = details or {}
+        if query:
+            error_details["query"] = query
+
+        super().__init__(
+            message=message,
+            error_code="NO_RESULTS",
+            details=error_details,
+        )
+
+
+class InvalidTemplateError(ChatflowAutomationError):
+    """
+    Template structure is invalid.
+
+    Raised when template fails validation:
+    - Missing required fields
+    - Invalid flowData structure
+    - Incompatible node references
+    """
+
+    def __init__(
+        self,
+        template_id: Optional[str] = None,
+        reason: Optional[str] = None,
+        details: Optional[dict] = None,
+    ):
+        """
+        Initialize invalid template error.
+
+        Args:
+            template_id: Template identifier
+            reason: Validation failure reason
+            details: Additional context
+        """
+        if template_id and reason:
+            message = f"Template '{template_id}' is invalid: {reason}"
+        elif template_id:
+            message = f"Template '{template_id}' is invalid"
+        else:
+            message = "Template structure is invalid"
+
+        error_details = details or {}
+        if template_id:
+            error_details["template_id"] = template_id
+        if reason:
+            error_details["reason"] = reason
+
+        super().__init__(
+            message=message,
+            error_code="INVALID_TEMPLATE",
+            details=error_details,
+        )
+
+
+class MissingParameterError(ChatflowAutomationError):
+    """
+    Required parameter is missing.
+
+    Raised when template requires parameters that weren't provided
+    in build_flow invocation.
+    """
+
+    def __init__(
+        self,
+        parameter: Optional[str] = None,
+        template_id: Optional[str] = None,
+        details: Optional[dict] = None,
+    ):
+        """
+        Initialize missing parameter error.
+
+        Args:
+            parameter: Name of missing parameter
+            template_id: Template requiring the parameter
+            details: Additional context
+        """
+        if parameter and template_id:
+            message = f"Template '{template_id}' requires parameter: {parameter}"
+        elif parameter:
+            message = f"Missing required parameter: {parameter}"
+        else:
+            message = "Required parameter is missing"
+
+        error_details = details or {}
+        if parameter:
+            error_details["parameter"] = parameter
+        if template_id:
+            error_details["template_id"] = template_id
+
+        super().__init__(
+            message=message,
+            error_code="MISSING_PARAMETER",
             details=error_details,
         )

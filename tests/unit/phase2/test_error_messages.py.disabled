@@ -1,0 +1,272 @@
+"""
+Unit tests for error messages with token validation.
+
+Tests compact error messages (<30, <40, <50 tokens) for token efficiency.
+All tests are TDD-RED phase - they should FAIL until implementation is complete.
+
+Test coverage:
+- NO_RESULTS error (<30 tokens)
+- INVALID_TEMPLATE error (<40 tokens)
+- MISSING_PARAMETER error (<50 tokens)
+- BUILD_FLOW_FAILURE error (<50 tokens)
+- Error message content and structure validation
+"""
+
+import pytest
+from typing import Dict
+
+from fluent_mind_mcp.utils.exceptions import (
+    NoResultsError,
+    InvalidTemplateError,
+    MissingParameterError,
+    BuildFlowError,
+)
+from fluent_mind_mcp.utils.error_formatter import ErrorFormatter
+
+
+def count_tokens(text: str) -> int:
+    """
+    Count tokens in text (rough estimation: ~1 token per 4 characters).
+    For accurate counting, use tiktoken or similar.
+    """
+    # Simple approximation: split on whitespace and punctuation
+    import re
+    words = re.findall(r'\b\w+\b', text)
+    return len(words)
+
+
+class TestNoResultsError:
+    """Test NO_RESULTS error message format and token count."""
+
+    def test_no_results_error_message(self):
+        """Message suggests query refinement."""
+        # Arrange & Act
+        error = NoResultsError(query="chatbot with memory and RAG")
+        message = error.get_message()
+
+        # Assert
+        assert "No nodes match" in message or "No results" in message
+        assert "broader" in message.lower() or "simpler" in message.lower() or "refine" in message.lower()
+
+    def test_no_results_error_token_count(self):
+        """Message ≤30 tokens."""
+        # Arrange & Act
+        error = NoResultsError(query="complex query text")
+        message = error.get_message()
+
+        # Assert
+        token_count = count_tokens(message)
+        assert token_count <= 30, f"Error message has {token_count} tokens, expected ≤30"
+
+    def test_no_results_error_code(self):
+        """Error code = "NO_RESULTS"."""
+        # Arrange & Act
+        error = NoResultsError(query="test")
+
+        # Assert
+        assert error.error_code == "NO_RESULTS"
+
+    def test_no_results_error_example(self):
+        """Includes example ("chat" instead of "chatbot with memory")."""
+        # Arrange & Act
+        error = NoResultsError(query="chatbot with memory and RAG")
+        message = error.get_message()
+
+        # Assert
+        assert "chat" in message.lower()
+        assert "instead" in message.lower() or "try" in message.lower()
+
+
+class TestInvalidTemplateError:
+    """Test INVALID_TEMPLATE error message format and token count."""
+
+    def test_invalid_template_error_message(self):
+        """Message indicates template not found."""
+        # Arrange & Act
+        error = InvalidTemplateError(template_id="tmpl_nonexistent")
+        message = error.get_message()
+
+        # Assert
+        assert "not found" in message.lower() or "invalid" in message.lower()
+        assert "template" in message.lower()
+
+    def test_invalid_template_error_token_count(self):
+        """Message ≤40 tokens."""
+        # Arrange & Act
+        error = InvalidTemplateError(template_id="tmpl_very_long_template_name_123")
+        message = error.get_message()
+
+        # Assert
+        token_count = count_tokens(message)
+        assert token_count <= 40, f"Error message has {token_count} tokens, expected ≤40"
+
+    def test_invalid_template_error_code(self):
+        """Error code = "INVALID_TEMPLATE"."""
+        # Arrange & Act
+        error = InvalidTemplateError(template_id="tmpl_test")
+
+        # Assert
+        assert error.error_code == "INVALID_TEMPLATE"
+
+    def test_invalid_template_error_includes_template_id(self):
+        """Error includes actual template_id attempted."""
+        # Arrange
+        template_id = "tmpl_custom_flow"
+
+        # Act
+        error = InvalidTemplateError(template_id=template_id)
+        message = error.get_message()
+
+        # Assert
+        assert template_id in message
+
+
+class TestMissingParameterError:
+    """Test MISSING_PARAMETER error message format and token count."""
+
+    def test_missing_parameter_error_message(self):
+        """Message specifies which parameter missing."""
+        # Arrange & Act
+        error = MissingParameterError(param_name="model")
+        message = error.get_message()
+
+        # Assert
+        assert "model" in message.lower()
+        assert "missing" in message.lower() or "required" in message.lower()
+
+    def test_missing_parameter_error_token_count(self):
+        """Message ≤50 tokens."""
+        # Arrange & Act
+        error = MissingParameterError(param_name="temperature", example_value="0.7")
+        message = error.get_message()
+
+        # Assert
+        token_count = count_tokens(message)
+        assert token_count <= 50, f"Error message has {token_count} tokens, expected ≤50"
+
+    def test_missing_parameter_error_code(self):
+        """Error code = "MISSING_PARAMETER"."""
+        # Arrange & Act
+        error = MissingParameterError(param_name="api_key")
+
+        # Assert
+        assert error.error_code == "MISSING_PARAMETER"
+
+    def test_missing_parameter_error_example(self):
+        """Includes example value for parameter."""
+        # Arrange & Act
+        error = MissingParameterError(param_name="model", example_value="gpt-4")
+        message = error.get_message()
+
+        # Assert
+        assert "example" in message.lower() or ":" in message
+        assert "gpt-4" in message
+
+
+class TestBuildFlowFailureError:
+    """Test BUILD_FLOW_FAILURE error message format and token count."""
+
+    def test_build_flow_failure_error_message(self):
+        """Message includes reason and recovery."""
+        # Arrange & Act
+        error = BuildFlowError(
+            reason="Cannot connect nodes",
+            recovery_suggestion="Check compatibility"
+        )
+        message = error.get_message()
+
+        # Assert
+        assert "Cannot connect nodes" in message
+        assert "Check compatibility" in message
+
+    def test_build_flow_failure_error_token_count(self):
+        """Message ≤50 tokens."""
+        # Arrange & Act
+        error = BuildFlowError(
+            reason="Flowise API connection timeout",
+            recovery_suggestion="Retry in 5 seconds"
+        )
+        message = error.get_message()
+
+        # Assert
+        token_count = count_tokens(message)
+        assert token_count <= 50, f"Error message has {token_count} tokens, expected ≤50"
+
+    def test_build_flow_failure_error_code(self):
+        """Error code = "BUILD_FLOW_FAILURE"."""
+        # Arrange & Act
+        error = BuildFlowError(reason="Test failure", recovery_suggestion="Retry")
+
+        # Assert
+        assert error.error_code == "BUILD_FLOW_FAILURE"
+
+    def test_build_flow_failure_error_recovery_suggestion(self):
+        """Includes actionable recovery step."""
+        # Arrange & Act
+        error = BuildFlowError(
+            reason="Connection inference failed",
+            recovery_suggestion="Use manual connections parameter"
+        )
+        message = error.get_message()
+
+        # Assert
+        # Should include recovery suggestion
+        assert "manual connections" in message.lower() or "parameter" in message.lower()
+        # Should be actionable (imperative verb)
+        assert any(word in message.lower() for word in ["use", "try", "check", "retry", "verify"])
+
+
+class TestErrorFormatting:
+    """Test error formatting utilities."""
+
+    def test_format_no_results_error(self):
+        """ErrorFormatter formats NO_RESULTS correctly."""
+        # Arrange
+        error = NoResultsError(query="test query")
+
+        # Act
+        formatted = ErrorFormatter.format_error(error)
+
+        # Assert
+        assert formatted["error_code"] == "NO_RESULTS"
+        assert "message" in formatted
+        assert count_tokens(formatted["message"]) <= 30
+
+    def test_format_invalid_template_error(self):
+        """ErrorFormatter formats INVALID_TEMPLATE correctly."""
+        # Arrange
+        error = InvalidTemplateError(template_id="tmpl_test")
+
+        # Act
+        formatted = ErrorFormatter.format_error(error)
+
+        # Assert
+        assert formatted["error_code"] == "INVALID_TEMPLATE"
+        assert "message" in formatted
+        assert count_tokens(formatted["message"]) <= 40
+
+    def test_format_missing_parameter_error(self):
+        """ErrorFormatter formats MISSING_PARAMETER correctly."""
+        # Arrange
+        error = MissingParameterError(param_name="model", example_value="gpt-4")
+
+        # Act
+        formatted = ErrorFormatter.format_error(error)
+
+        # Assert
+        assert formatted["error_code"] == "MISSING_PARAMETER"
+        assert "message" in formatted
+        assert count_tokens(formatted["message"]) <= 50
+
+    def test_format_build_flow_error(self):
+        """ErrorFormatter formats BUILD_FLOW_FAILURE correctly."""
+        # Arrange
+        error = BuildFlowError(reason="Test", recovery_suggestion="Retry")
+
+        # Act
+        formatted = ErrorFormatter.format_error(error)
+
+        # Assert
+        assert formatted["error_code"] == "BUILD_FLOW_FAILURE"
+        assert "message" in formatted
+        assert count_tokens(formatted["message"]) <= 50

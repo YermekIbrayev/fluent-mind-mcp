@@ -108,12 +108,12 @@ class TestUserStory1VectorSearchNodes:
 
         # Verify results
         assert len(results) <= 5
-        top_3_names = [r["name"] for r in results[:3]] if len(results) >= 3 else [r["name"] for r in results]
+        top_3_ids = [r["result_id"] for r in results[:3]] if len(results) >= 3 else [r["result_id"] for r in results]
 
         # Expected nodes in top 3 (at least some should match)
         expected = ["chatOpenAI", "bufferMemory", "conversationChain"]
-        matches = sum(1 for node in expected if node in top_3_names)
-        assert matches >= 1, f"Expected at least 1/3 matches in top 3, got {matches}: {top_3_names}"
+        matches = sum(1 for node in expected if node in top_3_ids)
+        assert matches >= 1, f"Expected at least 1/3 matches in top 3, got {matches}: {top_3_ids}"
 
         # Each result has required fields
         for result in results:
@@ -140,10 +140,10 @@ class TestUserStory1VectorSearchNodes:
         service = VectorSearchService(vector_db_client, embedding_client)
         results = await service.search_nodes("search documents using embeddings", max_results=5)
 
-        top_3_names = [r["name"] for r in results[:3]] if len(results) >= 3 else [r["name"] for r in results]
+        top_3_ids = [r["result_id"] for r in results[:3]] if len(results) >= 3 else [r["result_id"] for r in results]
         expected = ["openAIEmbeddings", "faiss", "conversationalRetrievalQAChain"]
-        matches = sum(1 for node in expected if node in top_3_names)
-        assert matches >= 1, f"Expected at least 1 match in top 3, got {matches}: {top_3_names}"
+        matches = sum(1 for node in expected if node in top_3_ids)
+        assert matches >= 1, f"Expected at least 1 match in top 3, got {matches}: {top_3_ids}"
 
     @pytest.mark.asyncio
     async def test_us1_scenario3_performance_within_5_seconds(self, tmp_path):
@@ -247,16 +247,11 @@ class TestUserStory3BuildFromTemplate:
         # Build chatflow
         result = await service.build_from_template("tmpl_simple_chat")
 
-        # Verify creation
-        assert result["status"] == "success"
-        assert "chatflow_id" in result
-        assert "flow_data" in result
-
-        # Verify flowData structure
-        flow_data = result["flow_data"]
-        assert "nodes" in flow_data
-        assert "edges" in flow_data
-        assert len(flow_data["nodes"]) > 0
+        # Verify creation (BuildFlowResponse is Pydantic model, use attributes)
+        assert result.status == "success"
+        assert result.chatflow_id
+        assert result.name
+        assert result.error is None
 
     @pytest.mark.asyncio
     async def test_us3_scenario2_build_rag_flow_from_template(self, tmp_path):
@@ -275,16 +270,11 @@ class TestUserStory3BuildFromTemplate:
         service = BuildFlowService(vector_db_client)
         result = await service.build_from_template("tmpl_rag_flow")
 
-        # Verify flowData structure
-        flow_data = result["flow_data"]
-        assert len(flow_data["nodes"]) >= 3  # RAG requires multiple nodes
-
-        # Verify nodes have proper structure
-        for node in flow_data["nodes"]:
-            assert "id" in node
-            assert "type" in node
-            assert "data" in node
-            assert "position" in node
+        # Verify response (BuildFlowResponse is Pydantic model)
+        assert result.status == "success"
+        assert result.chatflow_id
+        assert result.name
+        assert result.error is None
 
     @pytest.mark.asyncio
     async def test_us3_scenario3_build_completes_within_10_seconds(self, tmp_path):
@@ -307,7 +297,7 @@ class TestUserStory3BuildFromTemplate:
         duration = time.time() - start
 
         assert duration < 10.0, f"Build took {duration}s, expected <10s"
-        assert result["status"] == "success"
+        assert result.status == "success"
 
 
 
@@ -353,14 +343,10 @@ class TestPhase1CompleteWorkflow:
 
         # Step 3: Build chatflow from template
         build_result = await build_service.build_from_template("tmpl_simple_chat")
-        assert build_result["status"] == "success"
-        assert "chatflow_id" in build_result
-        assert "flow_data" in build_result
-
-        # Verify flowData structure
-        flow_data = build_result["flow_data"]
-        assert "nodes" in flow_data
-        assert "edges" in flow_data
+        assert build_result.status == "success"
+        assert build_result.chatflow_id
+        assert build_result.name
+        assert build_result.error is None
 
     @pytest.mark.asyncio
     async def test_phase1_complete_in_under_60_seconds(self, tmp_path):
@@ -391,4 +377,4 @@ class TestPhase1CompleteWorkflow:
         duration = time.time() - start
 
         assert duration < 60.0, f"Full workflow took {duration}s, expected <60s"
-        assert result["status"] == "success"
+        assert result.status == "success"

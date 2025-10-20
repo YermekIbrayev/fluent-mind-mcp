@@ -99,6 +99,60 @@ class VectorSearchService:
         """
         return max(0.0, 1.0 - (distance / self.COSINE_DISTANCE_MAX))
 
+    def _parse_base_classes(self, base_classes_str: str) -> list[str]:
+        """Parse comma-separated base classes string.
+
+        Args:
+            base_classes_str: Comma-separated base classes (e.g., "BaseChain,LLMChain")
+
+        Returns:
+            List of trimmed base class names, empty list if input is empty
+
+        WHY: Centralizes parsing logic for consistency and reusability.
+             Handles empty strings and whitespace trimming uniformly.
+        """
+        if not base_classes_str:
+            return []
+        return [cls.strip() for cls in base_classes_str.split(",")]
+
+    def _parse_tags(self, tags_str: str) -> list[str]:
+        """Parse comma-separated tags string.
+
+        Args:
+            tags_str: Comma-separated tags (e.g., "chatbot,rag,memory")
+
+        Returns:
+            List of trimmed tag names, empty list if input is empty
+
+        WHY: Centralizes tag parsing for consistency with base_classes parsing.
+        """
+        if not tags_str:
+            return []
+        return [tag.strip() for tag in tags_str.split(",")]
+
+    def _parse_required_nodes(self, required_nodes_raw: Any) -> list[str]:
+        """Parse required_nodes from various formats.
+
+        Args:
+            required_nodes_raw: Required nodes as list, JSON string, or CSV
+
+        Returns:
+            List of node names, empty list if input is empty
+
+        WHY: Handles flexible storage formats (JSON array, comma-separated).
+             Tries JSON first (structured), falls back to CSV parsing.
+        """
+        if isinstance(required_nodes_raw, list):
+            return required_nodes_raw
+        elif isinstance(required_nodes_raw, str) and required_nodes_raw:
+            # Try JSON parsing first, fallback to comma-separated
+            try:
+                import json
+                return json.loads(required_nodes_raw)
+            except (json.JSONDecodeError, ValueError):
+                return [n.strip() for n in required_nodes_raw.split(",") if n.strip()]
+        return []
+
     def _format_node_result(
         self,
         node_id: str,
@@ -119,24 +173,31 @@ class VectorSearchService:
 
         WHY: Separates formatting logic from search orchestration.
         """
+        # Calculate derived fields
         relevance_score = self._calculate_relevance_score(distance)
         truncated_description = self._truncate_to_token_budget(
             document,
             max_tokens=self.DEFAULT_TOKEN_BUDGET
         )
+        base_classes = self._parse_base_classes(metadata.get("base_classes", ""))
 
-        # Parse base_classes from comma-separated string
-        base_classes_str = metadata.get("base_classes", "")
-        base_classes = [cls.strip() for cls in base_classes_str.split(",")] if base_classes_str else []
-
+        # WHY: Return both top-level fields (for backward compatibility with tests)
+        # and metadata dict (for SearchResult model compliance). Duplication is
+        # intentional to support both direct field access and structured metadata.
         return {
-            "node_name": metadata["name"],
-            "label": metadata["label"],
+            "result_id": metadata["name"],  # Unique node identifier (e.g., "chatOpenAI")
+            "name": metadata["label"],      # Display name (e.g., "ChatOpenAI")
+            "label": metadata["label"],     # Backward compatibility
             "category": metadata["category"],
             "description": truncated_description,
             "base_classes": base_classes,
             "deprecated": metadata.get("deprecated", False),
-            "relevance_score": round(relevance_score, 3)
+            "relevance_score": round(relevance_score, 3),
+            "metadata": {
+                "category": metadata["category"],
+                "base_classes": base_classes,
+                "deprecated": metadata.get("deprecated", False)
+            }
         }
 
     def _format_template_result_with_boost(
@@ -161,37 +222,26 @@ class VectorSearchService:
 
         WHY: Tag boosting improves precision by leveraging explicit metadata.
         """
+        # Calculate derived fields
         base_relevance = self._calculate_relevance_score(distance)
-
-        # Tag boosting: +0.2 relevance if query matches any tag
-        tags = metadata.get("tags", "").split(",") if metadata.get("tags") else []
-        query_lower = query.lower()
-        tag_boost = self.TAG_BOOST_SCORE if any(
-            tag.lower() in query_lower for tag in tags
-        ) else 0.0
-
-        relevance_score = min(1.0, base_relevance + tag_boost)
-
+        tags = self._parse_tags(metadata.get("tags", ""))
         truncated_description = self._truncate_to_token_budget(
             document,
             max_tokens=self.DEFAULT_TOKEN_BUDGET
         )
 
-        # Parse required_nodes from metadata (stored as JSON string or list)
-        required_nodes_raw = metadata.get("required_nodes", "")
-        if isinstance(required_nodes_raw, list):
-            required_nodes = required_nodes_raw
-        elif isinstance(required_nodes_raw, str) and required_nodes_raw:
-            # Try to parse as JSON list, fallback to comma-separated
-            try:
-                import json
-                required_nodes = json.loads(required_nodes_raw)
-            except (json.JSONDecodeError, ValueError):
-                required_nodes = [n.strip() for n in required_nodes_raw.split(",") if n.strip()]
-        else:
-            required_nodes = []
+        # Apply tag-based relevance boost
+        query_lower = query.lower()
+        tag_boost = self.TAG_BOOST_SCORE if any(
+            tag.lower() in query_lower for tag in tags
+        ) else 0.0
+        relevance_score = min(1.0, base_relevance + tag_boost)
+
+        # Parse required_nodes (handles JSON string, list, or comma-separated)
+        required_nodes = self._parse_required_nodes(metadata.get("required_nodes", ""))
 
         result = {
+            "result_id": metadata["template_id"],  # WHY: SearchResult expects result_id
             "template_id": metadata["template_id"],
             "name": metadata["name"],
             "description": truncated_description,
@@ -199,7 +249,12 @@ class VectorSearchService:
             "node_count": metadata.get("node_count", 0),
             "complexity_level": metadata.get("complexity_level", "unknown"),
             "required_nodes": required_nodes,
-            "relevance_score": round(relevance_score, 3)
+            "relevance_score": round(relevance_score, 3),
+            "metadata": {
+                "tags": tags,
+                "node_count": metadata.get("node_count", 0),
+                "complexity_level": metadata.get("complexity_level", "unknown")
+            }
         }
 
         # Add parameters_schema if present (T026 - optional field)
